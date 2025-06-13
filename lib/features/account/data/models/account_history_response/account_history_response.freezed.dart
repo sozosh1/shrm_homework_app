@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountHistoryResponse {
 
- int get accountId; String get accountName; String get currency; String get currentBalance; AccountHistory get history;
+ int get accountId; String get accountName; String get currency; String get currentBalance; List<AccountHistory> get history;
 /// Create a copy of AccountHistoryResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,12 +29,12 @@ $AccountHistoryResponseCopyWith<AccountHistoryResponse> get copyWith => _$Accoun
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountHistoryResponse&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.accountName, accountName) || other.accountName == accountName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.currentBalance, currentBalance) || other.currentBalance == currentBalance)&&(identical(other.history, history) || other.history == history));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountHistoryResponse&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.accountName, accountName) || other.accountName == accountName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.currentBalance, currentBalance) || other.currentBalance == currentBalance)&&const DeepCollectionEquality().equals(other.history, history));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accountId,accountName,currency,currentBalance,history);
+int get hashCode => Object.hash(runtimeType,accountId,accountName,currency,currentBalance,const DeepCollectionEquality().hash(history));
 
 @override
 String toString() {
@@ -49,11 +49,11 @@ abstract mixin class $AccountHistoryResponseCopyWith<$Res>  {
   factory $AccountHistoryResponseCopyWith(AccountHistoryResponse value, $Res Function(AccountHistoryResponse) _then) = _$AccountHistoryResponseCopyWithImpl;
 @useResult
 $Res call({
- int accountId, String accountName, String currency, String currentBalance, AccountHistory history
+ int accountId, String accountName, String currency, String currentBalance, List<AccountHistory> history
 });
 
 
-$AccountHistoryCopyWith<$Res> get history;
+
 
 }
 /// @nodoc
@@ -73,19 +73,10 @@ as int,accountName: null == accountName ? _self.accountName : accountName // ign
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
 as String,history: null == history ? _self.history : history // ignore: cast_nullable_to_non_nullable
-as AccountHistory,
+as List<AccountHistory>,
   ));
 }
-/// Create a copy of AccountHistoryResponse
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AccountHistoryCopyWith<$Res> get history {
-  
-  return $AccountHistoryCopyWith<$Res>(_self.history, (value) {
-    return _then(_self.copyWith(history: value));
-  });
-}
+
 }
 
 
@@ -93,14 +84,20 @@ $AccountHistoryCopyWith<$Res> get history {
 @JsonSerializable()
 
 class _AccountHistoryResponse implements AccountHistoryResponse {
-  const _AccountHistoryResponse({required this.accountId, required this.accountName, required this.currency, required this.currentBalance, required this.history});
+  const _AccountHistoryResponse({required this.accountId, required this.accountName, required this.currency, required this.currentBalance, required final  List<AccountHistory> history}): _history = history;
   factory _AccountHistoryResponse.fromJson(Map<String, dynamic> json) => _$AccountHistoryResponseFromJson(json);
 
 @override final  int accountId;
 @override final  String accountName;
 @override final  String currency;
 @override final  String currentBalance;
-@override final  AccountHistory history;
+ final  List<AccountHistory> _history;
+@override List<AccountHistory> get history {
+  if (_history is EqualUnmodifiableListView) return _history;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_history);
+}
+
 
 /// Create a copy of AccountHistoryResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -115,12 +112,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountHistoryResponse&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.accountName, accountName) || other.accountName == accountName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.currentBalance, currentBalance) || other.currentBalance == currentBalance)&&(identical(other.history, history) || other.history == history));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountHistoryResponse&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.accountName, accountName) || other.accountName == accountName)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.currentBalance, currentBalance) || other.currentBalance == currentBalance)&&const DeepCollectionEquality().equals(other._history, _history));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accountId,accountName,currency,currentBalance,history);
+int get hashCode => Object.hash(runtimeType,accountId,accountName,currency,currentBalance,const DeepCollectionEquality().hash(_history));
 
 @override
 String toString() {
@@ -135,11 +132,11 @@ abstract mixin class _$AccountHistoryResponseCopyWith<$Res> implements $AccountH
   factory _$AccountHistoryResponseCopyWith(_AccountHistoryResponse value, $Res Function(_AccountHistoryResponse) _then) = __$AccountHistoryResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int accountId, String accountName, String currency, String currentBalance, AccountHistory history
+ int accountId, String accountName, String currency, String currentBalance, List<AccountHistory> history
 });
 
 
-@override $AccountHistoryCopyWith<$Res> get history;
+
 
 }
 /// @nodoc
@@ -158,21 +155,12 @@ accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nulla
 as int,accountName: null == accountName ? _self.accountName : accountName // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
-as String,history: null == history ? _self.history : history // ignore: cast_nullable_to_non_nullable
-as AccountHistory,
+as String,history: null == history ? _self._history : history // ignore: cast_nullable_to_non_nullable
+as List<AccountHistory>,
   ));
 }
 
-/// Create a copy of AccountHistoryResponse
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AccountHistoryCopyWith<$Res> get history {
-  
-  return $AccountHistoryCopyWith<$Res>(_self.history, (value) {
-    return _then(_self.copyWith(history: value));
-  });
-}
+
 }
 
 // dart format on

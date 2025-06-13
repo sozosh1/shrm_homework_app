@@ -20,7 +20,6 @@ class MockAccountRepository implements AccountRepository {
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      //! как правильно указывать время?
       createdAt: DateTime.now().toIso8601String(),
       updatedAt: DateTime.now().toIso8601String(),
     );
@@ -56,9 +55,7 @@ class MockAccountRepository implements AccountRepository {
   }
 
   @override
-  Future<void> deleteAccount(int id) async {
-    //! тут же пока никак не реализуешь?
-  }
+  Future<void> deleteAccount(int id) async {}
 
   @override
   Future<data_account.AccountHistoryResponse> getAccountHistory(int id) async {
@@ -67,27 +64,28 @@ class MockAccountRepository implements AccountRepository {
       accountName: 'Main account',
       currency: 'RUB',
       currentBalance: '2100.00',
-      history:
-      // todo нужно возвращать список истории 
-      AccountHistory(
-        id: 1,
-        accountId: id,
-        changeType: 'deposit',
-        previousState: AccountState(
-          id: id,
-          name: "Основной счёт",
-          balance: "500.00",
-          currency: "RUB",
+      history: [
+        // todo нужно возвращать список истории
+        AccountHistory(
+          id: 1,
+          accountId: id,
+          changeType: 'deposit',
+          previousState: AccountState(
+            id: id,
+            name: "Основной счёт",
+            balance: "500.00",
+            currency: "RUB",
+          ),
+          newState: AccountState(
+            id: id,
+            name: "Основной счёт",
+            balance: "2100.00",
+            currency: "RUB",
+          ),
+          changeTimestamp: "2025-06-11T12:00:00Z",
+          createdAt: "2025-04-11T12:00:00Z",
         ),
-        newState: AccountState(
-          id: id,
-          name: "Основной счёт",
-          balance: "2100.00",
-          currency: "RUB",
-        ),
-        changeTimestamp: "2025-06-11T12:00:00Z",
-        createdAt: "2025-04-11T12:00:00Z",
-      ),
+      ],
     );
   }
 }

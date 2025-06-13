@@ -13,7 +13,7 @@ class MockTransitionRepository implements TransitionRepository {
       amount: '500.00',
       transactionDate: "2025-06-12T11:35:00Z",
       comment: 'salary alo business dada dengi',
-      //! это дата создания счета чи как?
+     
       createdAt: "2025-04-12T11:35:00Z",
       updatedAt: "2025-06-12T11:35:00Z",
     );
