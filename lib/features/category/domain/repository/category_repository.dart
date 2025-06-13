@@ -1,4 +1,4 @@
-import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 
 abstract class CategoryRepository {
   Future<List<Category>> getAllCategories();

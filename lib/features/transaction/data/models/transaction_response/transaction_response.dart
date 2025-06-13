@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
-import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 
 part 'transaction_response.freezed.dart';
 part 'transaction_response.g.dart';
