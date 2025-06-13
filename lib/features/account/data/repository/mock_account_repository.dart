@@ -36,7 +36,7 @@ class MockAccountRepository implements AccountRepository {
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      createdAt: "2025-06-12T11:35:00Z",
+      createdAt: "2025-04-12T11:35:00Z",
       updatedAt: DateTime.now().toIso8601String(),
     );
   }
@@ -55,7 +55,10 @@ class MockAccountRepository implements AccountRepository {
   }
 
   @override
-  Future<void> deleteAccount(int id) async {}
+  Future<void> deleteAccount(int id) async {
+    await Future.delayed(Duration(milliseconds: 500));
+    // ничего не делаю потому что нет состояния
+  }
 
   @override
   Future<data_account.AccountHistoryResponse> getAccountHistory(int id) async {
@@ -65,7 +68,6 @@ class MockAccountRepository implements AccountRepository {
       currency: 'RUB',
       currentBalance: '2100.00',
       history: [
-        // todo нужно возвращать список истории
         AccountHistory(
           id: 1,
           accountId: id,

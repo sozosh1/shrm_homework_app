@@ -13,7 +13,6 @@ class MockTransitionRepository implements TransitionRepository {
       amount: '500.00',
       transactionDate: "2025-06-12T11:35:00Z",
       comment: 'salary alo business dada dengi',
-     
       createdAt: "2025-04-12T11:35:00Z",
       updatedAt: "2025-06-12T11:35:00Z",
     );
@@ -53,5 +52,8 @@ class MockTransitionRepository implements TransitionRepository {
   }
 
   @override
-  Future<void> deleteTransaction(int id) async {}
+  Future<void> deleteTransaction(int id) async {
+    await Future.delayed(Duration(milliseconds: 500));
+    // ничего не делаю потому что нет состояния
+  }
 }

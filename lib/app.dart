@@ -46,89 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Placeholder(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/expense.svg',
-              width: 24,
-              height: 24,
-
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 0
-                    ? AppColors.primaryGreen
-                    : AppColors.textDark,
-                BlendMode.srcIn,
-              ),
-            ),
-
-            label: 'Расходы',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/income.svg',
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 1
-                    ? AppColors.primaryGreen
-                    : AppColors.textDark,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: 'Доходы',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/account.svg',
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 2
-                    ? AppColors.primaryGreen
-                    : AppColors.textDark,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: 'Счет',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/article.svg',
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 3
-                    ? AppColors.primaryGreen
-                    : AppColors.textDark,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: 'Статьи',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/settings.svg',
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 4
-                    ? AppColors.primaryGreen
-                    : AppColors.textDark,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: 'Настройки',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppColors.primaryGreen,
-        unselectedItemColor: AppColors.textDark,
-        backgroundColor: AppColors.whiteBackground,
+      body: Center(
+        child: Image.asset('assets/images/meme.png', width: 200, height: 200),
+      ),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: _selectedIndex,
         onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
       ),
       backgroundColor: AppColors.lightBackground,
     );
@@ -138,5 +61,91 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+}
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onTap;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/expense.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              selectedIndex == 0 ? AppColors.primaryGreen : AppColors.textDark,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Расходы',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/income.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              selectedIndex == 1 ? AppColors.primaryGreen : AppColors.textDark,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Доходы',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/account.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              selectedIndex == 2 ? AppColors.primaryGreen : AppColors.textDark,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Счет',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/article.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              selectedIndex == 3 ? AppColors.primaryGreen : AppColors.textDark,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Статьи',
+        ),
+        BottomNavigationBarItem(
+          icon: SvgPicture.asset(
+            'assets/icons/settings.svg',
+            width: 24,
+            height: 24,
+            colorFilter: ColorFilter.mode(
+              selectedIndex == 4 ? AppColors.primaryGreen : AppColors.textDark,
+              BlendMode.srcIn,
+            ),
+          ),
+          label: 'Настройки',
+        ),
+      ],
+      currentIndex: selectedIndex,
+      selectedItemColor: AppColors.primaryGreen,
+      unselectedItemColor: AppColors.textDark,
+      backgroundColor: AppColors.whiteBackground,
+      onTap: onTap,
+      type: BottomNavigationBarType.fixed,
+      showUnselectedLabels: true,
+    );
   }
 }
