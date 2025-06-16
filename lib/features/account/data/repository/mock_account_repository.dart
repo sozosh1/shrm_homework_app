@@ -1,9 +1,11 @@
-import 'package:shrm_homework_app/features/account/data/models/account_create_request/account_create_request.dart'
-    as data_account;
-import 'package:shrm_homework_app/features/account/data/models/account_history_response/account_history_response.dart'
-    as data_account;
-import 'package:shrm_homework_app/features/account/data/models/account_update_request/account_update_request.dart'
-    as data_account;
+import 'package:shrm_homework_app/features/account/data/models/account_create_request/account_create_request.dart';
+
+import 'package:shrm_homework_app/features/account/data/models/account_history_response/account_history_response.dart';
+import 'package:shrm_homework_app/features/account/data/models/account_responce/account_response.dart';
+
+import 'package:shrm_homework_app/features/account/data/models/account_update_request/account_update_request.dart';
+import 'package:shrm_homework_app/features/account/data/models/stat_item/stat_item.dart';
+
 import 'package:shrm_homework_app/features/account/domain/models/account/account.dart';
 import 'package:shrm_homework_app/features/account/domain/models/account_history/account_history.dart';
 import 'package:shrm_homework_app/features/account/domain/models/account_state/account_state.dart';
@@ -11,58 +13,62 @@ import 'package:shrm_homework_app/features/account/domain/repository/account_rep
 
 class MockAccountRepository implements AccountRepository {
   @override
-  Future<Account> createAccount(
-    data_account.AccountCreateRequest request,
-  ) async {
+  Future<Account> createAccount(AccountCreateRequest request) async {
     return Account(
       id: 1,
       userId: 2,
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      createdAt: DateTime.now().toIso8601String(),
-      updatedAt: DateTime.now().toIso8601String(),
+      createdAt: '2025-06-16T21:58:48.372Z',
+      updatedAt: '2025-06-16T21:58:48.372Z',
     );
   }
 
   @override
-  Future<Account> updateAccount(
-    int id,
-    data_account.AccountUpdateRequest request,
-  ) async {
+  Future<Account> updateAccount(int id, AccountUpdateRequest request) async {
     return Account(
       id: id,
       userId: 1,
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      createdAt: "2025-04-12T11:35:00Z",
-      updatedAt: DateTime.now().toIso8601String(),
+      createdAt: "2025-06-16T21:48:25.586Z",
+      updatedAt: "2025-06-16T21:48:25.586Z",
     );
   }
 
   @override
-  Future<Account> getAccount(int id) async {
-    return Account(
+  Future<AccountResponse> getAccount(int id) async {
+    return AccountResponse(
       id: id,
-      userId: 1,
-      name: "Main account",
-      balance: '2100.00',
+      name: 'Main account',
+      balance: '1000.00',
       currency: 'RUB',
-      createdAt: '2025-04-12T11:35:00Z',
-      updatedAt: '2025-06-12T11:35:00Z',
+      incomeStats: [
+        StatItem(
+          categoryId: 1,
+          categoryName: 'salary',
+          emoji: '💰',
+          amount: '5000.00',
+        ),
+      ],
+      expenseStats: [
+        StatItem(
+          categoryId: 1,
+          categoryName: 'salary',
+          emoji: '💰',
+          amount: '5000.00',
+        ),
+      ],
+      createdAt: '2025-06-16T21:52:33.724Z',
+      updatedAt: '2025-06-16T21:52:33.724Z',
     );
   }
 
   @override
-  Future<void> deleteAccount(int id) async {
-    await Future.delayed(Duration(milliseconds: 500));
-    // ничего не делаю потому что нет состояния
-  }
-
-  @override
-  Future<data_account.AccountHistoryResponse> getAccountHistory(int id) async {
-    return data_account.AccountHistoryResponse(
+  Future<AccountHistoryResponse> getAccountHistory(int id) async {
+    return AccountHistoryResponse(
       accountId: id,
       accountName: 'Main account',
       currency: 'RUB',

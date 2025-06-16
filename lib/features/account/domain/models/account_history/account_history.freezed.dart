@@ -16,9 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountHistory {
 
- int get id; int get accountId; String get changeType;//! сделать необязательным?  
-//? AccountState? previousState,
- AccountState get previousState; AccountState get newState; String get changeTimestamp; String get createdAt;
+ int get id; int get accountId; String get changeType; AccountState get previousState; AccountState get newState; String get changeTimestamp; String get createdAt;
 /// Create a copy of AccountHistory
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -112,8 +110,6 @@ class _AccountHistory implements AccountHistory {
 @override final  int id;
 @override final  int accountId;
 @override final  String changeType;
-//! сделать необязательным?  
-//? AccountState? previousState,
 @override final  AccountState previousState;
 @override final  AccountState newState;
 @override final  String changeTimestamp;

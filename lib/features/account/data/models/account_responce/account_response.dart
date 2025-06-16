@@ -11,8 +11,8 @@ abstract class AccountResponse with _$AccountResponse {
     required String name,
     required String balance,
     required String currency,
-    required StatItem incomeStats,
-    required StatItem expenseStats,
+    required List<StatItem> incomeStats,
+    required List<StatItem> expenseStats,
     required String createdAt,
     required String updatedAt,
   }) = _AccountResponse;

@@ -10,8 +10,6 @@ abstract class AccountHistory with _$AccountHistory {
     required int id,
     required int accountId,
     required String changeType,
-    //! сделать необязательным?  
-    //? AccountState? previousState,
     required AccountState previousState,
     required AccountState newState,
     required String changeTimestamp,

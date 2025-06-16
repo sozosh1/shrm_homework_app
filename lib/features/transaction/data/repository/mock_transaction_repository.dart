@@ -1,27 +1,32 @@
-import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart'
-    as data_transaction;
+import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
+import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/domain/models/transaction/transaction.dart';
-import 'package:shrm_homework_app/features/transaction/domain/repository/transition_repository.dart';
+import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
 class MockTransitionRepository implements TransitionRepository {
   @override
-  Future<Transaction> getTransition(int id) async {
-    return Transaction(
+  Future<TransactionResponse> getTransition(int id) async {
+    return TransactionResponse(
       id: id,
-      accountId: 1,
-      categoryId: 1,
-      amount: '500.00',
-      transactionDate: "2025-06-12T11:35:00Z",
-      comment: 'salary alo business dada dengi',
-      createdAt: "2025-04-12T11:35:00Z",
-      updatedAt: "2025-06-12T11:35:00Z",
+      account: AccountBrief(
+        id: 1,
+        name: 'main account',
+        balance: '1000.00',
+        currency: 'RUB',
+      ),
+      category: Category(id: 1, name: 'salary', emodji: '💰', isIncome: true),
+      amount: '500',
+      transactionDate: '2025-06-16T21:59:14.677Z',
+      createdAt: '2025-06-16T21:59:14.677Z',
+      updatedAt: '2025-06-16T21:59:14.677Z',
+      comment: 'month salary',
     );
   }
 
   @override
-  Future<Transaction> createTransaction(
-    data_transaction.TransactionRequest request,
-  ) async {
+  Future<Transaction> createTransaction(TransactionRequest request) async {
     return Transaction(
       id: 1,
       accountId: request.accountId,
@@ -35,54 +40,49 @@ class MockTransitionRepository implements TransitionRepository {
   }
 
   @override
-  Future<Transaction> updateTransaction(
+  Future<TransactionResponse> updateTransaction(
     int id,
-    data_transaction.TransactionRequest request,
+    TransactionRequest request,
   ) async {
-    return Transaction(
-      id: id,
-      accountId: request.accountId,
-      categoryId: request.categoryId,
-      amount: request.amount,
-      transactionDate: request.transactionDate,
-      comment: request.comment ?? '',
-      createdAt: "2025-04-12T11:35:00Z",
-      updatedAt: "2025-06-12T11:35:00Z",
+    return TransactionResponse(
+      id: 1,
+      account: AccountBrief(
+        id: request.accountId,
+        name: 'main account',
+        balance: '1000.00',
+        currency: 'RUB',
+      ),
+      category: Category(
+        id: request.categoryId,
+        name: 'salary',
+        emodji: '💰',
+        isIncome: true,
+      ),
+      amount: '500.00',
+      transactionDate: '2025-06-16T21:59:14.677Z',
+      createdAt: '2025-06-16T21:59:14.677Z',
+      updatedAt: '2025-06-16T21:59:14.677Z',
+      comment: 'month salary',
     );
   }
 
   @override
-  Future<List<Transaction>> getAllTransactions() async {
+  Future<List<TransactionResponse>> getAllTransactions() async {
     return [
-      Transaction(
-        id: 2,
-        accountId: 2,
-        categoryId: 2,
-        amount: '500.00',
-        transactionDate: "2025-06-12T11:35:00Z",
-        comment: 'salary alo business dada dengi',
-        createdAt: "2025-04-12T11:35:00Z",
-        updatedAt: "2025-06-12T11:35:00Z",
-      ),
-      Transaction(
-        id: 2,
-        accountId: 2,
-        categoryId: 2,
-        amount: '1500.00',
-        transactionDate: "2025-06-12T11:35:00Z",
-        comment: 'alo business dada dengi',
-        createdAt: "2025-04-12T11:35:00Z",
-        updatedAt: "2025-06-12T11:35:00Z",
-      ),
-      Transaction(
-        id: 2,
-        accountId: 2,
-        categoryId: 2,
-        amount: '2500.00',
-        transactionDate: "2025-06-12T11:35:00Z",
-        comment: 'dada dengi',
-        createdAt: "2025-04-12T11:35:00Z",
-        updatedAt: "2025-06-12T11:35:00Z",
+      TransactionResponse(
+        id: 1,
+        account: AccountBrief(
+          id: 1,
+          name: 'main account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(id: 1, name: 'salary', emodji: '💰', isIncome: true),
+        amount: '500',
+        transactionDate: '2025-06-16T21:59:14.677Z',
+        createdAt: '2025-06-16T21:59:14.677Z',
+        updatedAt: '2025-06-16T21:59:14.677Z',
+        comment: 'month salary',
       ),
     ];
   }
@@ -92,4 +92,7 @@ class MockTransitionRepository implements TransitionRepository {
     final transactions = await getAllTransactions();
     transactions.removeWhere((t) => t.id == id);
   }
-}
+
+ 
+  }
+
