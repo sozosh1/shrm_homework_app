@@ -52,8 +52,44 @@ class MockTransitionRepository implements TransitionRepository {
   }
 
   @override
+  Future<List<Transaction>> getAllTransactions() async {
+    return [
+      Transaction(
+        id: 2,
+        accountId: 2,
+        categoryId: 2,
+        amount: '500.00',
+        transactionDate: "2025-06-12T11:35:00Z",
+        comment: 'salary alo business dada dengi',
+        createdAt: "2025-04-12T11:35:00Z",
+        updatedAt: "2025-06-12T11:35:00Z",
+      ),
+      Transaction(
+        id: 2,
+        accountId: 2,
+        categoryId: 2,
+        amount: '1500.00',
+        transactionDate: "2025-06-12T11:35:00Z",
+        comment: 'alo business dada dengi',
+        createdAt: "2025-04-12T11:35:00Z",
+        updatedAt: "2025-06-12T11:35:00Z",
+      ),
+      Transaction(
+        id: 2,
+        accountId: 2,
+        categoryId: 2,
+        amount: '2500.00',
+        transactionDate: "2025-06-12T11:35:00Z",
+        comment: 'dada dengi',
+        createdAt: "2025-04-12T11:35:00Z",
+        updatedAt: "2025-06-12T11:35:00Z",
+      ),
+    ];
+  }
+
+  @override
   Future<void> deleteTransaction(int id) async {
-    await Future.delayed(Duration(milliseconds: 500));
-    // ничего не делаю потому что нет состояния
+    final transactions = await getAllTransactions();
+    transactions.removeWhere((t) => t.id == id);
   }
 }
