@@ -17,6 +17,9 @@ dependencies:
   freezed_annotation: ^3.0.0
   theme_tailor_annotation: ^3.0.2
   flutter_svg: ^2.1.0
+  injectable: ^2.5.0
+  injectable_generator: ^2.7.0
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:

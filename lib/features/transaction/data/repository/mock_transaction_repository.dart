@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
 import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
@@ -5,7 +6,8 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 import 'package:shrm_homework_app/features/transaction/domain/models/transaction/transaction.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
-class MockTransitionRepository implements TransitionRepository {
+@Singleton(as: TransactionRepository)
+class MockTransitionRepository implements TransactionRepository {
   @override
   Future<TransactionResponse> getTransition(int id) async {
     return TransactionResponse(
@@ -92,7 +94,4 @@ class MockTransitionRepository implements TransitionRepository {
     final transactions = await getAllTransactions();
     transactions.removeWhere((t) => t.id == id);
   }
-
- 
-  }
-
+}

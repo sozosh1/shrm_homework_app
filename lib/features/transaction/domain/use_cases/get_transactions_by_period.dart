@@ -4,7 +4,7 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
 class GetTransactionsByPeriodUseCase {
-  final TransitionRepository repository;
+  final TransactionRepository repository;
 
   GetTransactionsByPeriodUseCase(this.repository);
 

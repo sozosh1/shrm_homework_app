@@ -3,7 +3,7 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 
 import 'package:shrm_homework_app/features/transaction/domain/models/transaction/transaction.dart';
 
-abstract class TransitionRepository {
+abstract class TransactionRepository {
   Future<TransactionResponse> getTransition(int id);
 
   Future<Transaction> createTransaction(TransactionRequest request);
