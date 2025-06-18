@@ -24,6 +24,10 @@ import '../../features/transaction/data/repository/mock_transaction_repository.d
     as _i624;
 import '../../features/transaction/domain/repository/transaction_repository.dart'
     as _i472;
+import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
+    as _i356;
+import '../../features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart'
+    as _i1051;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -32,12 +36,16 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.singleton<_i847.CategoryRepository>(
-      () => _i1064.MockCategoryRepository(),
-    );
-    gh.singleton<_i104.AccountRepository>(() => _i938.MockAccountRepository());
-    gh.singleton<_i472.TransactionRepository>(
+    gh.factory<_i847.CategoryRepository>(() => _i1064.MockCategoryRepository());
+    gh.factory<_i104.AccountRepository>(() => _i938.MockAccountRepository());
+    gh.factory<_i472.TransactionRepository>(
       () => _i624.MockTransitionRepository(),
+    );
+    gh.factory<_i356.TransactionBloc>(
+      () => _i356.TransactionBloc(gh<_i472.TransactionRepository>()),
+    );
+    gh.factory<_i1051.TransactionHistoryBloc>(
+      () => _i1051.TransactionHistoryBloc(gh<_i472.TransactionRepository>()),
     );
     return this;
   }

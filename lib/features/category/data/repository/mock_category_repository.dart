@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 import 'package:shrm_homework_app/features/category/domain/repository/category_repository.dart';
 
-@Singleton(as: CategoryRepository)
+@Injectable(as: CategoryRepository)
 class MockCategoryRepository implements CategoryRepository {
   @override
   Future<List<Category>> getAllCategories() async {

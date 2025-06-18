@@ -9,7 +9,7 @@ import 'package:shrm_homework_app/features/account/domain/models/account_history
 import 'package:shrm_homework_app/features/account/domain/models/account_state/account_state.dart';
 import 'package:shrm_homework_app/features/account/domain/repository/account_repository.dart';
 
-@Singleton(as: AccountRepository)
+@Injectable(as: AccountRepository)
 class MockAccountRepository implements AccountRepository {
   @override
   Future<Account> createAccount(AccountCreateRequest request) async {
