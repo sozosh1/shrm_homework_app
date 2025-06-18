@@ -9,28 +9,115 @@ import 'package:shrm_homework_app/features/transaction/domain/repository/transac
 @Singleton(as: TransactionRepository)
 class MockTransitionRepository implements TransactionRepository {
   @override
-  Future<TransactionResponse> getTransition(int id) async {
-    return TransactionResponse(
-      id: id,
-      account: AccountBrief(
+  Future<List<TransactionResponse>> getAllTransactions() async {
+    return [
+      TransactionResponse(
         id: 1,
-        name: 'main account',
-        balance: '1000.00',
-        currency: 'RUB',
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(id: 1, name: 'Salary', emodji: '💰', isIncome: true),
+        amount: '500.00',
+        transactionDate: '2025-06-16T21:59:14.677Z',
+        createdAt: '2025-06-16T21:59:14.677Z',
+        updatedAt: '2025-06-16T21:59:14.677Z',
+        comment: 'Monthly salary',
       ),
-      category: Category(id: 1, name: 'salary', emodji: '💰', isIncome: true),
-      amount: '500',
-      transactionDate: '2025-06-16T21:59:14.677Z',
-      createdAt: '2025-06-16T21:59:14.677Z',
-      updatedAt: '2025-06-16T21:59:14.677Z',
-      comment: 'month salary',
+      TransactionResponse(
+        id: 2,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 2,
+          name: 'Groceries',
+          emodji: '🛒',
+          isIncome: false,
+        ),
+        amount: '75.50',
+        transactionDate: '2025-06-17T10:30:00.000Z',
+        createdAt: '2025-06-17T10:30:00.000Z',
+        updatedAt: '2025-06-17T10:30:00.000Z',
+        comment: 'Weekly groceries',
+      ),
+      TransactionResponse(
+        id: 3,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 3,
+          name: 'Freelance',
+          emodji: '💻',
+          isIncome: true,
+        ),
+        amount: '1200.00',
+        transactionDate: '2025-06-18T15:45:00.000Z',
+        createdAt: '2025-06-18T15:45:00.000Z',
+        updatedAt: '2025-06-18T15:45:00.000Z',
+        comment: 'Freelance project payment',
+      ),
+      TransactionResponse(
+        id: 4,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 4,
+          name: 'Utilities',
+          emodji: '💡',
+          isIncome: false,
+        ),
+        amount: '150.00',
+        transactionDate: '2025-06-15T09:00:00.000Z',
+        createdAt: '2025-06-15T09:00:00.000Z',
+        updatedAt: '2025-06-15T09:00:00.000Z',
+        comment: 'Electricity bill',
+      ),
+      TransactionResponse(
+        id: 5,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(id: 5, name: 'Bonus', emodji: '🎁', isIncome: true),
+        amount: '300.00',
+        transactionDate: '2025-06-18T08:00:00.000Z',
+        createdAt: '2025-06-18T08:00:00.000Z',
+        updatedAt: '2025-06-18T08:00:00.000Z',
+        comment: 'Yearly bonus',
+      ),
+    ];
+  }
+
+  @override
+  Future<TransactionResponse> getTransaction(int id) async {
+    final transactions = await getAllTransactions();
+    final transaction = transactions.firstWhere(
+      (t) => t.id == id,
+      orElse: () => throw Exception('Transaction with id $id not found'),
     );
+    return transaction;
   }
 
   @override
   Future<Transaction> createTransaction(TransactionRequest request) async {
     return Transaction(
-      id: 1,
+      id: (await getAllTransactions()).length + 1,
       accountId: request.accountId,
       categoryId: request.categoryId,
       amount: request.amount,
@@ -47,7 +134,7 @@ class MockTransitionRepository implements TransactionRepository {
     TransactionRequest request,
   ) async {
     return TransactionResponse(
-      id: 1,
+      id: id,
       account: AccountBrief(
         id: request.accountId,
         name: 'main account',
@@ -66,27 +153,6 @@ class MockTransitionRepository implements TransactionRepository {
       updatedAt: '2025-06-16T21:59:14.677Z',
       comment: 'month salary',
     );
-  }
-
-  @override
-  Future<List<TransactionResponse>> getAllTransactions() async {
-    return [
-      TransactionResponse(
-        id: 1,
-        account: AccountBrief(
-          id: 1,
-          name: 'main account',
-          balance: '1000.00',
-          currency: 'RUB',
-        ),
-        category: Category(id: 1, name: 'salary', emodji: '💰', isIncome: true),
-        amount: '500',
-        transactionDate: '2025-06-16T21:59:14.677Z',
-        createdAt: '2025-06-16T21:59:14.677Z',
-        updatedAt: '2025-06-16T21:59:14.677Z',
-        comment: 'month salary',
-      ),
-    ];
   }
 
   @override
