@@ -1,0 +1,11 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'transaction_event.freezed.dart';
+@freezed
+abstract class TransactionEvent with _$TransactionEvent {
+  const factory TransactionEvent.loadTodayTransactions({
+    required bool isIncome,
+  }) = LoadTodayTransactions;
+  const factory TransactionEvent.refreshTransactions() = RefreshTransactions;
+
+  //const factory TransactionEvent.addTransaction({})
+}
