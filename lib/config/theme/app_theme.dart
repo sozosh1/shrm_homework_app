@@ -5,18 +5,14 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       colorScheme: ColorScheme.light(
-        primary: AppColors.primaryGreen, // Green app bar and FAB
-        onPrimary: Colors.white, // Text/icon color on primary
-        primaryContainer:
-            AppColors.lightGreenBackground, // Light green for backgrounds
-        onPrimaryContainer:
-            AppColors.textDark, // Text on light green background
-        secondary:
-            AppColors
-                .lightPurpleBackground, // Secondary background (e.g., income screen)
-        onSecondary: AppColors.textDark, // Text on secondary background
-        surface: AppColors.whiteBackground, // Main content background
-        onSurface: AppColors.textDark, // Text on white background
+        primary: AppColors.primaryGreen,
+        onPrimary: Colors.white,
+        primaryContainer: AppColors.lightGreenBackground,
+        onPrimaryContainer: AppColors.textDark,
+        secondary: AppColors.lightPurpleBackground,
+        onSecondary: AppColors.textDark,
+        surface: AppColors.whiteBackground,
+        onSurface: AppColors.textDark,
       ),
       useMaterial3: true,
       appBarTheme: const AppBarTheme(
@@ -31,16 +27,16 @@ class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.whiteBackground,
-        indicatorColor: AppColors.lightGreenBackground, // Light green indicator
+        indicatorColor: AppColors.lightGreenBackground,
         labelTextStyle: WidgetStateProperty.all(
-          const TextStyle(color: AppColors.textDark), // Dark text for labels
+          const TextStyle(color: AppColors.textDark),
         ),
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: AppColors.textDark), // Main text
-        titleLarge: TextStyle(color: AppColors.textDark), // Section titles
+        bodyLarge: TextStyle(color: AppColors.textDark),
+        titleLarge: TextStyle(color: AppColors.textDark),
       ),
-      iconTheme: const IconThemeData(color: AppColors.textDark), // Icons color
+      iconTheme: const IconThemeData(color: AppColors.textDark),
     );
   }
 }

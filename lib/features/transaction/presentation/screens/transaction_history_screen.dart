@@ -105,7 +105,7 @@ class TransactionHistoryView extends StatelessWidget {
 
                     _buildSummaryListTile(
                       'Сумма',
-                      // нужно поработаться над данными 
+                      // нужно поработаться над данными
                       '${double.parse(state.totalAmount).toStringAsFixed(0)} ${state.currency == 'RUB' ? '₽' : state.currency}',
                     ),
                   ],
