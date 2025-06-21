@@ -84,7 +84,8 @@ class TransactionsView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${state.totalAmount} ${state.currency == 'RUB' ? '₽' : ''}',
+                      //todo надо поработать над данными
+                      '${double.parse(state.totalAmount).toStringAsFixed(0)} ${state.currency == 'RUB' ? '₽' : ''}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.textDark,
