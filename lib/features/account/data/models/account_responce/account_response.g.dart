@@ -6,18 +6,23 @@ part of 'account_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_AccountResponse _$AccountResponseFromJson(
-  Map<String, dynamic> json,
-) => _AccountResponse(
-  id: (json['id'] as num).toInt(),
-  name: json['name'] as String,
-  balance: json['balance'] as String,
-  currency: json['currency'] as String,
-  incomeStats: StatItem.fromJson(json['incomeStats'] as Map<String, dynamic>),
-  expenseStats: StatItem.fromJson(json['expenseStats'] as Map<String, dynamic>),
-  createdAt: json['createdAt'] as String,
-  updatedAt: json['updatedAt'] as String,
-);
+_AccountResponse _$AccountResponseFromJson(Map<String, dynamic> json) =>
+    _AccountResponse(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String,
+      balance: json['balance'] as String,
+      currency: json['currency'] as String,
+      incomeStats:
+          (json['incomeStats'] as List<dynamic>)
+              .map((e) => StatItem.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      expenseStats:
+          (json['expenseStats'] as List<dynamic>)
+              .map((e) => StatItem.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      createdAt: json['createdAt'] as String,
+      updatedAt: json['updatedAt'] as String,
+    );
 
 Map<String, dynamic> _$AccountResponseToJson(_AccountResponse instance) =>
     <String, dynamic>{

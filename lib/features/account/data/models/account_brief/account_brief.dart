@@ -7,12 +7,9 @@ part 'account_brief.g.dart';
 abstract class AccountBrief with _$AccountBrief {
   const factory AccountBrief({
     required int id,
-    required int userId,
     required String name,
     required String balance,
     required String currency,
-    required String createdAt,
-    required String updatedAt,
   }) = _AccountBrief;
 
   factory AccountBrief.fromJson(Map<String, Object?> json) =>

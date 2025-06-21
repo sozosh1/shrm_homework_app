@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountBrief {
 
- int get id; int get userId; String get name; String get balance; String get currency; String get createdAt; String get updatedAt;
+ int get id; String get name; String get balance; String get currency;
 /// Create a copy of AccountBrief
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $AccountBriefCopyWith<AccountBrief> get copyWith => _$AccountBriefCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountBrief&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.name, name) || other.name == name)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountBrief&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,name,balance,currency,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,name,balance,currency);
 
 @override
 String toString() {
-  return 'AccountBrief(id: $id, userId: $userId, name: $name, balance: $balance, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AccountBrief(id: $id, name: $name, balance: $balance, currency: $currency)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $AccountBriefCopyWith<$Res>  {
   factory $AccountBriefCopyWith(AccountBrief value, $Res Function(AccountBrief) _then) = _$AccountBriefCopyWithImpl;
 @useResult
 $Res call({
- int id, int userId, String name, String balance, String currency, String createdAt, String updatedAt
+ int id, String name, String balance, String currency
 });
 
 
@@ -66,15 +66,12 @@ class _$AccountBriefCopyWithImpl<$Res>
 
 /// Create a copy of AccountBrief
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? name = null,Object? balance = null,Object? currency = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? balance = null,Object? currency = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -86,16 +83,13 @@ as String,
 @JsonSerializable()
 
 class _AccountBrief implements AccountBrief {
-  const _AccountBrief({required this.id, required this.userId, required this.name, required this.balance, required this.currency, required this.createdAt, required this.updatedAt});
+  const _AccountBrief({required this.id, required this.name, required this.balance, required this.currency});
   factory _AccountBrief.fromJson(Map<String, dynamic> json) => _$AccountBriefFromJson(json);
 
 @override final  int id;
-@override final  int userId;
 @override final  String name;
 @override final  String balance;
 @override final  String currency;
-@override final  String createdAt;
-@override final  String updatedAt;
 
 /// Create a copy of AccountBrief
 /// with the given fields replaced by the non-null parameter values.
@@ -110,16 +104,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountBrief&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.name, name) || other.name == name)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountBrief&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.currency, currency) || other.currency == currency));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,name,balance,currency,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,name,balance,currency);
 
 @override
 String toString() {
-  return 'AccountBrief(id: $id, userId: $userId, name: $name, balance: $balance, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AccountBrief(id: $id, name: $name, balance: $balance, currency: $currency)';
 }
 
 
@@ -130,7 +124,7 @@ abstract mixin class _$AccountBriefCopyWith<$Res> implements $AccountBriefCopyWi
   factory _$AccountBriefCopyWith(_AccountBrief value, $Res Function(_AccountBrief) _then) = __$AccountBriefCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int userId, String name, String balance, String currency, String createdAt, String updatedAt
+ int id, String name, String balance, String currency
 });
 
 
@@ -147,15 +141,12 @@ class __$AccountBriefCopyWithImpl<$Res>
 
 /// Create a copy of AccountBrief
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? name = null,Object? balance = null,Object? currency = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? balance = null,Object? currency = null,}) {
   return _then(_AccountBrief(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
