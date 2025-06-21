@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
@@ -24,14 +25,16 @@ class TransactionHistoryScreen extends StatelessWidget {
               ),
       child: Scaffold(
         appBar: AppBar(title: Text('Моя история')),
-        body: const TransactionHistoryView(),
+        body: TransactionHistoryView(isIncome: isIncome),
       ),
     );
   }
 }
 
 class TransactionHistoryView extends StatelessWidget {
-  const TransactionHistoryView({super.key});
+  final bool isIncome;
+
+  const TransactionHistoryView({super.key, required this.isIncome});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,6 @@ class TransactionHistoryView extends StatelessWidget {
                 color: AppColors.lightGreenBackground,
                 child: Column(
                   children: [
-                    // Поле "Начало"
                     _buildDateListTile(
                       context,
                       'Начало',
@@ -108,7 +110,7 @@ class TransactionHistoryView extends StatelessWidget {
                   ],
                 ),
               ),
-              // Список транзакций
+
               Expanded(
                 child: Container(
                   child:
@@ -155,6 +157,17 @@ class TransactionHistoryView extends StatelessWidget {
                 ),
               ),
             ],
+          );
+        } else if (state is TransactionHistoryError) {
+          return AppErrorWidget(
+            message: state.message,
+            onRetry: () {
+              context.read<TransactionHistoryBloc>().add(
+                TransactionHistoryEvent.loadTransactionInitialHistory(
+                  isIncome: isIncome,
+                ),
+              );
+            },
           );
         }
         return const Center(child: CircularProgressIndicator());

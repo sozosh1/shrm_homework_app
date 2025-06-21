@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_state.dart';
@@ -36,7 +37,7 @@ class TransactionsScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: const TransactionsView(),
+        body: TransactionsView(isIncome: isIncome),
         floatingActionButton: FloatingActionButton(
           shape: const CircleBorder(),
           elevation: 0.0,
@@ -57,7 +58,9 @@ class TransactionsScreen extends StatelessWidget {
 }
 
 class TransactionsView extends StatelessWidget {
-  const TransactionsView({super.key});
+  final bool isIncome;
+
+  const TransactionsView({super.key, required this.isIncome});
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +136,15 @@ class TransactionsView extends StatelessWidget {
                         ),
               ),
             ],
+          );
+        } else if (state is TransactionError) {
+          return AppErrorWidget(
+            message: state.message,
+            onRetry: () {
+              context.read<TransactionBloc>().add(
+                TransactionEvent.loadTodayTransactions(isIncome: isIncome),
+              );
+            },
           );
         } else {
           return const Center(child: CircularProgressIndicator());
