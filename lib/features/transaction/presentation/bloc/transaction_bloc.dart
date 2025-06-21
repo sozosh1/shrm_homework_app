@@ -8,7 +8,7 @@ import 'transaction_state.dart';
 @injectable
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final TransactionRepository _repository;
-
+  
   TransactionBloc(this._repository) : super(const TransactionState.initial()) {
     on<LoadTodayTransactions>(_onLoadTodayTransactions);
     on<RefreshTransactions>(_onRefreshTransactions);
@@ -22,45 +22,39 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
     try {
       final allTransactions = await _repository.getAllTransactions();
-      // ! нужно разобраться с датой и правильно ее написать
+
       final today = DateTime.now();
       final startOfDay = DateTime(today.year, today.month, today.day);
-      final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59);
+      final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59, 999);
 
-      final todayTransactions =
-          allTransactions.where((transaction) {
-            final transactionDate = DateTime.parse(transaction.transactionDate);
-            final isToday =
-                transactionDate.isAfter(startOfDay) &&
-                transactionDate.isBefore(endOfDay);
-            final isCorrectType =
-                transaction.category.isIncome == event.isIncome;
-            return isToday && isCorrectType;
-          }).toList();
+      final todayTransactions = allTransactions.where((transaction) {
+        final transactionDate = DateTime.parse(transaction.transactionDate);
+        final isToday = !transactionDate.isBefore(startOfDay) && 
+                       !transactionDate.isAfter(endOfDay);
+        final isCorrectType = transaction.category.isIncome == event.isIncome;
+        return isToday && isCorrectType;
+      }).toList();
 
-      // info новые сверху
       todayTransactions.sort(
-        (a, b) => DateTime.parse(
-          b.transactionDate,
-        ).compareTo(DateTime.parse(a.transactionDate)),
+        (a, b) => DateTime.parse(b.transactionDate)
+            .compareTo(DateTime.parse(a.transactionDate)),
       );
 
-      final totalAmout = todayTransactions
+      final totalAmount = todayTransactions
           .fold<double>(
             0,
             (sum, transaction) => sum + double.parse(transaction.amount),
           )
           .toStringAsFixed(2);
 
-      final currency =
-          todayTransactions.isNotEmpty
-              ? todayTransactions.first.account.currency
-              : 'RUB';
+      final currency = todayTransactions.isNotEmpty
+          ? todayTransactions.first.account.currency
+          : 'RUB';
 
       emit(
         TransactionState.loaded(
           transactions: todayTransactions,
-          totalAmout: totalAmout,
+          totalAmount: totalAmount,
           isIncome: event.isIncome,
           currency: currency,
         ),

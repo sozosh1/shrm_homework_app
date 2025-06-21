@@ -3,7 +3,7 @@ import 'package:shrm_homework_app/features/account/data/models/account_brief/acc
 import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
-import 'package:shrm_homework_app/features/transaction/domain/models/transaction/transaction.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction/transaction.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
 @Injectable(as: TransactionRepository)
@@ -100,6 +100,96 @@ class MockTransitionRepository implements TransactionRepository {
         createdAt: '2025-06-18T08:00:00.000Z',
         updatedAt: '2025-06-18T08:00:00.000Z',
         comment: 'Yearly bonus',
+      ),
+      TransactionResponse(
+        id: 6,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 2,
+          name: 'Groceries',
+          emodji: '🛒',
+          isIncome: false,
+        ),
+        amount: '45.20',
+        transactionDate: '2025-06-21T15:47:00.000Z',
+        createdAt: '2025-06-20T15:47:00.000Z',
+        updatedAt: '2025-06-20T15:47:00.000Z',
+        comment: 'Morning groceries',
+      ),
+      TransactionResponse(
+        id: 7,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 4,
+          name: 'Utilities',
+          emodji: '💡',
+          isIncome: false,
+        ),
+        amount: '30.00',
+        transactionDate: '2025-06-21T15:47:00.000Z',
+        createdAt: '2025-06-20T15:47:00.000Z',
+        updatedAt: '2025-06-20T15:47:00.000Z',
+        comment: 'Internet payment',
+      ),
+      TransactionResponse(
+        id: 8,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(id: 1, name: 'Salary', emodji: '💰', isIncome: true),
+        amount: '200.00',
+        transactionDate: '2025-06-21T15:47:00.000Z',
+        createdAt: '2025-06-20T15:47:00.000Z',
+        updatedAt: '2025-06-20T15:47:00.000Z',
+        comment: 'Bonus payment',
+      ),
+      TransactionResponse(
+        id: 9,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(
+          id: 3,
+          name: 'Freelance',
+          emodji: '💻',
+          isIncome: true,
+        ),
+        amount: '150.00',
+        transactionDate: '2025-06-21T15:47:00.000Z',
+        createdAt: '2025-06-20T15:47:00.000Z',
+        updatedAt: '2025-06-20T15:47:00.000Z',
+        comment: 'Quick freelance task',
+      ),
+      TransactionResponse(
+        id: 10,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: '1000.00',
+          currency: 'RUB',
+        ),
+        category: Category(id: 5, name: 'Bonus', emodji: '🎁', isIncome: true),
+        amount: '100.00',
+        transactionDate: '2025-06-21T15:47:00.000Z',
+        createdAt: '2025-06-2T15:47:00.000Z',
+        updatedAt: '2025-06-20T15:47:00.000Z',
+        comment: 'Small reward',
       ),
     ];
   }

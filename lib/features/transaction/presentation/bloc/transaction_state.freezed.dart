@@ -110,7 +110,7 @@ String toString() {
 
 
 class TransactionLoaded implements TransactionState {
-  const TransactionLoaded({required final  List<TransactionResponse> transactions, required this.totalAmout, required this.isIncome, required this.currency}): _transactions = transactions;
+  const TransactionLoaded({required final  List<TransactionResponse> transactions, required this.totalAmount, required this.isIncome, required this.currency}): _transactions = transactions;
   
 
  final  List<TransactionResponse> _transactions;
@@ -120,7 +120,7 @@ class TransactionLoaded implements TransactionState {
   return EqualUnmodifiableListView(_transactions);
 }
 
- final  String totalAmout;
+ final  String totalAmount;
  final  bool isIncome;
  final  String currency;
 
@@ -134,16 +134,16 @@ $TransactionLoadedCopyWith<TransactionLoaded> get copyWith => _$TransactionLoade
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionLoaded&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.totalAmout, totalAmout) || other.totalAmout == totalAmout)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionLoaded&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),totalAmout,isIncome,currency);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),totalAmount,isIncome,currency);
 
 @override
 String toString() {
-  return 'TransactionState.loaded(transactions: $transactions, totalAmout: $totalAmout, isIncome: $isIncome, currency: $currency)';
+  return 'TransactionState.loaded(transactions: $transactions, totalAmount: $totalAmount, isIncome: $isIncome, currency: $currency)';
 }
 
 
@@ -154,7 +154,7 @@ abstract mixin class $TransactionLoadedCopyWith<$Res> implements $TransactionSta
   factory $TransactionLoadedCopyWith(TransactionLoaded value, $Res Function(TransactionLoaded) _then) = _$TransactionLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<TransactionResponse> transactions, String totalAmout, bool isIncome, String currency
+ List<TransactionResponse> transactions, String totalAmount, bool isIncome, String currency
 });
 
 
@@ -171,10 +171,10 @@ class _$TransactionLoadedCopyWithImpl<$Res>
 
 /// Create a copy of TransactionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? totalAmout = null,Object? isIncome = null,Object? currency = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? totalAmount = null,Object? isIncome = null,Object? currency = null,}) {
   return _then(TransactionLoaded(
 transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
-as List<TransactionResponse>,totalAmout: null == totalAmout ? _self.totalAmout : totalAmout // ignore: cast_nullable_to_non_nullable
+as List<TransactionResponse>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as String,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
 as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,

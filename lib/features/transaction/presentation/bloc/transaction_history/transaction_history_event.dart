@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'transaction_history_event.freezed.dart';
 
 @freezed
-abstract class TransactionHistoryEvent with _$TransactionHistoryEvent {
+class TransactionHistoryEvent with _$TransactionHistoryEvent {
   const factory TransactionHistoryEvent.loadTransactionInitialHistory({
     required bool isIncome,
   }) = LoadTransactionHistoryInitial;

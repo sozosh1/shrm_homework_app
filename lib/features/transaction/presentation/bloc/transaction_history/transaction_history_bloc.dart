@@ -48,7 +48,8 @@ class TransactionHistoryBloc
     LoadTransactionHistoryByPeriod event,
     Emitter<TransactionHistoryState> emit,
   ) async {
-    emit(const TransactionHistoryState.initial());
+    emit(const TransactionHistoryState.loading());
+
     try {
       final allTransactions = await _repository.getAllTransactions();
 
@@ -65,20 +66,21 @@ class TransactionHistoryBloc
         23,
         59,
         59,
+        999,
       );
 
       final filteredTransactions =
           allTransactions.where((transaction) {
             final transactionDate = DateTime.parse(transaction.transactionDate);
             final isInPeriod =
-                transactionDate.isAfter(startOfDay) &&
-                transactionDate.isBefore(endOfDay);
+                !transactionDate.isBefore(startOfDay) &&
+                !transactionDate.isAfter(endOfDay);
             final isCorrectType =
                 transaction.category.isIncome == event.isIncome;
             return isInPeriod && isCorrectType;
           }).toList();
 
-      final totalAmout = filteredTransactions
+      final totalAmount = filteredTransactions
           .fold<double>(
             0,
             (sum, transaction) => sum + double.parse(transaction.amount),
@@ -95,7 +97,7 @@ class TransactionHistoryBloc
       emit(
         TransactionHistoryState.loaded(
           transactions: filteredTransactions,
-          totalAmout: totalAmout,
+          totalAmount: totalAmount,
           isIncome: event.isIncome,
           currency: currency,
           startDate: event.startDate,
@@ -116,10 +118,12 @@ class TransactionHistoryBloc
     if (currentState is TransactionHistoryLoaded) {
       DateTime newEndDate = currentState.endDate;
 
-      //Если в результате редактирования начала периода оно оказалось позже конца, то конец сделать совпадающим с началом периода
+      // Если в результате редактирования начала периода оно оказалось позже конца,
+      // то конец сделать совпадающим с началом периода
       if (event.startDate.isAfter(currentState.endDate)) {
         newEndDate = event.startDate;
       }
+
       add(
         TransactionHistoryEvent.loadTransactionHistoryByPeriod(
           startDate: event.startDate,
@@ -137,15 +141,17 @@ class TransactionHistoryBloc
   ) async {
     final currentState = state;
     if (currentState is TransactionHistoryLoaded) {
-      DateTime newStartDay = currentState.endDate;
+      DateTime newStartDate = currentState.startDate;
 
-      // Если в результате редактирования конца периода он оказался раньше начала, то начало сделать совпадающим с концом периода
+      // Если в результате редактирования конца периода он оказался раньше начала,
+      // то начало сделать совпадающим с концом периода
       if (event.endDate.isBefore(currentState.startDate)) {
-        newStartDay = event.endDate;
+        newStartDate = event.endDate;
       }
+
       add(
         TransactionHistoryEvent.loadTransactionHistoryByPeriod(
-          startDate: newStartDay,
+          startDate: newStartDate,
           endDate: event.endDate,
           isIncome: currentState.isIncome,
           sortBy: currentState.sortBy,
@@ -190,7 +196,7 @@ class TransactionHistoryBloc
 }
 
 void _sortTransactions(List<TransactionResponse> transactions, String sortBy) {
-  if (sortBy == 'amout') {
+  if (sortBy == 'amount') {
     transactions.sort(
       (a, b) => double.parse(b.amount).compareTo(double.parse(a.amount)),
     );

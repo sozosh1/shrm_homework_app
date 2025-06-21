@@ -16,7 +16,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Transaction {
 
- int get id; int get accountId; int get categoryId; String get amount; String get transactionDate; String get comment; String get createdAt; String get updatedAt;
+ int get id; int get accountId; int get categoryId; String get amount;// int
+ String get transactionDate;// DateTime
+ String get comment; String get createdAt;// DateTime
+ String get updatedAt;
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -94,9 +97,12 @@ class _Transaction implements Transaction {
 @override final  int accountId;
 @override final  int categoryId;
 @override final  String amount;
+// int
 @override final  String transactionDate;
+// DateTime
 @override final  String comment;
 @override final  String createdAt;
+// DateTime
 @override final  String updatedAt;
 
 /// Create a copy of Transaction

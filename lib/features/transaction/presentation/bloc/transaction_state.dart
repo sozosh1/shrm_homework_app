@@ -3,12 +3,12 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 part 'transaction_state.freezed.dart';
 
 @freezed
-abstract class TransactionState with _$TransactionState {
+class TransactionState with _$TransactionState {
   const factory TransactionState.initial() = TransactionInitial;
   const factory TransactionState.loading() = TransactionLoading;
   const factory TransactionState.loaded({
     required List<TransactionResponse> transactions,
-    required String totalAmout,
+    required String totalAmount,
     required bool isIncome,
     required String currency,
   }) = TransactionLoaded;

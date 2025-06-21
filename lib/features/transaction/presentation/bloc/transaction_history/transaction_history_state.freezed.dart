@@ -110,7 +110,7 @@ String toString() {
 
 
 class TransactionHistoryLoaded implements TransactionHistoryState {
-  const TransactionHistoryLoaded({required final  List<TransactionResponse> transactions, required this.totalAmout, required this.isIncome, required this.currency, required this.startDate, required this.endDate, required this.sortBy}): _transactions = transactions;
+  const TransactionHistoryLoaded({required final  List<TransactionResponse> transactions, required this.totalAmount, required this.isIncome, required this.currency, required this.startDate, required this.endDate, required this.sortBy}): _transactions = transactions;
   
 
  final  List<TransactionResponse> _transactions;
@@ -120,7 +120,7 @@ class TransactionHistoryLoaded implements TransactionHistoryState {
   return EqualUnmodifiableListView(_transactions);
 }
 
- final  String totalAmout;
+ final  String totalAmount;
  final  bool isIncome;
  final  String currency;
  final  DateTime startDate;
@@ -137,16 +137,16 @@ $TransactionHistoryLoadedCopyWith<TransactionHistoryLoaded> get copyWith => _$Tr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionHistoryLoaded&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.totalAmout, totalAmout) || other.totalAmout == totalAmout)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.sortBy, sortBy) || other.sortBy == sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionHistoryLoaded&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.sortBy, sortBy) || other.sortBy == sortBy));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),totalAmout,isIncome,currency,startDate,endDate,sortBy);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_transactions),totalAmount,isIncome,currency,startDate,endDate,sortBy);
 
 @override
 String toString() {
-  return 'TransactionHistoryState.loaded(transactions: $transactions, totalAmout: $totalAmout, isIncome: $isIncome, currency: $currency, startDate: $startDate, endDate: $endDate, sortBy: $sortBy)';
+  return 'TransactionHistoryState.loaded(transactions: $transactions, totalAmount: $totalAmount, isIncome: $isIncome, currency: $currency, startDate: $startDate, endDate: $endDate, sortBy: $sortBy)';
 }
 
 
@@ -157,7 +157,7 @@ abstract mixin class $TransactionHistoryLoadedCopyWith<$Res> implements $Transac
   factory $TransactionHistoryLoadedCopyWith(TransactionHistoryLoaded value, $Res Function(TransactionHistoryLoaded) _then) = _$TransactionHistoryLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<TransactionResponse> transactions, String totalAmout, bool isIncome, String currency, DateTime startDate, DateTime endDate, String sortBy
+ List<TransactionResponse> transactions, String totalAmount, bool isIncome, String currency, DateTime startDate, DateTime endDate, String sortBy
 });
 
 
@@ -174,10 +174,10 @@ class _$TransactionHistoryLoadedCopyWithImpl<$Res>
 
 /// Create a copy of TransactionHistoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? totalAmout = null,Object? isIncome = null,Object? currency = null,Object? startDate = null,Object? endDate = null,Object? sortBy = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? transactions = null,Object? totalAmount = null,Object? isIncome = null,Object? currency = null,Object? startDate = null,Object? endDate = null,Object? sortBy = null,}) {
   return _then(TransactionHistoryLoaded(
 transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
-as List<TransactionResponse>,totalAmout: null == totalAmout ? _self.totalAmout : totalAmout // ignore: cast_nullable_to_non_nullable
+as List<TransactionResponse>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as String,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
 as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable

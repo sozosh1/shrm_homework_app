@@ -9,11 +9,11 @@ abstract class Transaction with _$Transaction {
     required int id,
     required int accountId,
     required int categoryId,
-    required String amount,
-    required String transactionDate,
-    required String comment,
-    required String createdAt,
-    required String updatedAt,
+    required String amount, // int
+    required String transactionDate, // DateTime
+    required String comment, 
+    required String createdAt, // DateTime
+    required String updatedAt, // DateTime
   }) = _Transaction;
 
   factory Transaction.fromJson(Map<String, Object?> json) =>
