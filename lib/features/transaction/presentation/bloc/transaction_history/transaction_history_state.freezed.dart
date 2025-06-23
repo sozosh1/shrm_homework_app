@@ -120,7 +120,7 @@ class TransactionHistoryLoaded implements TransactionHistoryState {
   return EqualUnmodifiableListView(_transactions);
 }
 
- final  String totalAmount;
+ final  double totalAmount;
  final  bool isIncome;
  final  String currency;
  final  DateTime startDate;
@@ -157,7 +157,7 @@ abstract mixin class $TransactionHistoryLoadedCopyWith<$Res> implements $Transac
   factory $TransactionHistoryLoadedCopyWith(TransactionHistoryLoaded value, $Res Function(TransactionHistoryLoaded) _then) = _$TransactionHistoryLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<TransactionResponse> transactions, String totalAmount, bool isIncome, String currency, DateTime startDate, DateTime endDate, String sortBy
+ List<TransactionResponse> transactions, double totalAmount, bool isIncome, String currency, DateTime startDate, DateTime endDate, String sortBy
 });
 
 
@@ -178,7 +178,7 @@ class _$TransactionHistoryLoadedCopyWithImpl<$Res>
   return _then(TransactionHistoryLoaded(
 transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionResponse>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as String,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as double,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
 as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable

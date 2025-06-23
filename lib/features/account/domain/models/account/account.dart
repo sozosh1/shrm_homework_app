@@ -9,11 +9,12 @@ abstract class Account with _$Account {
     required int id,
     required int userId,
     required String name,
-    required String balance,
+    required double balance,
     required String currency,
-    required String createdAt,
-    required String updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _Account;
 
-  factory Account.fromJson(Map<String, Object?> json) => _$AccountFromJson(json);
+  factory Account.fromJson(Map<String, Object?> json) =>
+      _$AccountFromJson(json);
 }

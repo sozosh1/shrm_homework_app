@@ -8,7 +8,7 @@ import 'transaction_state.dart';
 @injectable
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final TransactionRepository _repository;
-  
+
   TransactionBloc(this._repository) : super(const TransactionState.initial()) {
     on<LoadTodayTransactions>(_onLoadTodayTransactions);
     on<RefreshTransactions>(_onRefreshTransactions);
@@ -25,31 +25,40 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
       final today = DateTime.now();
       final startOfDay = DateTime(today.year, today.month, today.day);
-      final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59, 999);
-
-      final todayTransactions = allTransactions.where((transaction) {
-        final transactionDate = DateTime.parse(transaction.transactionDate);
-        final isToday = !transactionDate.isBefore(startOfDay) && 
-                       !transactionDate.isAfter(endOfDay);
-        final isCorrectType = transaction.category.isIncome == event.isIncome;
-        return isToday && isCorrectType;
-      }).toList();
-
-      todayTransactions.sort(
-        (a, b) => DateTime.parse(b.transactionDate)
-            .compareTo(DateTime.parse(a.transactionDate)),
+      final endOfDay = DateTime(
+        today.year,
+        today.month,
+        today.day,
+        23,
+        59,
+        59,
+        999,
       );
 
-      final totalAmount = todayTransactions
-          .fold<double>(
-            0,
-            (sum, transaction) => sum + double.parse(transaction.amount),
-          )
-          .toStringAsFixed(2);
+      final todayTransactions =
+          allTransactions.where((transaction) {
+            final transactionDate = transaction.transactionDate;
+            final isToday =
+                !transactionDate.isBefore(startOfDay) &&
+                !transactionDate.isAfter(endOfDay);
+            final isCorrectType =
+                transaction.category.isIncome == event.isIncome;
+            return isToday && isCorrectType;
+          }).toList();
 
-      final currency = todayTransactions.isNotEmpty
-          ? todayTransactions.first.account.currency
-          : 'RUB';
+      todayTransactions.sort(
+        (a, b) => b.transactionDate.compareTo(a.transactionDate),
+      );
+
+      final totalAmount = todayTransactions.fold<double>(
+        0,
+        (sum, transaction) => sum + transaction.amount,
+      );
+
+      final currency =
+          todayTransactions.isNotEmpty
+              ? todayTransactions.first.account.currency
+              : 'RUB';
 
       emit(
         TransactionState.loaded(

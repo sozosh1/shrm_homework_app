@@ -15,8 +15,8 @@ _AccountHistory _$AccountHistoryFromJson(Map<String, dynamic> json) =>
         json['previousState'] as Map<String, dynamic>,
       ),
       newState: AccountState.fromJson(json['newState'] as Map<String, dynamic>),
-      changeTimestamp: json['changeTimestamp'] as String,
-      createdAt: json['createdAt'] as String,
+      changeTimestamp: DateTime.parse(json['changeTimestamp'] as String),
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$AccountHistoryToJson(_AccountHistory instance) =>
@@ -26,6 +26,6 @@ Map<String, dynamic> _$AccountHistoryToJson(_AccountHistory instance) =>
       'changeType': instance.changeType,
       'previousState': instance.previousState,
       'newState': instance.newState,
-      'changeTimestamp': instance.changeTimestamp,
-      'createdAt': instance.createdAt,
+      'changeTimestamp': instance.changeTimestamp.toIso8601String(),
+      'createdAt': instance.createdAt.toIso8601String(),
     };

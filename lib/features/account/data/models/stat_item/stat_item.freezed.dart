@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StatItem implements DiagnosticableTreeMixin {
 
- int get categoryId; String get categoryName; String get emoji; String get amount;
+ int get categoryId; String get categoryName; String get emoji; double get amount;
 /// Create a copy of StatItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -55,7 +55,7 @@ abstract mixin class $StatItemCopyWith<$Res>  {
   factory $StatItemCopyWith(StatItem value, $Res Function(StatItem) _then) = _$StatItemCopyWithImpl;
 @useResult
 $Res call({
- int categoryId, String categoryName, String emoji, String amount
+ int categoryId, String categoryName, String emoji, double amount
 });
 
 
@@ -78,7 +78,7 @@ categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_n
 as int,categoryName: null == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
 as String,emoji: null == emoji ? _self.emoji : emoji // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,
+as double,
   ));
 }
 
@@ -95,7 +95,7 @@ class _StatItem with DiagnosticableTreeMixin implements StatItem {
 @override final  int categoryId;
 @override final  String categoryName;
 @override final  String emoji;
-@override final  String amount;
+@override final  double amount;
 
 /// Create a copy of StatItem
 /// with the given fields replaced by the non-null parameter values.
@@ -136,7 +136,7 @@ abstract mixin class _$StatItemCopyWith<$Res> implements $StatItemCopyWith<$Res>
   factory _$StatItemCopyWith(_StatItem value, $Res Function(_StatItem) _then) = __$StatItemCopyWithImpl;
 @override @useResult
 $Res call({
- int categoryId, String categoryName, String emoji, String amount
+ int categoryId, String categoryName, String emoji, double amount
 });
 
 
@@ -159,7 +159,7 @@ categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_n
 as int,categoryName: null == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
 as String,emoji: null == emoji ? _self.emoji : emoji // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,
+as double,
   ));
 }
 

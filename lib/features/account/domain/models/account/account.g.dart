@@ -10,10 +10,10 @@ _Account _$AccountFromJson(Map<String, dynamic> json) => _Account(
   id: (json['id'] as num).toInt(),
   userId: (json['userId'] as num).toInt(),
   name: json['name'] as String,
-  balance: json['balance'] as String,
+  balance: (json['balance'] as num).toDouble(),
   currency: json['currency'] as String,
-  createdAt: json['createdAt'] as String,
-  updatedAt: json['updatedAt'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
 );
 
 Map<String, dynamic> _$AccountToJson(_Account instance) => <String, dynamic>{
@@ -22,6 +22,6 @@ Map<String, dynamic> _$AccountToJson(_Account instance) => <String, dynamic>{
   'name': instance.name,
   'balance': instance.balance,
   'currency': instance.currency,
-  'createdAt': instance.createdAt,
-  'updatedAt': instance.updatedAt,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
 };

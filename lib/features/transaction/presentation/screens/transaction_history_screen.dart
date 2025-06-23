@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
@@ -105,8 +106,10 @@ class TransactionHistoryView extends StatelessWidget {
 
                     _buildSummaryListTile(
                       'Сумма',
-                      // нужно поработаться над данными
-                      '${double.parse(state.totalAmount).toStringAsFixed(0)} ${state.currency == 'RUB' ? '₽' : state.currency}',
+                      CurrencyFormatter.format(
+                        state.totalAmount,
+                        state.currency,
+                      ),
                     ),
                   ],
                 ),

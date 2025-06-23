@@ -9,7 +9,7 @@ abstract class StatItem with _$StatItem {
     required int categoryId,
     required String categoryName,
     required String emoji,
-    required String amount,
+    required double amount,
   }) = _StatItem;
 
   factory StatItem.fromJson(Map<String, Object?> json) =>

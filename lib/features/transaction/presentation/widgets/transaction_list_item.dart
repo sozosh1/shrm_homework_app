@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
+import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 
 class TransactionListItem extends StatelessWidget {
@@ -9,8 +10,6 @@ class TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final amount = double.parse(transaction.amount);
-
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
@@ -36,7 +35,11 @@ class TransactionListItem extends StatelessWidget {
               ),
             ),
             Text(
-              '${amount.toStringAsFixed(0)} ${transaction.account.currency == 'RUB' ? ' ₽' : ''}',
+              CurrencyFormatter.format(
+                transaction.amount,
+                transaction.account.currency,
+              ),
+
               style: TextStyle(fontSize: 16, color: AppColors.textDark),
             ),
           ],

@@ -7,7 +7,7 @@ part 'account_create_request.g.dart';
 abstract class AccountCreateRequest with _$AccountCreateRequest {
   const factory AccountCreateRequest({
     required String name,
-    required String balance,
+    required double balance,
     required String currency,
   }) = _AccountCreateRequest;
 

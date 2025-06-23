@@ -8,7 +8,7 @@ abstract class AccountBrief with _$AccountBrief {
   const factory AccountBrief({
     required int id,
     required String name,
-    required String balance,
+    required double balance,
     required String currency,
   }) = _AccountBrief;
 

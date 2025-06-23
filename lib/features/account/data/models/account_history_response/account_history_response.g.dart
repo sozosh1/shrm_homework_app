@@ -12,7 +12,7 @@ _AccountHistoryResponse _$AccountHistoryResponseFromJson(
   accountId: (json['accountId'] as num).toInt(),
   accountName: json['accountName'] as String,
   currency: json['currency'] as String,
-  currentBalance: json['currentBalance'] as String,
+  currentBalance: (json['currentBalance'] as num).toDouble(),
   history:
       (json['history'] as List<dynamic>)
           .map((e) => AccountHistory.fromJson(e as Map<String, dynamic>))

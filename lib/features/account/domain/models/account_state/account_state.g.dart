@@ -10,7 +10,7 @@ _AccountState _$AccountStateFromJson(Map<String, dynamic> json) =>
     _AccountState(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      balance: json['balance'] as String,
+      balance: (json['balance'] as num).toDouble(),
       currency: json['currency'] as String,
     );
 

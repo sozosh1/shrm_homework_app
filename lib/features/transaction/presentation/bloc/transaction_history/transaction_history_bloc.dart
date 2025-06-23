@@ -71,7 +71,7 @@ class TransactionHistoryBloc
 
       final filteredTransactions =
           allTransactions.where((transaction) {
-            final transactionDate = DateTime.parse(transaction.transactionDate);
+            final transactionDate = transaction.transactionDate;
             final isInPeriod =
                 !transactionDate.isBefore(startOfDay) &&
                 !transactionDate.isAfter(endOfDay);
@@ -80,12 +80,10 @@ class TransactionHistoryBloc
             return isInPeriod && isCorrectType;
           }).toList();
 
-      final totalAmount = filteredTransactions
-          .fold<double>(
-            0,
-            (sum, transaction) => sum + double.parse(transaction.amount),
-          )
-          .toStringAsFixed(2);
+      final totalAmount = filteredTransactions.fold<double>(
+        0,
+        (sum, transaction) => sum + transaction.amount,
+      );
 
       final currency =
           filteredTransactions.isNotEmpty
@@ -117,9 +115,7 @@ class TransactionHistoryBloc
     final currentState = state;
     if (currentState is TransactionHistoryLoaded) {
       DateTime newEndDate = currentState.endDate;
-
-      // Если в результате редактирования начала периода оно оказалось позже конца,
-      // то конец сделать совпадающим с началом периода
+      
       if (event.startDate.isAfter(currentState.endDate)) {
         newEndDate = event.startDate;
       }
@@ -143,8 +139,6 @@ class TransactionHistoryBloc
     if (currentState is TransactionHistoryLoaded) {
       DateTime newStartDate = currentState.startDate;
 
-      // Если в результате редактирования конца периода он оказался раньше начала,
-      // то начало сделать совпадающим с концом периода
       if (event.endDate.isBefore(currentState.startDate)) {
         newStartDate = event.endDate;
       }
@@ -197,14 +191,10 @@ class TransactionHistoryBloc
 
 void _sortTransactions(List<TransactionResponse> transactions, String sortBy) {
   if (sortBy == 'amount') {
-    transactions.sort(
-      (a, b) => double.parse(b.amount).compareTo(double.parse(a.amount)),
-    );
+    transactions.sort((a, b) => b.amount.compareTo(a.amount));
   } else {
     transactions.sort(
-      (a, b) => DateTime.parse(
-        b.transactionDate,
-      ).compareTo(DateTime.parse(a.transactionDate)),
+      (a, b) => (b.transactionDate).compareTo(a.transactionDate),
     );
   }
 }

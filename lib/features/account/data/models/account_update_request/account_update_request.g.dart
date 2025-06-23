@@ -10,7 +10,7 @@ _AccountUpdateRequest _$AccountUpdateRequestFromJson(
   Map<String, dynamic> json,
 ) => _AccountUpdateRequest(
   name: json['name'] as String,
-  balance: json['balance'] as String,
+  balance: (json['balance'] as num).toDouble(),
   currency: json['currency'] as String,
 );
 

@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountHistoryResponse {
 
- int get accountId; String get accountName; String get currency; String get currentBalance; List<AccountHistory> get history;
+ int get accountId; String get accountName; String get currency; double get currentBalance; List<AccountHistory> get history;
 /// Create a copy of AccountHistoryResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $AccountHistoryResponseCopyWith<$Res>  {
   factory $AccountHistoryResponseCopyWith(AccountHistoryResponse value, $Res Function(AccountHistoryResponse) _then) = _$AccountHistoryResponseCopyWithImpl;
 @useResult
 $Res call({
- int accountId, String accountName, String currency, String currentBalance, List<AccountHistory> history
+ int accountId, String accountName, String currency, double currentBalance, List<AccountHistory> history
 });
 
 
@@ -72,7 +72,7 @@ accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nulla
 as int,accountName: null == accountName ? _self.accountName : accountName // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
-as String,history: null == history ? _self.history : history // ignore: cast_nullable_to_non_nullable
+as double,history: null == history ? _self.history : history // ignore: cast_nullable_to_non_nullable
 as List<AccountHistory>,
   ));
 }
@@ -90,7 +90,7 @@ class _AccountHistoryResponse implements AccountHistoryResponse {
 @override final  int accountId;
 @override final  String accountName;
 @override final  String currency;
-@override final  String currentBalance;
+@override final  double currentBalance;
  final  List<AccountHistory> _history;
 @override List<AccountHistory> get history {
   if (_history is EqualUnmodifiableListView) return _history;
@@ -132,7 +132,7 @@ abstract mixin class _$AccountHistoryResponseCopyWith<$Res> implements $AccountH
   factory _$AccountHistoryResponseCopyWith(_AccountHistoryResponse value, $Res Function(_AccountHistoryResponse) _then) = __$AccountHistoryResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int accountId, String accountName, String currency, String currentBalance, List<AccountHistory> history
+ int accountId, String accountName, String currency, double currentBalance, List<AccountHistory> history
 });
 
 
@@ -155,7 +155,7 @@ accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nulla
 as int,accountName: null == accountName ? _self.accountName : accountName // ignore: cast_nullable_to_non_nullable
 as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
-as String,history: null == history ? _self._history : history // ignore: cast_nullable_to_non_nullable
+as double,history: null == history ? _self._history : history // ignore: cast_nullable_to_non_nullable
 as List<AccountHistory>,
   ));
 }

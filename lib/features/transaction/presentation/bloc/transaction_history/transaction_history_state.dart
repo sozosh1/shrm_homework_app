@@ -10,7 +10,7 @@ class TransactionHistoryState with _$TransactionHistoryState {
 
   const factory TransactionHistoryState.loaded({
     required List<TransactionResponse> transactions,
-    required String totalAmount,
+    required double totalAmount,
     required bool isIncome,
     required String currency,
     required DateTime startDate,

@@ -8,7 +8,7 @@ class TransactionState with _$TransactionState {
   const factory TransactionState.loading() = TransactionLoading;
   const factory TransactionState.loaded({
     required List<TransactionResponse> transactions,
-    required String totalAmount,
+    required double totalAmount,
     required bool isIncome,
     required String currency,
   }) = TransactionLoaded;

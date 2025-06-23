@@ -19,8 +19,8 @@ class MockAccountRepository implements AccountRepository {
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      createdAt: '2025-06-16T21:58:48.372Z',
-      updatedAt: '2025-06-16T21:58:48.372Z',
+      createdAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
+      updatedAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
     );
   }
 
@@ -32,8 +32,8 @@ class MockAccountRepository implements AccountRepository {
       name: request.name,
       balance: request.balance,
       currency: request.currency,
-      createdAt: "2025-06-16T21:48:25.586Z",
-      updatedAt: "2025-06-16T21:48:25.586Z",
+      createdAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
+      updatedAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
     );
   }
 
@@ -42,14 +42,14 @@ class MockAccountRepository implements AccountRepository {
     return AccountResponse(
       id: id,
       name: 'Main account',
-      balance: '1000.00',
+      balance: 1000.00,
       currency: 'RUB',
       incomeStats: [
         StatItem(
           categoryId: 1,
           categoryName: 'salary',
           emoji: '💰',
-          amount: '5000.00',
+          amount: 5000.00,
         ),
       ],
       expenseStats: [
@@ -57,11 +57,11 @@ class MockAccountRepository implements AccountRepository {
           categoryId: 1,
           categoryName: 'salary',
           emoji: '💰',
-          amount: '5000.00',
+          amount: 5000.00,
         ),
       ],
-      createdAt: '2025-06-16T21:52:33.724Z',
-      updatedAt: '2025-06-16T21:52:33.724Z',
+      createdAt: DateTime.parse('2025-06-16T21:52:33.724Z'),
+      updatedAt: DateTime.parse('2025-06-16T21:52:33.724Z'),
     );
   }
 
@@ -71,7 +71,7 @@ class MockAccountRepository implements AccountRepository {
       accountId: id,
       accountName: 'Main account',
       currency: 'RUB',
-      currentBalance: '2100.00',
+      currentBalance: 2100.00,
       history: [
         AccountHistory(
           id: 1,
@@ -80,17 +80,17 @@ class MockAccountRepository implements AccountRepository {
           previousState: AccountState(
             id: id,
             name: "Основной счёт",
-            balance: "500.00",
+            balance: 500.00,
             currency: "RUB",
           ),
           newState: AccountState(
             id: id,
             name: "Основной счёт",
-            balance: "2100.00",
+            balance: 2100.00,
             currency: "RUB",
           ),
-          changeTimestamp: "2025-06-11T12:00:00Z",
-          createdAt: "2025-04-11T12:00:00Z",
+          changeTimestamp: DateTime.parse("2025-06-11T12:00:00Z"),
+          createdAt: DateTime.parse("2025-04-11T12:00:00Z"),
         ),
       ],
     );

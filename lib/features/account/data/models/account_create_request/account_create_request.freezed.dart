@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountCreateRequest {
 
- String get name; String get balance; String get currency;
+ String get name; double get balance; String get currency;
 /// Create a copy of AccountCreateRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $AccountCreateRequestCopyWith<$Res>  {
   factory $AccountCreateRequestCopyWith(AccountCreateRequest value, $Res Function(AccountCreateRequest) _then) = _$AccountCreateRequestCopyWithImpl;
 @useResult
 $Res call({
- String name, String balance, String currency
+ String name, double balance, String currency
 });
 
 
@@ -70,7 +70,7 @@ class _$AccountCreateRequestCopyWithImpl<$Res>
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -86,7 +86,7 @@ class _AccountCreateRequest implements AccountCreateRequest {
   factory _AccountCreateRequest.fromJson(Map<String, dynamic> json) => _$AccountCreateRequestFromJson(json);
 
 @override final  String name;
-@override final  String balance;
+@override final  double balance;
 @override final  String currency;
 
 /// Create a copy of AccountCreateRequest
@@ -122,7 +122,7 @@ abstract mixin class _$AccountCreateRequestCopyWith<$Res> implements $AccountCre
   factory _$AccountCreateRequestCopyWith(_AccountCreateRequest value, $Res Function(_AccountCreateRequest) _then) = __$AccountCreateRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String balance, String currency
+ String name, double balance, String currency
 });
 
 
@@ -143,7 +143,7 @@ class __$AccountCreateRequestCopyWithImpl<$Res>
   return _then(_AccountCreateRequest(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

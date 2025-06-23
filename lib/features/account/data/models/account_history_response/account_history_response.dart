@@ -10,7 +10,7 @@ abstract class AccountHistoryResponse with _$AccountHistoryResponse {
     required int accountId,
     required String accountName,
     required String currency,
-    required String currentBalance,
+    required double currentBalance,
     required List<AccountHistory> history,
   }) = _AccountHistoryResponse;
 
