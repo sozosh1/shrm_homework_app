@@ -28,6 +28,8 @@ import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
     as _i356;
 import '../../features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart'
     as _i1051;
+import '../database/app_database.dart' as _i982;
+import '../storage/preferences_service.dart' as _i636;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -36,6 +38,8 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.singleton<_i982.AppDatabase>(() => _i982.AppDatabase());
+    gh.singleton<_i636.PreferencesService>(() => _i636.PreferencesService());
     gh.factory<_i847.CategoryRepository>(() => _i1064.MockCategoryRepository());
     gh.factory<_i104.AccountRepository>(() => _i938.MockAccountRepository());
     gh.factory<_i472.TransactionRepository>(
