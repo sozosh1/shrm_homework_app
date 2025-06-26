@@ -39,11 +39,11 @@ class $AccountsTableTable extends AccountsTable
     'balance',
   );
   @override
-  late final GeneratedColumn<String> balance = GeneratedColumn<String>(
+  late final GeneratedColumn<double> balance = GeneratedColumn<double>(
     'balance',
     aliasedName,
     false,
-    type: DriftSqlType.string,
+    type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _currencyMeta = const VerificationMeta(
@@ -163,7 +163,7 @@ class $AccountsTableTable extends AccountsTable
           )!,
       balance:
           attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
+            DriftSqlType.double,
             data['${effectivePrefix}balance'],
           )!,
       currency:
@@ -194,7 +194,7 @@ class AccountsTableData extends DataClass
     implements Insertable<AccountsTableData> {
   final int id;
   final String name;
-  final String balance;
+  final double balance;
   final String currency;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -211,7 +211,7 @@ class AccountsTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['balance'] = Variable<String>(balance);
+    map['balance'] = Variable<double>(balance);
     map['currency'] = Variable<String>(currency);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -237,7 +237,7 @@ class AccountsTableData extends DataClass
     return AccountsTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      balance: serializer.fromJson<String>(json['balance']),
+      balance: serializer.fromJson<double>(json['balance']),
       currency: serializer.fromJson<String>(json['currency']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -249,7 +249,7 @@ class AccountsTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'balance': serializer.toJson<String>(balance),
+      'balance': serializer.toJson<double>(balance),
       'currency': serializer.toJson<String>(currency),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -259,7 +259,7 @@ class AccountsTableData extends DataClass
   AccountsTableData copyWith({
     int? id,
     String? name,
-    String? balance,
+    double? balance,
     String? currency,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -313,7 +313,7 @@ class AccountsTableData extends DataClass
 class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> balance;
+  final Value<double> balance;
   final Value<String> currency;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -328,7 +328,7 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
   AccountsTableCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String balance,
+    required double balance,
     this.currency = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -339,7 +339,7 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
   static Insertable<AccountsTableData> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<String>? balance,
+    Expression<double>? balance,
     Expression<String>? currency,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -357,7 +357,7 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
   AccountsTableCompanion copyWith({
     Value<int>? id,
     Value<String>? name,
-    Value<String>? balance,
+    Value<double>? balance,
     Value<String>? currency,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
@@ -382,7 +382,7 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
       map['name'] = Variable<String>(name.value);
     }
     if (balance.present) {
-      map['balance'] = Variable<String>(balance.value);
+      map['balance'] = Variable<double>(balance.value);
     }
     if (currency.present) {
       map['currency'] = Variable<String>(currency.value);
@@ -442,10 +442,10 @@ class $CategoriesTableTable extends CategoriesTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _emojiMeta = const VerificationMeta('emoji');
+  static const VerificationMeta _emodjiMeta = const VerificationMeta('emodji');
   @override
-  late final GeneratedColumn<String> emoji = GeneratedColumn<String>(
-    'emoji',
+  late final GeneratedColumn<String> emodji = GeneratedColumn<String>(
+    'emodji',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -466,7 +466,7 @@ class $CategoriesTableTable extends CategoriesTable
     ),
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name, emoji, isIncome];
+  List<GeneratedColumn> get $columns => [id, name, emodji, isIncome];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -490,13 +490,13 @@ class $CategoriesTableTable extends CategoriesTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('emoji')) {
+    if (data.containsKey('emodji')) {
       context.handle(
-        _emojiMeta,
-        emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta),
+        _emodjiMeta,
+        emodji.isAcceptableOrUnknown(data['emodji']!, _emodjiMeta),
       );
     } else if (isInserting) {
-      context.missing(_emojiMeta);
+      context.missing(_emodjiMeta);
     }
     if (data.containsKey('is_income')) {
       context.handle(
@@ -525,10 +525,10 @@ class $CategoriesTableTable extends CategoriesTable
             DriftSqlType.string,
             data['${effectivePrefix}name'],
           )!,
-      emoji:
+      emodji:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}emoji'],
+            data['${effectivePrefix}emodji'],
           )!,
       isIncome:
           attachedDatabase.typeMapping.read(
@@ -548,12 +548,12 @@ class CategoriesTableData extends DataClass
     implements Insertable<CategoriesTableData> {
   final int id;
   final String name;
-  final String emoji;
+  final String emodji;
   final bool isIncome;
   const CategoriesTableData({
     required this.id,
     required this.name,
-    required this.emoji,
+    required this.emodji,
     required this.isIncome,
   });
   @override
@@ -561,7 +561,7 @@ class CategoriesTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['emoji'] = Variable<String>(emoji);
+    map['emodji'] = Variable<String>(emodji);
     map['is_income'] = Variable<bool>(isIncome);
     return map;
   }
@@ -570,7 +570,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableCompanion(
       id: Value(id),
       name: Value(name),
-      emoji: Value(emoji),
+      emodji: Value(emodji),
       isIncome: Value(isIncome),
     );
   }
@@ -583,7 +583,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      emoji: serializer.fromJson<String>(json['emoji']),
+      emodji: serializer.fromJson<String>(json['emodji']),
       isIncome: serializer.fromJson<bool>(json['isIncome']),
     );
   }
@@ -593,7 +593,7 @@ class CategoriesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'emoji': serializer.toJson<String>(emoji),
+      'emodji': serializer.toJson<String>(emodji),
       'isIncome': serializer.toJson<bool>(isIncome),
     };
   }
@@ -601,19 +601,19 @@ class CategoriesTableData extends DataClass
   CategoriesTableData copyWith({
     int? id,
     String? name,
-    String? emoji,
+    String? emodji,
     bool? isIncome,
   }) => CategoriesTableData(
     id: id ?? this.id,
     name: name ?? this.name,
-    emoji: emoji ?? this.emoji,
+    emodji: emodji ?? this.emodji,
     isIncome: isIncome ?? this.isIncome,
   );
   CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
     return CategoriesTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
-      emoji: data.emoji.present ? data.emoji.value : this.emoji,
+      emodji: data.emodji.present ? data.emodji.value : this.emodji,
       isIncome: data.isIncome.present ? data.isIncome.value : this.isIncome,
     );
   }
@@ -623,53 +623,53 @@ class CategoriesTableData extends DataClass
     return (StringBuffer('CategoriesTableData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emoji: $emoji, ')
+          ..write('emodji: $emodji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, emoji, isIncome);
+  int get hashCode => Object.hash(id, name, emodji, isIncome);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoriesTableData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.emoji == this.emoji &&
+          other.emodji == this.emodji &&
           other.isIncome == this.isIncome);
 }
 
 class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> emoji;
+  final Value<String> emodji;
   final Value<bool> isIncome;
   const CategoriesTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.emoji = const Value.absent(),
+    this.emodji = const Value.absent(),
     this.isIncome = const Value.absent(),
   });
   CategoriesTableCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String emoji,
+    required String emodji,
     required bool isIncome,
   }) : name = Value(name),
-       emoji = Value(emoji),
+       emodji = Value(emodji),
        isIncome = Value(isIncome);
   static Insertable<CategoriesTableData> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<String>? emoji,
+    Expression<String>? emodji,
     Expression<bool>? isIncome,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (emoji != null) 'emoji': emoji,
+      if (emodji != null) 'emodji': emodji,
       if (isIncome != null) 'is_income': isIncome,
     });
   }
@@ -677,13 +677,13 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   CategoriesTableCompanion copyWith({
     Value<int>? id,
     Value<String>? name,
-    Value<String>? emoji,
+    Value<String>? emodji,
     Value<bool>? isIncome,
   }) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      emoji: emoji ?? this.emoji,
+      emodji: emodji ?? this.emodji,
       isIncome: isIncome ?? this.isIncome,
     );
   }
@@ -697,8 +697,8 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (emoji.present) {
-      map['emoji'] = Variable<String>(emoji.value);
+    if (emodji.present) {
+      map['emodji'] = Variable<String>(emodji.value);
     }
     if (isIncome.present) {
       map['is_income'] = Variable<bool>(isIncome.value);
@@ -711,7 +711,7 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     return (StringBuffer('CategoriesTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emoji: $emoji, ')
+          ..write('emodji: $emodji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
@@ -767,11 +767,11 @@ class $TransactionsTableTable extends TransactionsTable
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedColumn<String> amount = GeneratedColumn<String>(
+  late final GeneratedColumn<double> amount = GeneratedColumn<double>(
     'amount',
     aliasedName,
     false,
-    type: DriftSqlType.string,
+    type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _commentMeta = const VerificationMeta(
@@ -930,7 +930,7 @@ class $TransactionsTableTable extends TransactionsTable
           )!,
       amount:
           attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
+            DriftSqlType.double,
             data['${effectivePrefix}amount'],
           )!,
       comment:
@@ -967,7 +967,7 @@ class TransactionsTableData extends DataClass
   final int id;
   final int accountId;
   final int categoryId;
-  final String amount;
+  final double amount;
   final String comment;
   final DateTime transactionDate;
   final DateTime createdAt;
@@ -988,7 +988,7 @@ class TransactionsTableData extends DataClass
     map['id'] = Variable<int>(id);
     map['account_id'] = Variable<int>(accountId);
     map['category_id'] = Variable<int>(categoryId);
-    map['amount'] = Variable<String>(amount);
+    map['amount'] = Variable<double>(amount);
     map['comment'] = Variable<String>(comment);
     map['transaction_date'] = Variable<DateTime>(transactionDate);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -1018,7 +1018,7 @@ class TransactionsTableData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       accountId: serializer.fromJson<int>(json['accountId']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
-      amount: serializer.fromJson<String>(json['amount']),
+      amount: serializer.fromJson<double>(json['amount']),
       comment: serializer.fromJson<String>(json['comment']),
       transactionDate: serializer.fromJson<DateTime>(json['transactionDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -1032,7 +1032,7 @@ class TransactionsTableData extends DataClass
       'id': serializer.toJson<int>(id),
       'accountId': serializer.toJson<int>(accountId),
       'categoryId': serializer.toJson<int>(categoryId),
-      'amount': serializer.toJson<String>(amount),
+      'amount': serializer.toJson<double>(amount),
       'comment': serializer.toJson<String>(comment),
       'transactionDate': serializer.toJson<DateTime>(transactionDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -1044,7 +1044,7 @@ class TransactionsTableData extends DataClass
     int? id,
     int? accountId,
     int? categoryId,
-    String? amount,
+    double? amount,
     String? comment,
     DateTime? transactionDate,
     DateTime? createdAt,
@@ -1121,7 +1121,7 @@ class TransactionsTableCompanion
   final Value<int> id;
   final Value<int> accountId;
   final Value<int> categoryId;
-  final Value<String> amount;
+  final Value<double> amount;
   final Value<String> comment;
   final Value<DateTime> transactionDate;
   final Value<DateTime> createdAt;
@@ -1140,7 +1140,7 @@ class TransactionsTableCompanion
     this.id = const Value.absent(),
     required int accountId,
     required int categoryId,
-    required String amount,
+    required double amount,
     required String comment,
     required DateTime transactionDate,
     required DateTime createdAt,
@@ -1156,7 +1156,7 @@ class TransactionsTableCompanion
     Expression<int>? id,
     Expression<int>? accountId,
     Expression<int>? categoryId,
-    Expression<String>? amount,
+    Expression<double>? amount,
     Expression<String>? comment,
     Expression<DateTime>? transactionDate,
     Expression<DateTime>? createdAt,
@@ -1178,7 +1178,7 @@ class TransactionsTableCompanion
     Value<int>? id,
     Value<int>? accountId,
     Value<int>? categoryId,
-    Value<String>? amount,
+    Value<double>? amount,
     Value<String>? comment,
     Value<DateTime>? transactionDate,
     Value<DateTime>? createdAt,
@@ -1209,7 +1209,7 @@ class TransactionsTableCompanion
       map['category_id'] = Variable<int>(categoryId.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<String>(amount.value);
+      map['amount'] = Variable<double>(amount.value);
     }
     if (comment.present) {
       map['comment'] = Variable<String>(comment.value);
@@ -1745,7 +1745,7 @@ typedef $$AccountsTableTableCreateCompanionBuilder =
     AccountsTableCompanion Function({
       Value<int> id,
       required String name,
-      required String balance,
+      required double balance,
       Value<String> currency,
       required DateTime createdAt,
       required DateTime updatedAt,
@@ -1754,7 +1754,7 @@ typedef $$AccountsTableTableUpdateCompanionBuilder =
     AccountsTableCompanion Function({
       Value<int> id,
       Value<String> name,
-      Value<String> balance,
+      Value<double> balance,
       Value<String> currency,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
@@ -1816,7 +1816,7 @@ class $$AccountsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get balance => $composableBuilder(
+  ColumnFilters<double> get balance => $composableBuilder(
     column: $table.balance,
     builder: (column) => ColumnFilters(column),
   );
@@ -1881,7 +1881,7 @@ class $$AccountsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get balance => $composableBuilder(
+  ColumnOrderings<double> get balance => $composableBuilder(
     column: $table.balance,
     builder: (column) => ColumnOrderings(column),
   );
@@ -1917,7 +1917,7 @@ class $$AccountsTableTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get balance =>
+  GeneratedColumn<double> get balance =>
       $composableBuilder(column: $table.balance, builder: (column) => column);
 
   GeneratedColumn<String> get currency =>
@@ -1990,7 +1990,7 @@ class $$AccountsTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> balance = const Value.absent(),
+                Value<double> balance = const Value.absent(),
                 Value<String> currency = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
@@ -2006,7 +2006,7 @@ class $$AccountsTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required String name,
-                required String balance,
+                required double balance,
                 Value<String> currency = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
@@ -2085,14 +2085,14 @@ typedef $$CategoriesTableTableCreateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       required String name,
-      required String emoji,
+      required String emodji,
       required bool isIncome,
     });
 typedef $$CategoriesTableTableUpdateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       Value<String> name,
-      Value<String> emoji,
+      Value<String> emodji,
       Value<bool> isIncome,
     });
 
@@ -2156,8 +2156,8 @@ class $$CategoriesTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get emoji => $composableBuilder(
-    column: $table.emoji,
+  ColumnFilters<String> get emodji => $composableBuilder(
+    column: $table.emodji,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2211,8 +2211,8 @@ class $$CategoriesTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get emoji => $composableBuilder(
-    column: $table.emoji,
+  ColumnOrderings<String> get emodji => $composableBuilder(
+    column: $table.emodji,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2237,8 +2237,8 @@ class $$CategoriesTableTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get emoji =>
-      $composableBuilder(column: $table.emoji, builder: (column) => column);
+  GeneratedColumn<String> get emodji =>
+      $composableBuilder(column: $table.emodji, builder: (column) => column);
 
   GeneratedColumn<bool> get isIncome =>
       $composableBuilder(column: $table.isIncome, builder: (column) => column);
@@ -2309,24 +2309,24 @@ class $$CategoriesTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> emoji = const Value.absent(),
+                Value<String> emodji = const Value.absent(),
                 Value<bool> isIncome = const Value.absent(),
               }) => CategoriesTableCompanion(
                 id: id,
                 name: name,
-                emoji: emoji,
+                emodji: emodji,
                 isIncome: isIncome,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String name,
-                required String emoji,
+                required String emodji,
                 required bool isIncome,
               }) => CategoriesTableCompanion.insert(
                 id: id,
                 name: name,
-                emoji: emoji,
+                emodji: emodji,
                 isIncome: isIncome,
               ),
           withReferenceMapper:
@@ -2397,7 +2397,7 @@ typedef $$TransactionsTableTableCreateCompanionBuilder =
       Value<int> id,
       required int accountId,
       required int categoryId,
-      required String amount,
+      required double amount,
       required String comment,
       required DateTime transactionDate,
       required DateTime createdAt,
@@ -2408,7 +2408,7 @@ typedef $$TransactionsTableTableUpdateCompanionBuilder =
       Value<int> id,
       Value<int> accountId,
       Value<int> categoryId,
-      Value<String> amount,
+      Value<double> amount,
       Value<String> comment,
       Value<DateTime> transactionDate,
       Value<DateTime> createdAt,
@@ -2487,7 +2487,7 @@ class $$TransactionsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get amount => $composableBuilder(
+  ColumnFilters<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnFilters(column),
   );
@@ -2573,7 +2573,7 @@ class $$TransactionsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get amount => $composableBuilder(
+  ColumnOrderings<double> get amount => $composableBuilder(
     column: $table.amount,
     builder: (column) => ColumnOrderings(column),
   );
@@ -2657,7 +2657,7 @@ class $$TransactionsTableTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get amount =>
+  GeneratedColumn<double> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
   GeneratedColumn<String> get comment =>
@@ -2763,7 +2763,7 @@ class $$TransactionsTableTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> accountId = const Value.absent(),
                 Value<int> categoryId = const Value.absent(),
-                Value<String> amount = const Value.absent(),
+                Value<double> amount = const Value.absent(),
                 Value<String> comment = const Value.absent(),
                 Value<DateTime> transactionDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -2783,7 +2783,7 @@ class $$TransactionsTableTableTableManager
                 Value<int> id = const Value.absent(),
                 required int accountId,
                 required int categoryId,
-                required String amount,
+                required double amount,
                 required String comment,
                 required DateTime transactionDate,
                 required DateTime createdAt,

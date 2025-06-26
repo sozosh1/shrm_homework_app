@@ -45,31 +45,31 @@ class AppDatabase extends _$AppDatabase {
         CategoriesTableCompanion.insert(
           id: const Value(1),
           name: 'Зарплата',
-          emoji: '💰',
+          emodji: '💰',
           isIncome: true,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(2),
           name: 'Фриланс',
-          emoji: '💰',
+          emodji: '💰',
           isIncome: true,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(3),
           name: 'Продукты',
-          emoji: '🛒',
+          emodji: '🛒',
           isIncome: true,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(4),
           name: 'Транспорт',
-          emoji: '🚗',
+          emodji: '🚗',
           isIncome: false,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(5),
           name: 'Развлечения',
-          emoji: '🎬',
+          emodji: '🎬',
           isIncome: false,
         ),
       ]);

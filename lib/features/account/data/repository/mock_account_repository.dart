@@ -11,18 +11,7 @@ import 'package:shrm_homework_app/features/account/domain/repository/account_rep
 
 @Injectable(as: AccountRepository)
 class MockAccountRepository implements AccountRepository {
-  @override
-  Future<Account> createAccount(AccountCreateRequest request) async {
-    return Account(
-      id: 1,
-      userId: 2,
-      name: request.name,
-      balance: request.balance,
-      currency: request.currency,
-      createdAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
-      updatedAt: DateTime.parse('2025-06-16T21:58:48.372Z'),
-    );
-  }
+
 
   @override
   Future<Account> updateAccount(int id, AccountUpdateRequest request) async {
@@ -65,34 +54,5 @@ class MockAccountRepository implements AccountRepository {
     );
   }
 
-  @override
-  Future<AccountHistoryResponse> getAccountHistory(int id) async {
-    return AccountHistoryResponse(
-      accountId: id,
-      accountName: 'Main account',
-      currency: 'RUB',
-      currentBalance: 2100.00,
-      history: [
-        AccountHistory(
-          id: 1,
-          accountId: id,
-          changeType: 'deposit',
-          previousState: AccountState(
-            id: id,
-            name: "Основной счёт",
-            balance: 500.00,
-            currency: "RUB",
-          ),
-          newState: AccountState(
-            id: id,
-            name: "Основной счёт",
-            balance: 2100.00,
-            currency: "RUB",
-          ),
-          changeTimestamp: DateTime.parse("2025-06-11T12:00:00Z"),
-          createdAt: DateTime.parse("2025-04-11T12:00:00Z"),
-        ),
-      ],
-    );
-  }
+ 
 }
