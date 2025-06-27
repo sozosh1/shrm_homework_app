@@ -8,7 +8,6 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
-@Named('local')
 @Injectable(as: TransactionRepository)
 class LocalTransactionRepository implements TransactionRepository {
   final AppDatabase _database;

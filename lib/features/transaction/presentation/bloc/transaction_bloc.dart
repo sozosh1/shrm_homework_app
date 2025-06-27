@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'transaction_event.dart';
 import 'transaction_state.dart';
@@ -68,8 +70,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           currency: currency,
         ),
       );
-    } catch (e) {
+    } catch (e, st) {
       emit(TransactionState.error(message: 'Ошибка загрузки транзакций: $e'));
+      GetIt.I<Talker>().handle(e, st);
     }
   }
 

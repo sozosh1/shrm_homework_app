@@ -3,6 +3,7 @@ import 'package:shrm_homework_app/core/database/app_database.dart';
 import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
 import 'package:shrm_homework_app/features/category/domain/repository/category_repository.dart';
 
+
 @Injectable(as: CategoryRepository)
 class LocalCategoryRepository implements CategoryRepository {
   final AppDatabase _database;

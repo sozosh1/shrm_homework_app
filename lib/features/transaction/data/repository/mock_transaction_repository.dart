@@ -5,8 +5,8 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction/transaction.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
-
-@Injectable(as: TransactionRepository)
+@Named('mock')
+//@Injectable(as: TransactionRepository)
 class MockTransitionRepository implements TransactionRepository {
   @override
   Future<List<TransactionResponse>> getAllTransactions() async {

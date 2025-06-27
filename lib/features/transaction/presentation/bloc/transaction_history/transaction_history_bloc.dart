@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'transaction_history_event.dart';
 import 'transaction_history_state.dart';
@@ -103,8 +105,9 @@ class TransactionHistoryBloc
           sortBy: event.sortBy ?? 'date',
         ),
       );
-    } catch (e) {
+    } catch (e, st) {
       emit(TransactionHistoryState.error(message: 'Произошла ошибка: $e'));
+      GetIt.I<Talker>().handle(e, st);
     }
   }
 
@@ -115,7 +118,7 @@ class TransactionHistoryBloc
     final currentState = state;
     if (currentState is TransactionHistoryLoaded) {
       DateTime newEndDate = currentState.endDate;
-      
+
       if (event.startDate.isAfter(currentState.endDate)) {
         newEndDate = event.startDate;
       }

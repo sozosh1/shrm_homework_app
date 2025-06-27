@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/core/database/app_database.dart';
-import 'package:shrm_homework_app/features/account/data/models/account_create_request/account_create_request.dart';
-import 'package:shrm_homework_app/features/account/data/models/account_history_response/account_history_response.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_responce/account_response.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_update_request/account_update_request.dart';
 import 'package:shrm_homework_app/features/account/data/models/stat_item/stat_item.dart';
