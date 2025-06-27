@@ -46,61 +46,71 @@ class LocalTransactionRepository implements TransactionRepository {
   @override
   Future<void> deleteTransaction(int id) async {
     await (_database.delete(_database.transactionsTable)
-      ..where((t) => t.id.equals(id))).go();
+      ..where((t) => t.id.equals(id)))
+        .go();
   }
 
   @override
   Future<List<TransactionResponse>> getAllTransactions() async {
-    final transactions =
-        await _database.select(_database.transactionsTable).get();
-    final List<TransactionResponse> result = [];
+    final query = _database.select(_database.transactionsTable).join([
+      innerJoin(
+        _database.accountsTable,
+        _database.accountsTable.id.equalsExp(_database.transactionsTable.accountId),
+      ),
+      innerJoin(
+        _database.categoriesTable,
+        _database.categoriesTable.id.equalsExp(_database.transactionsTable.categoryId),
+      ),
+    ]);
 
-    for (final transaction in transactions) {
-      final account =
-          await (_database.select(_database.accountsTable)
-            ..where((t) => t.id.equals(transaction.accountId))).getSingle();
-      final category =
-          await (_database.select(_database.categoriesTable)
-            ..where((t) => t.id.equals(transaction.categoryId))).getSingle();
+    final results = await query.get();
 
-      result.add(
-        TransactionResponse(
-          id: transaction.id,
-          account: AccountBrief(
-            id: account.id,
-            name: account.name,
-            balance: account.balance,
-            currency: account.currency,
-          ),
-          category: Category(
-            id: category.id,
-            name: category.name,
-            emodji: category.emodji,
-            isIncome: category.isIncome,
-          ),
-          amount: transaction.amount,
-          transactionDate: transaction.transactionDate,
-          createdAt: transaction.createdAt,
-          updatedAt: transaction.createdAt,
+    return results.map((row) {
+      final transaction = row.readTable(_database.transactionsTable);
+      final account = row.readTable(_database.accountsTable);
+      final category = row.readTable(_database.categoriesTable);
+
+      return TransactionResponse(
+        id: transaction.id,
+        account: AccountBrief(
+          id: account.id,
+          name: account.name,
+          balance: account.balance,
+          currency: account.currency,
         ),
+        category: Category(
+          id: category.id,
+          name: category.name,
+          emodji: category.emodji,
+          isIncome: category.isIncome,
+        ),
+        amount: transaction.amount,
+        transactionDate: transaction.transactionDate,
+        createdAt: transaction.createdAt,
+        updatedAt: transaction.updatedAt,
       );
-    }
-    return result;
+    }).toList();
   }
 
   @override
   Future<TransactionResponse> getTransaction(int id) async {
-    final transaction =
-        await (_database.select(_database.transactionsTable)
-          ..where((t) => t.id.equals(id))).getSingle();
+    final query = _database.select(_database.transactionsTable).join([
+      innerJoin(
+        _database.accountsTable,
+        _database.accountsTable.id.equalsExp(_database.transactionsTable.accountId),
+      ),
+      innerJoin(
+        _database.categoriesTable,
+        _database.categoriesTable.id.equalsExp(_database.transactionsTable.categoryId),
+      ),
+    ])
+      ..where(_database.transactionsTable.id.equals(id));
 
-    final account =
-        await (_database.select(_database.accountsTable)
-          ..where((t) => t.id.equals(transaction.accountId))).getSingle();
+    final row = await query.getSingle();
 
-    final category =
-        await (_database.select(_database.categoriesTable)
-          ..where((t) => t.id.equals(transaction.categoryId))).getSingle();
+    final transaction = row.readTable(_database.transactionsTable);
+    final account = row.readTable(_database.accountsTable);
+    final category = row.readTable(_database.categoriesTable);
 
     return TransactionResponse(
       id: transaction.id,
@@ -119,7 +129,7 @@ class LocalTransactionRepository implements TransactionRepository {
       amount: transaction.amount,
       transactionDate: transaction.transactionDate,
       createdAt: transaction.createdAt,
-      updatedAt: transaction.createdAt,
+      updatedAt: transaction.updatedAt,
     );
   }
 
@@ -131,15 +141,15 @@ class LocalTransactionRepository implements TransactionRepository {
     final now = DateTime.now();
 
     await (_database.update(_database.transactionsTable)
-      ..where((t) => t.id.equals(id))).write(
+      ..where((t) => t.id.equals(id)))
+        .write(
       TransactionsTableCompanion(
         accountId: Value(request.accountId),
         amount: Value(request.amount),
         categoryId: Value(request.categoryId),
         comment: Value(request.comment ?? ''),
         transactionDate: Value(request.transactionDate),
-        createdAt: Value(now),
-        updatedAt: Value(now),
+        updatedAt: Value(now), // ИСПРАВЛЕНО: createdAt больше не обновляется
       ),
     );
 

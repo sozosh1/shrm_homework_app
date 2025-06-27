@@ -12,9 +12,12 @@ class LocalCategoryRepository implements CategoryRepository {
 
   @override
   Future<List<Category>> getAllCategories() async {
+    // 1. Получаем все записи из таблицы категорий.
     final categories =
         await (_database.select(_database.categoriesTable)).get();
 
+    // 2. Преобразуем (мапим) каждую запись из формата таблицы (Drift)
+    //    в формат доменной модели Category.
     return categories.map((category) {
       return Category(
         id: category.id,
@@ -27,9 +30,14 @@ class LocalCategoryRepository implements CategoryRepository {
 
   @override
   Future<List<Category>> getCategoriesByType(bool isIncome) async {
-    final categories =
-        await (_database.select(_database.categoriesTable)
-          ..where((t) => t.isIncome.equals(isIncome))).get();
+    // 1. Создаем запрос к таблице категорий с фильтром по полю isIncome.
+    final query = _database.select(_database.categoriesTable)
+      ..where((t) => t.isIncome.equals(isIncome));
+    
+    // 2. Выполняем запрос.
+    final categories = await query.get();
+
+    // 3. Так же, как и в первом методе, мапим результат в список доменных моделей.
     return categories.map((category) {
       return Category(
         id: category.id,

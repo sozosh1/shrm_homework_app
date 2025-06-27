@@ -9,6 +9,7 @@ import 'package:shrm_homework_app/features/account/domain/repository/account_rep
 
 @Injectable(as: AccountRepository)
 class LocalAccountRepository implements AccountRepository {
+  // Использование константы для единственного аккаунта, согласно требованию.
   static const _accountId = 1;
   final AppDatabase _database;
 
@@ -16,6 +17,7 @@ class LocalAccountRepository implements AccountRepository {
 
   @override
   Future<AccountResponse> getAccount(int id) async {
+    // Примечание: параметр 'id' игнорируется, всегда используется _accountId.
     final account = await _getAccountInternal();
     final stats = await _getAccountStats();
 
@@ -33,6 +35,7 @@ class LocalAccountRepository implements AccountRepository {
 
   @override
   Future<Account> updateAccount(int id, AccountUpdateRequest request) async {
+    // Примечание: параметр 'id' игнорируется, всегда используется _accountId.
     await (_database.update(_database.accountsTable)
       ..where((t) => t.id.equals(_accountId))).write(
       AccountsTableCompanion(
@@ -57,7 +60,7 @@ class LocalAccountRepository implements AccountRepository {
       balance: data.balance,
       currency: data.currency,
       createdAt: data.createdAt,
-      updatedAt: data.createdAt,
+      updatedAt: data.updatedAt, // ИСПРАВЛЕНО: было data.createdAt
     );
   }
 
@@ -67,9 +70,8 @@ class LocalAccountRepository implements AccountRepository {
         await (_database.select(_database.transactionsTable)
           ..where((t) => t.accountId.equals(_accountId))).get();
 
-    final categories =
-        await (_database.select(_database.categoriesTable)).get();
-    //Для быстрого доступа к категориям по их ID без поиска в списке
+    final categories = await _database.select(_database.categoriesTable).get();
+    // Для быстрого доступа к категориям по их ID без поиска в списке
     final categoriesMap = {for (var c in categories) c.id: c};
 
     final incomeStats = <StatItem>[];
