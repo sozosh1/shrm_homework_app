@@ -27,7 +27,7 @@ class AccountRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ArticlesScreen]
+/// [ArticlesPage]
 class ArticlesRoute extends PageRouteInfo<void> {
   const ArticlesRoute({List<PageRouteInfo>? children})
     : super(ArticlesRoute.name, initialChildren: children);
@@ -37,7 +37,7 @@ class ArticlesRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ArticlesScreen();
+      return const ArticlesPage();
     },
   );
 }

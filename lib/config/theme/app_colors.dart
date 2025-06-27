@@ -7,9 +7,7 @@ class AppColors {
 
   static const Color textDark = Color(0xFF1D1B20);
 
-  static const Color lightPurpleBackground = Color(0xFFF3EDF7);
+  static const Color lightBackground = Color(0xFFF3EDF7);
 
-  static const Color whiteBackground = Colors.white;
-
-  static const Color lightBackground = Color(0xFFF7F7F7);
+  static const Color white = Colors.white;
 }

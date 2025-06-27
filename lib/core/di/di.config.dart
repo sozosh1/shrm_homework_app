@@ -22,6 +22,9 @@ import '../../features/category/data/repository/local_category_repository.dart'
     as _i1026;
 import '../../features/category/domain/repository/category_repository.dart'
     as _i847;
+import '../../features/category/domain/usecases/fuzzy_search_usecase.dart'
+    as _i578;
+import '../../features/category/presentation/bloc/category_bloc.dart' as _i292;
 import '../../features/transaction/data/repository/local_transaction_repository.dart'
     as _i100;
 import '../../features/transaction/domain/repository/transaction_repository.dart'
@@ -43,6 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final talkerModule = _$TalkerModule();
+    gh.factory<_i578.FuzzySearchUseCase>(() => _i578.FuzzySearchUseCase());
     gh.singleton<_i207.Talker>(() => talkerModule.talker);
     gh.singletonAsync<_i636.PreferencesService>(() {
       final i = _i636.PreferencesService();
@@ -62,6 +66,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i104.AccountRepository>(
       () => _i766.LocalAccountRepository(gh<_i982.AppDatabase>()),
+    );
+    gh.factory<_i292.CategoryBloc>(
+      () => _i292.CategoryBloc(
+        gh<_i847.CategoryRepository>(),
+        gh<_i578.FuzzySearchUseCase>(),
+      ),
     );
     gh.factory<_i356.TransactionBloc>(
       () => _i356.TransactionBloc(gh<_i472.TransactionRepository>()),

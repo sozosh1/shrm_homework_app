@@ -5,28 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 @RoutePage()
-class ArticlesScreen extends StatelessWidget {
-  const ArticlesScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset('assets/icons/article.svg', height: 70),
-          const SizedBox(height: 16),
-          Text(
-            'Экран "Статьи" в разработке',
-            style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-@RoutePage()
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -34,6 +12,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: 'talker button',
         child: Icon(Icons.info_outline_rounded),
         onPressed: () {
           Navigator.of(context).push(

@@ -187,6 +187,24 @@ class AppDatabase extends _$AppDatabase {
         createdAt: now.subtract(const Duration(days: 1)),
         updatedAt: now.subtract(const Duration(days: 1)),
       ),
+      TransactionsTableCompanion.insert(
+        accountId: 1,
+        categoryId: 5,
+        amount: -800.0,
+        comment: 'развлечения',
+        transactionDate: now,
+        createdAt: now,
+        updatedAt: now,
+      ),
+      TransactionsTableCompanion.insert(
+        accountId: 1,
+        categoryId: 5,
+        amount: -800.0,
+        comment: 'развлечения',
+        transactionDate: now,
+        createdAt: now,
+        updatedAt: now,
+      ),
     ];
 
     await batch((batch) {

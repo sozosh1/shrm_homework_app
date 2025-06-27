@@ -5,61 +5,66 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 
 class TransactionListItem extends StatelessWidget {
   final TransactionResponse transaction;
-
-  const TransactionListItem({super.key, required this.transaction});
+  final bool? showAvatar;
+  final bool? showTime;
+  const TransactionListItem({
+    super.key,
+    required this.transaction,
+    this.showAvatar,
+    this.showTime,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 6),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade300, width: 1.0),
-        ),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: AppColors.lightGreenBackground,
-          radius: 12,
-          child: Text(
-            transaction.category.emodji,
-            style: const TextStyle(fontSize: 20),
+    return Column(
+      children: [
+        Divider(height: 0.5, thickness: 0.5),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundColor: AppColors.lightGreenBackground,
+            radius: 12,
+            child: Text(
+              transaction.category.emodji,
+              style: const TextStyle(fontSize: 20),
+            ),
           ),
-        ),
-        title: Row(
-          children: [
-            Expanded(
-              child: Text(
-                transaction.category.name,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-            Text(
-              CurrencyFormatter.format(
-                transaction.amount,
-                transaction.account.currency,
-              ),
 
-              style: TextStyle(fontSize: 16, color: AppColors.textDark),
-            ),
-          ],
-        ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(transaction.category.name),
+                  if (transaction.comment?.isNotEmpty ?? false)
+                    Expanded(child: Text(transaction.comment!)),
+                ],
+              ),
+              Text(
+                CurrencyFormatter.format(
+                  transaction.amount,
+                  transaction.account.currency,
+                ),
+              ),
+            ],
+          ),
 
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
-          color: Colors.grey,
+          trailing: const Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: Colors.grey,
+          ),
+          onTap: () {
+            // TODO: Добавить детальный просмотр транзакции
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Транзакция: ${transaction.category.name}'),
+                duration: const Duration(seconds: 1),
+              ),
+            );
+          },
         ),
-        onTap: () {
-          // TODO: Добавить детальный просмотр транзакции
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Транзакция: ${transaction.category.name}'),
-              duration: const Duration(seconds: 1),
-            ),
-          );
-        },
-      ),
+        Divider(height: 0.5, thickness: 0.5),
+      ],
     );
   }
 }
