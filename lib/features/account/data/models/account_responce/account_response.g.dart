@@ -10,7 +10,7 @@ _AccountResponse _$AccountResponseFromJson(Map<String, dynamic> json) =>
     _AccountResponse(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      balance: json['balance'] as String,
+      balance: (json['balance'] as num).toDouble(),
       currency: json['currency'] as String,
       incomeStats:
           (json['incomeStats'] as List<dynamic>)
@@ -20,8 +20,8 @@ _AccountResponse _$AccountResponseFromJson(Map<String, dynamic> json) =>
           (json['expenseStats'] as List<dynamic>)
               .map((e) => StatItem.fromJson(e as Map<String, dynamic>))
               .toList(),
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$AccountResponseToJson(_AccountResponse instance) =>
@@ -32,6 +32,6 @@ Map<String, dynamic> _$AccountResponseToJson(_AccountResponse instance) =>
       'currency': instance.currency,
       'incomeStats': instance.incomeStats,
       'expenseStats': instance.expenseStats,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

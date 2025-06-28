@@ -120,7 +120,7 @@ class TransactionLoaded implements TransactionState {
   return EqualUnmodifiableListView(_transactions);
 }
 
- final  String totalAmount;
+ final  double totalAmount;
  final  bool isIncome;
  final  String currency;
 
@@ -154,7 +154,7 @@ abstract mixin class $TransactionLoadedCopyWith<$Res> implements $TransactionSta
   factory $TransactionLoadedCopyWith(TransactionLoaded value, $Res Function(TransactionLoaded) _then) = _$TransactionLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<TransactionResponse> transactions, String totalAmount, bool isIncome, String currency
+ List<TransactionResponse> transactions, double totalAmount, bool isIncome, String currency
 });
 
 
@@ -175,7 +175,7 @@ class _$TransactionLoadedCopyWithImpl<$Res>
   return _then(TransactionLoaded(
 transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionResponse>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as String,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as double,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
 as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));

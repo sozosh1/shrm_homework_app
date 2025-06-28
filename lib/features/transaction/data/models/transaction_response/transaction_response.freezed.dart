@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionResponse {
 
- int get id; AccountBrief get account; Category get category; String get amount; String get transactionDate; String? get comment; String get createdAt; String get updatedAt;
+ int get id; AccountBrief get account; Category get category; double get amount; DateTime get transactionDate; String? get comment; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of TransactionResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TransactionResponseCopyWith<$Res>  {
   factory $TransactionResponseCopyWith(TransactionResponse value, $Res Function(TransactionResponse) _then) = _$TransactionResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, AccountBrief account, Category category, String amount, String transactionDate, String? comment, String createdAt, String updatedAt
+ int id, AccountBrief account, Category category, double amount, DateTime transactionDate, String? comment, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -72,11 +72,11 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,account: null == account ? _self.account : account // ignore: cast_nullable_to_non_nullable
 as AccountBrief,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as Category,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as double,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
+as DateTime,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 /// Create a copy of TransactionResponse
@@ -111,11 +111,11 @@ class _TransactionResponse implements TransactionResponse {
 @override final  int id;
 @override final  AccountBrief account;
 @override final  Category category;
-@override final  String amount;
-@override final  String transactionDate;
+@override final  double amount;
+@override final  DateTime transactionDate;
 @override final  String? comment;
-@override final  String createdAt;
-@override final  String updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of TransactionResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -150,7 +150,7 @@ abstract mixin class _$TransactionResponseCopyWith<$Res> implements $Transaction
   factory _$TransactionResponseCopyWith(_TransactionResponse value, $Res Function(_TransactionResponse) _then) = __$TransactionResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, AccountBrief account, Category category, String amount, String transactionDate, String? comment, String createdAt, String updatedAt
+ int id, AccountBrief account, Category category, double amount, DateTime transactionDate, String? comment, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -173,11 +173,11 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,account: null == account ? _self.account : account // ignore: cast_nullable_to_non_nullable
 as AccountBrief,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as Category,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as double,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
+as DateTime,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 

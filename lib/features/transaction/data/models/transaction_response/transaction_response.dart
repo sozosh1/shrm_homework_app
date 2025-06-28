@@ -11,11 +11,11 @@ abstract class TransactionResponse with _$TransactionResponse {
     required int id,
     required AccountBrief account,
     required Category category,
-    required String amount,
-    required String transactionDate,
+    required double amount,
+    required DateTime transactionDate,
     String? comment,
-    required String createdAt,
-    required String updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _TransactionResponse;
 
   factory TransactionResponse.fromJson(Map<String, dynamic> json) =>

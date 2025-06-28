@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_event.dart';
@@ -83,9 +84,9 @@ class TransactionsView extends StatelessWidget {
                         color: AppColors.textDark,
                       ),
                     ),
-                    Text(
-                      //todo надо поработать над данными
-                      '${double.parse(state.totalAmount).toStringAsFixed(0)} ${state.currency == 'RUB' ? '₽' : ''}',
+                    CurrencyDisplay(
+                      amount: state.totalAmount,
+                      accountCurrency: state.currency,
                       style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.textDark,

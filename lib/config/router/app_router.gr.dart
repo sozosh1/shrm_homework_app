@@ -27,7 +27,7 @@ class AccountRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ArticlesScreen]
+/// [ArticlesPage]
 class ArticlesRoute extends PageRouteInfo<void> {
   const ArticlesRoute({List<PageRouteInfo>? children})
     : super(ArticlesRoute.name, initialChildren: children);
@@ -37,9 +37,121 @@ class ArticlesRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ArticlesScreen();
+      return const ArticlesPage();
     },
   );
+}
+
+/// generated route for
+/// [CategoryTransactionsScreen]
+class CategoryTransactionsRoute
+    extends PageRouteInfo<CategoryTransactionsRouteArgs> {
+  CategoryTransactionsRoute({
+    Key? key,
+    required CategoryAnalysisItem item,
+    List<PageRouteInfo>? children,
+  }) : super(
+         CategoryTransactionsRoute.name,
+         args: CategoryTransactionsRouteArgs(key: key, item: item),
+         initialChildren: children,
+       );
+
+  static const String name = 'CategoryTransactionsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<CategoryTransactionsRouteArgs>();
+      return CategoryTransactionsScreen(key: args.key, item: args.item);
+    },
+  );
+}
+
+class CategoryTransactionsRouteArgs {
+  const CategoryTransactionsRouteArgs({this.key, required this.item});
+
+  final Key? key;
+
+  final CategoryAnalysisItem item;
+
+  @override
+  String toString() {
+    return 'CategoryTransactionsRouteArgs{key: $key, item: $item}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CategoryTransactionsRouteArgs) return false;
+    return key == other.key && item == other.item;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ item.hashCode;
+}
+
+/// generated route for
+/// [EditAccountScreen]
+class EditAccountRoute extends PageRouteInfo<EditAccountRouteArgs> {
+  EditAccountRoute({
+    Key? key,
+    required int accountId,
+    required String initialName,
+    List<PageRouteInfo>? children,
+  }) : super(
+         EditAccountRoute.name,
+         args: EditAccountRouteArgs(
+           key: key,
+           accountId: accountId,
+           initialName: initialName,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'EditAccountRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EditAccountRouteArgs>();
+      return EditAccountScreen(
+        key: args.key,
+        accountId: args.accountId,
+        initialName: args.initialName,
+      );
+    },
+  );
+}
+
+class EditAccountRouteArgs {
+  const EditAccountRouteArgs({
+    this.key,
+    required this.accountId,
+    required this.initialName,
+  });
+
+  final Key? key;
+
+  final int accountId;
+
+  final String initialName;
+
+  @override
+  String toString() {
+    return 'EditAccountRouteArgs{key: $key, accountId: $accountId, initialName: $initialName}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EditAccountRouteArgs) return false;
+    return key == other.key &&
+        accountId == other.accountId &&
+        initialName == other.initialName;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ accountId.hashCode ^ initialName.hashCode;
 }
 
 /// generated route for
@@ -104,6 +216,53 @@ class SettingsRoute extends PageRouteInfo<void> {
       return const SettingsScreen();
     },
   );
+}
+
+/// generated route for
+/// [TransactionAnalysScreen]
+class TransactionAnalysRoute extends PageRouteInfo<TransactionAnalysRouteArgs> {
+  TransactionAnalysRoute({
+    Key? key,
+    required bool isIncome,
+    List<PageRouteInfo>? children,
+  }) : super(
+         TransactionAnalysRoute.name,
+         args: TransactionAnalysRouteArgs(key: key, isIncome: isIncome),
+         initialChildren: children,
+       );
+
+  static const String name = 'TransactionAnalysRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<TransactionAnalysRouteArgs>();
+      return TransactionAnalysScreen(key: args.key, isIncome: args.isIncome);
+    },
+  );
+}
+
+class TransactionAnalysRouteArgs {
+  const TransactionAnalysRouteArgs({this.key, required this.isIncome});
+
+  final Key? key;
+
+  final bool isIncome;
+
+  @override
+  String toString() {
+    return 'TransactionAnalysRouteArgs{key: $key, isIncome: $isIncome}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! TransactionAnalysRouteArgs) return false;
+    return key == other.key && isIncome == other.isIncome;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ isIncome.hashCode;
 }
 
 /// generated route for

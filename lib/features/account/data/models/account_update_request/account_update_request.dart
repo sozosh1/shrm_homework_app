@@ -8,7 +8,7 @@ part 'account_update_request.g.dart';
 abstract class AccountUpdateRequest with _$AccountUpdateRequest {
   const factory AccountUpdateRequest({
     required String name,
-    required String balance,
+    required double balance,
     required String currency,
   }) = _AccountUpdateRequest;
 

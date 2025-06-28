@@ -5,8 +5,8 @@ import 'package:shrm_homework_app/features/transaction/data/models/transaction_r
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction/transaction.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
-
-@Injectable(as: TransactionRepository)
+@Named('mock')
+//@Injectable(as: TransactionRepository)
 class MockTransitionRepository implements TransactionRepository {
   @override
   Future<List<TransactionResponse>> getAllTransactions() async {
@@ -16,14 +16,14 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(id: 1, name: 'Salary', emodji: '💰', isIncome: true),
-        amount: '500.00',
-        transactionDate: '2025-06-16T21:59:14.677Z',
-        createdAt: '2025-06-16T21:59:14.677Z',
-        updatedAt: '2025-06-16T21:59:14.677Z',
+        amount: 500.00,
+        transactionDate: DateTime.parse('2025-06-16T21:59:14.677Z'),
+        createdAt: DateTime.parse('2025-06-16T21:59:14.677Z'),
+        updatedAt: DateTime.parse('2025-06-16T21:59:14.677Z'),
         comment: 'Monthly salary',
       ),
       TransactionResponse(
@@ -31,7 +31,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -40,10 +40,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '🛒',
           isIncome: false,
         ),
-        amount: '75.50',
-        transactionDate: '2025-06-17T10:30:00.000Z',
-        createdAt: '2025-06-17T10:30:00.000Z',
-        updatedAt: '2025-06-17T10:30:00.000Z',
+        amount: 75.50,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Weekly groceries',
       ),
       TransactionResponse(
@@ -51,7 +51,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -60,10 +60,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '💻',
           isIncome: true,
         ),
-        amount: '1200.00',
-        transactionDate: '2025-06-18T15:45:00.000Z',
-        createdAt: '2025-06-18T15:45:00.000Z',
-        updatedAt: '2025-06-18T15:45:00.000Z',
+        amount: 1200.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Freelance project payment',
       ),
       TransactionResponse(
@@ -71,7 +71,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -80,10 +80,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '💡',
           isIncome: false,
         ),
-        amount: '150.00',
-        transactionDate: '2025-06-15T09:00:00.000Z',
-        createdAt: '2025-06-15T09:00:00.000Z',
-        updatedAt: '2025-06-15T09:00:00.000Z',
+        amount: 150.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Electricity bill',
       ),
       TransactionResponse(
@@ -91,14 +91,14 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(id: 5, name: 'Bonus', emodji: '🎁', isIncome: true),
-        amount: '300.00',
-        transactionDate: '2025-06-18T08:00:00.000Z',
-        createdAt: '2025-06-18T08:00:00.000Z',
-        updatedAt: '2025-06-18T08:00:00.000Z',
+        amount: 300.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Yearly bonus',
       ),
       TransactionResponse(
@@ -106,7 +106,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -115,10 +115,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '🛒',
           isIncome: false,
         ),
-        amount: '45.20',
-        transactionDate: '2025-06-21T15:47:00.000Z',
-        createdAt: '2025-06-20T15:47:00.000Z',
-        updatedAt: '2025-06-20T15:47:00.000Z',
+        amount: 45.20,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Morning groceries',
       ),
       TransactionResponse(
@@ -126,7 +126,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -135,10 +135,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '💡',
           isIncome: false,
         ),
-        amount: '30.00',
-        transactionDate: '2025-06-21T15:47:00.000Z',
-        createdAt: '2025-06-20T15:47:00.000Z',
-        updatedAt: '2025-06-20T15:47:00.000Z',
+        amount: 30.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Internet payment',
       ),
       TransactionResponse(
@@ -146,14 +146,14 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(id: 1, name: 'Salary', emodji: '💰', isIncome: true),
-        amount: '200.00',
-        transactionDate: '2025-06-21T15:47:00.000Z',
-        createdAt: '2025-06-20T15:47:00.000Z',
-        updatedAt: '2025-06-20T15:47:00.000Z',
+        amount: 200.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Bonus payment',
       ),
       TransactionResponse(
@@ -161,7 +161,7 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(
@@ -170,10 +170,10 @@ class MockTransitionRepository implements TransactionRepository {
           emodji: '💻',
           isIncome: true,
         ),
-        amount: '150.00',
-        transactionDate: '2025-06-21T15:47:00.000Z',
-        createdAt: '2025-06-20T15:47:00.000Z',
-        updatedAt: '2025-06-20T15:47:00.000Z',
+        amount: 150.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
         comment: 'Quick freelance task',
       ),
       TransactionResponse(
@@ -181,14 +181,29 @@ class MockTransitionRepository implements TransactionRepository {
         account: AccountBrief(
           id: 1,
           name: 'Main Account',
-          balance: '1000.00',
+          balance: 1000.00,
           currency: 'RUB',
         ),
         category: Category(id: 5, name: 'Bonus', emodji: '🎁', isIncome: true),
-        amount: '100.00',
-        transactionDate: '2025-06-21T15:47:00.000Z',
-        createdAt: '2025-06-2T15:47:00.000Z',
-        updatedAt: '2025-06-20T15:47:00.000Z',
+        amount: 100.00,
+        transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+        comment: 'Small reward',
+      ),
+      TransactionResponse(
+        id: 11,
+        account: AccountBrief(
+          id: 1,
+          name: 'Main Account',
+          balance: 1000.00,
+          currency: 'RUB',
+        ),
+        category: Category(id: 5, name: 'Bonus', emodji: '🎁', isIncome: true),
+        amount: 100.00,
+        transactionDate: DateTime.now(),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
         comment: 'Small reward',
       ),
     ];
@@ -213,8 +228,8 @@ class MockTransitionRepository implements TransactionRepository {
       amount: request.amount,
       transactionDate: request.transactionDate,
       comment: request.comment ?? '',
-      createdAt: "2025-04-12T11:35:00Z",
-      updatedAt: "2025-06-12T11:35:00Z",
+      createdAt: DateTime.parse("2025-04-12T11:35:00Z"),
+      updatedAt: DateTime.parse("2025-06-12T11:35:00Z"),
     );
   }
 
@@ -228,7 +243,7 @@ class MockTransitionRepository implements TransactionRepository {
       account: AccountBrief(
         id: request.accountId,
         name: 'main account',
-        balance: '1000.00',
+        balance: 1000.00,
         currency: 'RUB',
       ),
       category: Category(
@@ -237,10 +252,10 @@ class MockTransitionRepository implements TransactionRepository {
         emodji: '💰',
         isIncome: true,
       ),
-      amount: '500.00',
-      transactionDate: '2025-06-16T21:59:14.677Z',
-      createdAt: '2025-06-16T21:59:14.677Z',
-      updatedAt: '2025-06-16T21:59:14.677Z',
+      amount: 500.00,
+      transactionDate: DateTime.parse('2025-06-18T15:45:00.000Z'),
+      createdAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
+      updatedAt: DateTime.parse('2025-06-18T15:45:00.000Z'),
       comment: 'month salary',
     );
   }

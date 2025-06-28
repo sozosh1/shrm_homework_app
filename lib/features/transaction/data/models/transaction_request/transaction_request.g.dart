@@ -10,8 +10,8 @@ _TransactionRequest _$TransactionRequestFromJson(Map<String, dynamic> json) =>
     _TransactionRequest(
       accountId: (json['accountId'] as num).toInt(),
       categoryId: (json['categoryId'] as num).toInt(),
-      amount: json['amount'] as String,
-      transactionDate: json['transactionDate'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      transactionDate: DateTime.parse(json['transactionDate'] as String),
       comment: json['comment'] as String?,
     );
 
@@ -20,6 +20,6 @@ Map<String, dynamic> _$TransactionRequestToJson(_TransactionRequest instance) =>
       'accountId': instance.accountId,
       'categoryId': instance.categoryId,
       'amount': instance.amount,
-      'transactionDate': instance.transactionDate,
+      'transactionDate': instance.transactionDate.toIso8601String(),
       'comment': instance.comment,
     };

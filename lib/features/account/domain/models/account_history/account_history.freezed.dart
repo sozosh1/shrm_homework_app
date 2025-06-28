@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountHistory {
 
- int get id; int get accountId; String get changeType; AccountState get previousState; AccountState get newState; String get changeTimestamp; String get createdAt;
+ int get id; int get accountId; String get changeType; AccountState get previousState; AccountState get newState; DateTime get changeTimestamp; DateTime get createdAt;
 /// Create a copy of AccountHistory
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $AccountHistoryCopyWith<$Res>  {
   factory $AccountHistoryCopyWith(AccountHistory value, $Res Function(AccountHistory) _then) = _$AccountHistoryCopyWithImpl;
 @useResult
 $Res call({
- int id, int accountId, String changeType, AccountState previousState, AccountState newState, String changeTimestamp, String createdAt
+ int id, int accountId, String changeType, AccountState previousState, AccountState newState, DateTime changeTimestamp, DateTime createdAt
 });
 
 
@@ -74,8 +74,8 @@ as int,changeType: null == changeType ? _self.changeType : changeType // ignore:
 as String,previousState: null == previousState ? _self.previousState : previousState // ignore: cast_nullable_to_non_nullable
 as AccountState,newState: null == newState ? _self.newState : newState // ignore: cast_nullable_to_non_nullable
 as AccountState,changeTimestamp: null == changeTimestamp ? _self.changeTimestamp : changeTimestamp // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 /// Create a copy of AccountHistory
@@ -112,8 +112,8 @@ class _AccountHistory implements AccountHistory {
 @override final  String changeType;
 @override final  AccountState previousState;
 @override final  AccountState newState;
-@override final  String changeTimestamp;
-@override final  String createdAt;
+@override final  DateTime changeTimestamp;
+@override final  DateTime createdAt;
 
 /// Create a copy of AccountHistory
 /// with the given fields replaced by the non-null parameter values.
@@ -148,7 +148,7 @@ abstract mixin class _$AccountHistoryCopyWith<$Res> implements $AccountHistoryCo
   factory _$AccountHistoryCopyWith(_AccountHistory value, $Res Function(_AccountHistory) _then) = __$AccountHistoryCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int accountId, String changeType, AccountState previousState, AccountState newState, String changeTimestamp, String createdAt
+ int id, int accountId, String changeType, AccountState previousState, AccountState newState, DateTime changeTimestamp, DateTime createdAt
 });
 
 
@@ -173,8 +173,8 @@ as int,changeType: null == changeType ? _self.changeType : changeType // ignore:
 as String,previousState: null == previousState ? _self.previousState : previousState // ignore: cast_nullable_to_non_nullable
 as AccountState,newState: null == newState ? _self.newState : newState // ignore: cast_nullable_to_non_nullable
 as AccountState,changeTimestamp: null == changeTimestamp ? _self.changeTimestamp : changeTimestamp // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 

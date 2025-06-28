@@ -10,7 +10,7 @@ _StatItem _$StatItemFromJson(Map<String, dynamic> json) => _StatItem(
   categoryId: (json['categoryId'] as num).toInt(),
   categoryName: json['categoryName'] as String,
   emoji: json['emoji'] as String,
-  amount: json['amount'] as String,
+  amount: (json['amount'] as num).toDouble(),
 );
 
 Map<String, dynamic> _$StatItemToJson(_StatItem instance) => <String, dynamic>{

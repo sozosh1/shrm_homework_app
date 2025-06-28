@@ -12,8 +12,8 @@ abstract class AccountHistory with _$AccountHistory {
     required String changeType,
     required AccountState previousState,
     required AccountState newState,
-    required String changeTimestamp,
-    required String createdAt,
+    required DateTime changeTimestamp,
+    required DateTime createdAt,
   }) = _AccountHistory;
 
   factory AccountHistory.fromJson(Map<String, Object?> json) =>

@@ -10,11 +10,11 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
   id: (json['id'] as num).toInt(),
   accountId: (json['accountId'] as num).toInt(),
   categoryId: (json['categoryId'] as num).toInt(),
-  amount: json['amount'] as String,
-  transactionDate: json['transactionDate'] as String,
+  amount: (json['amount'] as num).toDouble(),
+  transactionDate: DateTime.parse(json['transactionDate'] as String),
   comment: json['comment'] as String,
-  createdAt: json['createdAt'] as String,
-  updatedAt: json['updatedAt'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
 );
 
 Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
@@ -23,8 +23,8 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
       'accountId': instance.accountId,
       'categoryId': instance.categoryId,
       'amount': instance.amount,
-      'transactionDate': instance.transactionDate,
+      'transactionDate': instance.transactionDate.toIso8601String(),
       'comment': instance.comment,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

@@ -1,7 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
+import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
@@ -24,7 +28,17 @@ class TransactionHistoryScreen extends StatelessWidget {
                 ),
               ),
       child: Scaffold(
-        appBar: AppBar(title: Text('Моя история')),
+        appBar: AppBar(
+          title: Text('Моя история'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.history),
+              onPressed: () {
+                context.router.push(TransactionAnalysRoute(isIncome: isIncome));
+              },
+            ),
+          ],
+        ),
         body: TransactionHistoryView(isIncome: isIncome),
       ),
     );
@@ -52,6 +66,7 @@ class TransactionHistoryView extends StatelessWidget {
                 color: AppColors.lightGreenBackground,
                 child: Column(
                   children: [
+                    Divider(thickness: 0.5, height: 0.5),
                     _buildDateListTile(
                       context,
                       'Начало',
@@ -72,7 +87,7 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-
+                    Divider(height: 0.5, thickness: 0.5),
                     _buildDateListTile(
                       context,
                       'Конец',
@@ -93,7 +108,7 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-
+                    Divider(height: 0.5, thickness: 0.5),
                     _buildSortingListTile(
                       context,
                       'Сортировка',
@@ -102,11 +117,13 @@ class TransactionHistoryView extends StatelessWidget {
                         _showSortingDialog(context, state.sortBy);
                       },
                     ),
-
+                    Divider(height: 0.5, thickness: 0.5),
                     _buildSummaryListTile(
                       'Сумма',
-                      // нужно поработаться над данными
-                      '${double.parse(state.totalAmount).toStringAsFixed(0)} ${state.currency == 'RUB' ? '₽' : state.currency}',
+                      CurrencyDisplay(
+                        amount: state.totalAmount,
+                        accountCurrency: state.currency,
+                      ),
                     ),
                   ],
                 ),
@@ -130,10 +147,7 @@ class TransactionHistoryView extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 Text(
                                   'Нет ${state.isIncome ? 'доходов' : 'расходов'} за выбранный период',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey[600],
-                                  ),
+
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -182,17 +196,7 @@ class TransactionHistoryView extends StatelessWidget {
     String value,
     VoidCallback onTap,
   ) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-      trailing: Text(
-        value,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-      onTap: onTap,
-    );
+    return ListTile(title: Text(title), trailing: Text(value), onTap: onTap);
   }
 
   Widget _buildSortingListTile(
@@ -201,30 +205,11 @@ class TransactionHistoryView extends StatelessWidget {
     String value,
     VoidCallback onTap,
   ) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-      trailing: Text(
-        value,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-      onTap: onTap,
-    );
+    return ListTile(title: Text(title), trailing: Text(value), onTap: onTap);
   }
 
-  Widget _buildSummaryListTile(String title, String value) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-      trailing: Text(
-        value,
-        style: const TextStyle(fontSize: 16, color: AppColors.textDark),
-      ),
-    );
+  Widget _buildSummaryListTile(String title, Widget value) {
+    return ListTile(title: Text(title), trailing: value);
   }
 
   String _formatDateForDisplay(DateTime date) {

@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionRequest {
 
- int get accountId; int get categoryId; String get amount; String get transactionDate; String? get comment;
+ int get accountId; int get categoryId; double get amount; DateTime get transactionDate; String? get comment;
 /// Create a copy of TransactionRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TransactionRequestCopyWith<$Res>  {
   factory $TransactionRequestCopyWith(TransactionRequest value, $Res Function(TransactionRequest) _then) = _$TransactionRequestCopyWithImpl;
 @useResult
 $Res call({
- int accountId, int categoryId, String amount, String transactionDate, String? comment
+ int accountId, int categoryId, double amount, DateTime transactionDate, String? comment
 });
 
 
@@ -71,8 +71,8 @@ class _$TransactionRequestCopyWithImpl<$Res>
 accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nullable_to_non_nullable
 as int,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
 as int,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as double,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
+as DateTime,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -89,8 +89,8 @@ class _TransactionRequest implements TransactionRequest {
 
 @override final  int accountId;
 @override final  int categoryId;
-@override final  String amount;
-@override final  String transactionDate;
+@override final  double amount;
+@override final  DateTime transactionDate;
 @override final  String? comment;
 
 /// Create a copy of TransactionRequest
@@ -126,7 +126,7 @@ abstract mixin class _$TransactionRequestCopyWith<$Res> implements $TransactionR
   factory _$TransactionRequestCopyWith(_TransactionRequest value, $Res Function(_TransactionRequest) _then) = __$TransactionRequestCopyWithImpl;
 @override @useResult
 $Res call({
- int accountId, int categoryId, String amount, String transactionDate, String? comment
+ int accountId, int categoryId, double amount, DateTime transactionDate, String? comment
 });
 
 
@@ -148,8 +148,8 @@ class __$TransactionRequestCopyWithImpl<$Res>
 accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nullable_to_non_nullable
 as int,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
 as int,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as String,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as double,transactionDate: null == transactionDate ? _self.transactionDate : transactionDate // ignore: cast_nullable_to_non_nullable
+as DateTime,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

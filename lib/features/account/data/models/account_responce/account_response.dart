@@ -9,12 +9,12 @@ abstract class AccountResponse with _$AccountResponse {
   const factory AccountResponse({
     required int id,
     required String name,
-    required String balance,
+    required double balance,
     required String currency,
     required List<StatItem> incomeStats,
     required List<StatItem> expenseStats,
-    required String createdAt,
-    required String updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _AccountResponse;
 
   factory AccountResponse.fromJson(Map<String, Object?> json) =>

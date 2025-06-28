@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountUpdateRequest implements DiagnosticableTreeMixin {
 
- String get name; String get balance; String get currency;
+ String get name; double get balance; String get currency;
 /// Create a copy of AccountUpdateRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -55,7 +55,7 @@ abstract mixin class $AccountUpdateRequestCopyWith<$Res>  {
   factory $AccountUpdateRequestCopyWith(AccountUpdateRequest value, $Res Function(AccountUpdateRequest) _then) = _$AccountUpdateRequestCopyWithImpl;
 @useResult
 $Res call({
- String name, String balance, String currency
+ String name, double balance, String currency
 });
 
 
@@ -76,7 +76,7 @@ class _$AccountUpdateRequestCopyWithImpl<$Res>
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -92,7 +92,7 @@ class _AccountUpdateRequest with DiagnosticableTreeMixin implements AccountUpdat
   factory _AccountUpdateRequest.fromJson(Map<String, dynamic> json) => _$AccountUpdateRequestFromJson(json);
 
 @override final  String name;
-@override final  String balance;
+@override final  double balance;
 @override final  String currency;
 
 /// Create a copy of AccountUpdateRequest
@@ -134,7 +134,7 @@ abstract mixin class _$AccountUpdateRequestCopyWith<$Res> implements $AccountUpd
   factory _$AccountUpdateRequestCopyWith(_AccountUpdateRequest value, $Res Function(_AccountUpdateRequest) _then) = __$AccountUpdateRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String balance, String currency
+ String name, double balance, String currency
 });
 
 
@@ -155,7 +155,7 @@ class __$AccountUpdateRequestCopyWithImpl<$Res>
   return _then(_AccountUpdateRequest(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

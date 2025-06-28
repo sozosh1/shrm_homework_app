@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountResponse {
 
- int get id; String get name; String get balance; String get currency; List<StatItem> get incomeStats; List<StatItem> get expenseStats; String get createdAt; String get updatedAt;
+ int get id; String get name; double get balance; String get currency; List<StatItem> get incomeStats; List<StatItem> get expenseStats; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of AccountResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $AccountResponseCopyWith<$Res>  {
   factory $AccountResponseCopyWith(AccountResponse value, $Res Function(AccountResponse) _then) = _$AccountResponseCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String balance, String currency, List<StatItem> incomeStats, List<StatItem> expenseStats, String createdAt, String updatedAt
+ int id, String name, double balance, String currency, List<StatItem> incomeStats, List<StatItem> expenseStats, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -71,12 +71,12 @@ class _$AccountResponseCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,incomeStats: null == incomeStats ? _self.incomeStats : incomeStats // ignore: cast_nullable_to_non_nullable
 as List<StatItem>,expenseStats: null == expenseStats ? _self.expenseStats : expenseStats // ignore: cast_nullable_to_non_nullable
 as List<StatItem>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
@@ -92,7 +92,7 @@ class _AccountResponse implements AccountResponse {
 
 @override final  int id;
 @override final  String name;
-@override final  String balance;
+@override final  double balance;
 @override final  String currency;
  final  List<StatItem> _incomeStats;
 @override List<StatItem> get incomeStats {
@@ -108,8 +108,8 @@ class _AccountResponse implements AccountResponse {
   return EqualUnmodifiableListView(_expenseStats);
 }
 
-@override final  String createdAt;
-@override final  String updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of AccountResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -144,7 +144,7 @@ abstract mixin class _$AccountResponseCopyWith<$Res> implements $AccountResponse
   factory _$AccountResponseCopyWith(_AccountResponse value, $Res Function(_AccountResponse) _then) = __$AccountResponseCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String balance, String currency, List<StatItem> incomeStats, List<StatItem> expenseStats, String createdAt, String updatedAt
+ int id, String name, double balance, String currency, List<StatItem> incomeStats, List<StatItem> expenseStats, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -166,12 +166,12 @@ class __$AccountResponseCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
-as String,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as double,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,incomeStats: null == incomeStats ? _self._incomeStats : incomeStats // ignore: cast_nullable_to_non_nullable
 as List<StatItem>,expenseStats: null == expenseStats ? _self._expenseStats : expenseStats // ignore: cast_nullable_to_non_nullable
 as List<StatItem>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 

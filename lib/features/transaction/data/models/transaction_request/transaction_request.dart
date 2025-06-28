@@ -8,8 +8,8 @@ abstract class TransactionRequest with _$TransactionRequest {
   const factory TransactionRequest({
     required int accountId,
     required int categoryId,
-    required String amount,
-    required String transactionDate,
+    required double amount,
+    required DateTime transactionDate,
     String? comment,
   }) = _TransactionRequest;
 
