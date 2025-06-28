@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
-import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
+import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 
 class TransactionListItem extends StatelessWidget {
@@ -39,11 +39,9 @@ class TransactionListItem extends StatelessWidget {
                     Expanded(child: Text(transaction.comment!)),
                 ],
               ),
-              Text(
-                CurrencyFormatter.format(
-                  transaction.amount,
-                  transaction.account.currency,
-                ),
+              CurrencyDisplay(
+                amount: transaction.amount,
+                accountCurrency: transaction.account.currency,
               ),
             ],
           ),

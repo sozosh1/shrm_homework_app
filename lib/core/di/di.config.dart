@@ -34,6 +34,7 @@ import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
 import '../../features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart'
     as _i1051;
 import '../database/app_database.dart' as _i982;
+import '../services/currency_service.dart' as _i31;
 import '../storage/preferences_service.dart' as _i636;
 import 'talker_module.dart' as _i956;
 
@@ -49,6 +50,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i207.Talker>(() => talkerModule.talker);
     gh.singletonAsync<_i636.PreferencesService>(() {
       final i = _i636.PreferencesService();
+      return i.init().then((_) => i);
+    });
+    gh.singletonAsync<_i31.CurrencyService>(() async {
+      final i = _i31.CurrencyService(
+        await getAsync<_i636.PreferencesService>(),
+      );
       return i.init().then((_) => i);
     });
     gh.singleton<_i982.AppDatabase>(

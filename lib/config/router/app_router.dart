@@ -2,9 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/account_screen.dart';
+import 'package:shrm_homework_app/features/account/presentation/screens/edit_account_screen.dart';
 import 'package:shrm_homework_app/features/category/presentation/screens/category_screen.dart';
 import 'package:shrm_homework_app/features/home/presentation/widgets/custom_navigation_destination.dart';
-import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
+
 import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/category_transactions.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_analys_screen.dart';
@@ -37,6 +38,7 @@ class AppRouter extends RootStackRouter {
     ),
     AutoRoute(page: TransactionAnalysRoute.page),
     AutoRoute(page: CategoryTransactionsRoute.page),
+    AutoRoute(page: EditAccountRoute.page),
   ];
 }
 

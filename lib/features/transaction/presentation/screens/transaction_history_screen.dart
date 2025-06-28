@@ -5,6 +5,7 @@ import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
+import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
@@ -119,9 +120,9 @@ class TransactionHistoryView extends StatelessWidget {
                     Divider(height: 0.5, thickness: 0.5),
                     _buildSummaryListTile(
                       'Сумма',
-                      CurrencyFormatter.format(
-                        state.totalAmount,
-                        state.currency,
+                      CurrencyDisplay(
+                        amount: state.totalAmount,
+                        accountCurrency: state.currency,
                       ),
                     ),
                   ],
@@ -207,8 +208,8 @@ class TransactionHistoryView extends StatelessWidget {
     return ListTile(title: Text(title), trailing: Text(value), onTap: onTap);
   }
 
-  Widget _buildSummaryListTile(String title, String value) {
-    return ListTile(title: Text(title), trailing: Text(value));
+  Widget _buildSummaryListTile(String title, Widget value) {
+    return ListTile(title: Text(title), trailing: value);
   }
 
   String _formatDateForDisplay(DateTime date) {

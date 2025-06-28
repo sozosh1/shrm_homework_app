@@ -62,6 +62,12 @@ class PreferencesService {
     await setRecentSearches(searches);
   }
 
+  // === currency ===
+  Future<void> setAppCurrency(String currency) async =>
+      await _preferences.setString('app_currency', currency);
+
+  String? getAppCurrency() => _preferences.getString('app_currency');
+
   // === clear data ===
   Future<void> clearUserData() async {
     await _preferences.remove('user_token');

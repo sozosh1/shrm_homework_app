@@ -91,6 +91,70 @@ class CategoryTransactionsRouteArgs {
 }
 
 /// generated route for
+/// [EditAccountScreen]
+class EditAccountRoute extends PageRouteInfo<EditAccountRouteArgs> {
+  EditAccountRoute({
+    Key? key,
+    required int accountId,
+    required String initialName,
+    List<PageRouteInfo>? children,
+  }) : super(
+         EditAccountRoute.name,
+         args: EditAccountRouteArgs(
+           key: key,
+           accountId: accountId,
+           initialName: initialName,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'EditAccountRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EditAccountRouteArgs>();
+      return EditAccountScreen(
+        key: args.key,
+        accountId: args.accountId,
+        initialName: args.initialName,
+      );
+    },
+  );
+}
+
+class EditAccountRouteArgs {
+  const EditAccountRouteArgs({
+    this.key,
+    required this.accountId,
+    required this.initialName,
+  });
+
+  final Key? key;
+
+  final int accountId;
+
+  final String initialName;
+
+  @override
+  String toString() {
+    return 'EditAccountRouteArgs{key: $key, accountId: $accountId, initialName: $initialName}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EditAccountRouteArgs) return false;
+    return key == other.key &&
+        accountId == other.accountId &&
+        initialName == other.initialName;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ accountId.hashCode ^ initialName.hashCode;
+}
+
+/// generated route for
 /// [ExpensesPage]
 class ExpensesRoute extends PageRouteInfo<void> {
   const ExpensesRoute({List<PageRouteInfo>? children})
