@@ -12,7 +12,7 @@ class CategoryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Divider(height: 0.5, thickness: 0.5),
+        Divider(height: 0.25, thickness: 0.25),
         ListTile(
           leading: CircleAvatar(
             child: Text(category.emodji, style: TextStyle(fontSize: 24)),
@@ -27,7 +27,7 @@ class CategoryListItem extends StatelessWidget {
             );
           },
         ),
-        Divider(height: 0.5, thickness: 0.5),
+        Divider(height: 0.25, thickness: 0.25),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
+import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -23,6 +24,7 @@ class TransactionHistoryBloc
     on<UpdateEndDate>(_onUpdateEndDate);
     on<ChangeSorting>(_onChangeSorting);
     on<RefreshHistory>(_onRefreshHistory);
+    on<LoadTransactionAnalysisByPeriod>(_onLoadTransactionAnalysisByPeriod);
   }
 
   Future<void> _onLoadTransactionHistoryInitial(
@@ -188,6 +190,78 @@ class TransactionHistoryBloc
           sortBy: currentState.sortBy,
         ),
       );
+    }
+  }
+
+  Future<void> _onLoadTransactionAnalysisByPeriod(
+    LoadTransactionAnalysisByPeriod event,
+    Emitter<TransactionHistoryState> emit,
+  ) async {
+    emit(const TransactionHistoryState.loading());
+    try {
+      final allTransactions = await _repository.getAllTransactions();
+      final startOfDay = DateTime(
+        event.startDate.year,
+        event.startDate.month,
+        event.startDate.day,
+      );
+      final endOfDay = DateTime(
+        event.endDate.year,
+        event.endDate.month,
+        event.endDate.day,
+        23,
+        59,
+        59,
+        999,
+      );
+      final filteredTransactions =
+          allTransactions.where((transaction) {
+            final transactionDate = transaction.transactionDate;
+            final isInPeriod =
+                !transactionDate.isBefore(startOfDay) &&
+                !transactionDate.isAfter(endOfDay);
+            final isCorrectType =
+                transaction.category.isIncome == event.isIncome;
+            return isInPeriod && isCorrectType;
+          }).toList();
+      final Map<int, List<TransactionResponse>> grouped = {};
+      for (final tx in filteredTransactions) {
+        grouped.putIfAbsent(tx.category.id, () => []).add(tx);
+      }
+      final List<CategoryAnalysisItem> items =
+          grouped.entries.map((entry) {
+            final txs = entry.value;
+            txs.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+            final category = txs.first.category;
+            final total = txs.fold<double>(0, (sum, t) => sum + t.amount);
+            return CategoryAnalysisItem(
+              category: category,
+              totalAmount: total,
+              lastTransaction: txs.first,
+              transactionCount: txs.length,
+            );
+          }).toList();
+      final totalAmount = filteredTransactions.fold<double>(
+        0,
+        (sum, transaction) => sum + transaction.amount,
+      );
+      final currency =
+          filteredTransactions.isNotEmpty
+              ? filteredTransactions.first.account.currency
+              : 'RUB';
+      emit(
+        TransactionHistoryState.analysisLoaded(
+          items: items,
+          totalAmount: totalAmount,
+          isIncome: event.isIncome,
+          currency: currency,
+          startDate: event.startDate,
+          endDate: event.endDate,
+        ),
+      );
+    } catch (e, st) {
+      emit(TransactionHistoryState.error(message: 'Произошла ошибка: $e'));
+      GetIt.I<Talker>().handle(e, st);
     }
   }
 }

@@ -28,4 +28,10 @@ class TransactionHistoryEvent with _$TransactionHistoryEvent {
   }) = ChangeSorting;
 
   const factory TransactionHistoryEvent.refreshHistory() = RefreshHistory;
+
+  const factory TransactionHistoryEvent.loadTransactionAnalysisByPeriod({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool isIncome,
+  }) = LoadTransactionAnalysisByPeriod;
 }

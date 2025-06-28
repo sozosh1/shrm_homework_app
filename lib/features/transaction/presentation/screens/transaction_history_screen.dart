@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
@@ -26,7 +27,17 @@ class TransactionHistoryScreen extends StatelessWidget {
                 ),
               ),
       child: Scaffold(
-        appBar: AppBar(title: Text('Моя история')),
+        appBar: AppBar(
+          title: Text('Моя история'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.history),
+              onPressed: () {
+                context.router.push(TransactionAnalysRoute(isIncome: isIncome));
+              },
+            ),
+          ],
+        ),
         body: TransactionHistoryView(isIncome: isIncome),
       ),
     );

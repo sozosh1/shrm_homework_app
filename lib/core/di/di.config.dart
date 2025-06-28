@@ -34,7 +34,6 @@ import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
 import '../../features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart'
     as _i1051;
 import '../database/app_database.dart' as _i982;
-import '../database/database_seeder.dart' as _i790;
 import '../storage/preferences_service.dart' as _i636;
 import 'talker_module.dart' as _i956;
 
@@ -60,9 +59,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i472.TransactionRepository>(
       () => _i100.LocalTransactionRepository(gh<_i982.AppDatabase>()),
-    );
-    gh.factory<_i790.DatabaseSeeder>(
-      () => _i790.DatabaseSeeder(gh<_i982.AppDatabase>()),
     );
     gh.factory<_i104.AccountRepository>(
       () => _i766.LocalAccountRepository(gh<_i982.AppDatabase>()),
