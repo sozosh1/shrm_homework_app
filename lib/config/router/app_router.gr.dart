@@ -43,6 +43,54 @@ class ArticlesRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CategoryTransactionsScreen]
+class CategoryTransactionsRoute
+    extends PageRouteInfo<CategoryTransactionsRouteArgs> {
+  CategoryTransactionsRoute({
+    Key? key,
+    required CategoryAnalysisItem item,
+    List<PageRouteInfo>? children,
+  }) : super(
+         CategoryTransactionsRoute.name,
+         args: CategoryTransactionsRouteArgs(key: key, item: item),
+         initialChildren: children,
+       );
+
+  static const String name = 'CategoryTransactionsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<CategoryTransactionsRouteArgs>();
+      return CategoryTransactionsScreen(key: args.key, item: args.item);
+    },
+  );
+}
+
+class CategoryTransactionsRouteArgs {
+  const CategoryTransactionsRouteArgs({this.key, required this.item});
+
+  final Key? key;
+
+  final CategoryAnalysisItem item;
+
+  @override
+  String toString() {
+    return 'CategoryTransactionsRouteArgs{key: $key, item: $item}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CategoryTransactionsRouteArgs) return false;
+    return key == other.key && item == other.item;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ item.hashCode;
+}
+
+/// generated route for
 /// [ExpensesPage]
 class ExpensesRoute extends PageRouteInfo<void> {
   const ExpensesRoute({List<PageRouteInfo>? children})
@@ -107,7 +155,7 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [TransactionAnalysPage]
+/// [TransactionAnalysScreen]
 class TransactionAnalysRoute extends PageRouteInfo<TransactionAnalysRouteArgs> {
   TransactionAnalysRoute({
     Key? key,
@@ -125,7 +173,7 @@ class TransactionAnalysRoute extends PageRouteInfo<TransactionAnalysRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<TransactionAnalysRouteArgs>();
-      return TransactionAnalysPage(key: args.key, isIncome: args.isIncome);
+      return TransactionAnalysScreen(key: args.key, isIncome: args.isIncome);
     },
   );
 }

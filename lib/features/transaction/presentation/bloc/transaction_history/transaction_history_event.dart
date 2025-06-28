@@ -15,6 +15,12 @@ class TransactionHistoryEvent with _$TransactionHistoryEvent {
     String? sortBy,
   }) = LoadTransactionHistoryByPeriod;
 
+  const factory TransactionHistoryEvent.loadTransactionAnalysisByPeriod({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool isIncome,
+  }) = LoadTransactionAnalysisByPeriod;
+
   const factory TransactionHistoryEvent.updateStartDate({
     required DateTime startDate,
   }) = UpdateStartDate;
@@ -28,10 +34,4 @@ class TransactionHistoryEvent with _$TransactionHistoryEvent {
   }) = ChangeSorting;
 
   const factory TransactionHistoryEvent.refreshHistory() = RefreshHistory;
-
-  const factory TransactionHistoryEvent.loadTransactionAnalysisByPeriod({
-    required DateTime startDate,
-    required DateTime endDate,
-    required bool isIncome,
-  }) = LoadTransactionAnalysisByPeriod;
 }

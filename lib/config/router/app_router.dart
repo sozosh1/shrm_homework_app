@@ -4,6 +4,9 @@ import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/account_screen.dart';
 import 'package:shrm_homework_app/features/category/presentation/screens/category_screen.dart';
 import 'package:shrm_homework_app/features/home/presentation/widgets/custom_navigation_destination.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
+import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/screens/category_transactions.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_analys_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transactions_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_history_screen.dart';
@@ -32,11 +35,8 @@ class AppRouter extends RootStackRouter {
       path: '/transaction-history',
       fullscreenDialog: true,
     ),
-    AutoRoute(
-      page: TransactionAnalysRoute.page,
-      path: '/transaction-analys',
-      fullscreenDialog: true,
-    ),
+    AutoRoute(page: TransactionAnalysRoute.page),
+    AutoRoute(page: CategoryTransactionsRoute.page),
   ];
 }
 
@@ -157,16 +157,5 @@ class TransactionHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransactionHistoryScreen(isIncome: isIncome);
-  }
-}
-
-@RoutePage()
-class TransactionAnalysPage extends StatelessWidget {
-  final bool isIncome;
-  const TransactionAnalysPage({super.key, required this.isIncome});
-
-  @override
-  Widget build(BuildContext context) {
-    return TransactionAnalysScreen(isIncome: isIncome);
   }
 }

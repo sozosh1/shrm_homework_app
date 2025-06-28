@@ -193,6 +193,88 @@ as String,
 /// @nodoc
 
 
+class TransactionAnalysisLoaded implements TransactionHistoryState {
+  const TransactionAnalysisLoaded({required final  List<CategoryAnalysisItem> analysisItems, required this.totalAmount, required this.isIncome, required this.currency, required this.startDate, required this.endDate}): _analysisItems = analysisItems;
+  
+
+ final  List<CategoryAnalysisItem> _analysisItems;
+ List<CategoryAnalysisItem> get analysisItems {
+  if (_analysisItems is EqualUnmodifiableListView) return _analysisItems;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_analysisItems);
+}
+
+ final  double totalAmount;
+ final  bool isIncome;
+ final  String currency;
+ final  DateTime startDate;
+ final  DateTime endDate;
+
+/// Create a copy of TransactionHistoryState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TransactionAnalysisLoadedCopyWith<TransactionAnalysisLoaded> get copyWith => _$TransactionAnalysisLoadedCopyWithImpl<TransactionAnalysisLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionAnalysisLoaded&&const DeepCollectionEquality().equals(other._analysisItems, _analysisItems)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_analysisItems),totalAmount,isIncome,currency,startDate,endDate);
+
+@override
+String toString() {
+  return 'TransactionHistoryState.analysisLoaded(analysisItems: $analysisItems, totalAmount: $totalAmount, isIncome: $isIncome, currency: $currency, startDate: $startDate, endDate: $endDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $TransactionAnalysisLoadedCopyWith<$Res> implements $TransactionHistoryStateCopyWith<$Res> {
+  factory $TransactionAnalysisLoadedCopyWith(TransactionAnalysisLoaded value, $Res Function(TransactionAnalysisLoaded) _then) = _$TransactionAnalysisLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<CategoryAnalysisItem> analysisItems, double totalAmount, bool isIncome, String currency, DateTime startDate, DateTime endDate
+});
+
+
+
+
+}
+/// @nodoc
+class _$TransactionAnalysisLoadedCopyWithImpl<$Res>
+    implements $TransactionAnalysisLoadedCopyWith<$Res> {
+  _$TransactionAnalysisLoadedCopyWithImpl(this._self, this._then);
+
+  final TransactionAnalysisLoaded _self;
+  final $Res Function(TransactionAnalysisLoaded) _then;
+
+/// Create a copy of TransactionHistoryState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? analysisItems = null,Object? totalAmount = null,Object? isIncome = null,Object? currency = null,Object? startDate = null,Object? endDate = null,}) {
+  return _then(TransactionAnalysisLoaded(
+analysisItems: null == analysisItems ? _self._analysisItems : analysisItems // ignore: cast_nullable_to_non_nullable
+as List<CategoryAnalysisItem>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
+as double,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class TransactionHistoryError implements TransactionHistoryState {
   const TransactionHistoryError({required this.message});
   
@@ -250,88 +332,6 @@ class _$TransactionHistoryErrorCopyWithImpl<$Res>
   return _then(TransactionHistoryError(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class TransactionAnalysisLoaded implements TransactionHistoryState {
-  const TransactionAnalysisLoaded({required final  List<CategoryAnalysisItem> items, required this.totalAmount, required this.isIncome, required this.currency, required this.startDate, required this.endDate}): _items = items;
-  
-
- final  List<CategoryAnalysisItem> _items;
- List<CategoryAnalysisItem> get items {
-  if (_items is EqualUnmodifiableListView) return _items;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_items);
-}
-
- final  double totalAmount;
- final  bool isIncome;
- final  String currency;
- final  DateTime startDate;
- final  DateTime endDate;
-
-/// Create a copy of TransactionHistoryState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TransactionAnalysisLoadedCopyWith<TransactionAnalysisLoaded> get copyWith => _$TransactionAnalysisLoadedCopyWithImpl<TransactionAnalysisLoaded>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionAnalysisLoaded&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),totalAmount,isIncome,currency,startDate,endDate);
-
-@override
-String toString() {
-  return 'TransactionHistoryState.analysisLoaded(items: $items, totalAmount: $totalAmount, isIncome: $isIncome, currency: $currency, startDate: $startDate, endDate: $endDate)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $TransactionAnalysisLoadedCopyWith<$Res> implements $TransactionHistoryStateCopyWith<$Res> {
-  factory $TransactionAnalysisLoadedCopyWith(TransactionAnalysisLoaded value, $Res Function(TransactionAnalysisLoaded) _then) = _$TransactionAnalysisLoadedCopyWithImpl;
-@useResult
-$Res call({
- List<CategoryAnalysisItem> items, double totalAmount, bool isIncome, String currency, DateTime startDate, DateTime endDate
-});
-
-
-
-
-}
-/// @nodoc
-class _$TransactionAnalysisLoadedCopyWithImpl<$Res>
-    implements $TransactionAnalysisLoadedCopyWith<$Res> {
-  _$TransactionAnalysisLoadedCopyWithImpl(this._self, this._then);
-
-  final TransactionAnalysisLoaded _self;
-  final $Res Function(TransactionAnalysisLoaded) _then;
-
-/// Create a copy of TransactionHistoryState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalAmount = null,Object? isIncome = null,Object? currency = null,Object? startDate = null,Object? endDate = null,}) {
-  return _then(TransactionAnalysisLoaded(
-items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<CategoryAnalysisItem>,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
-as bool,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
-as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as DateTime,
   ));
 }
 

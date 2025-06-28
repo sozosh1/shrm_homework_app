@@ -183,6 +183,76 @@ as String?,
 /// @nodoc
 
 
+class LoadTransactionAnalysisByPeriod implements TransactionHistoryEvent {
+  const LoadTransactionAnalysisByPeriod({required this.startDate, required this.endDate, required this.isIncome});
+  
+
+ final  DateTime startDate;
+ final  DateTime endDate;
+ final  bool isIncome;
+
+/// Create a copy of TransactionHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadTransactionAnalysisByPeriodCopyWith<LoadTransactionAnalysisByPeriod> get copyWith => _$LoadTransactionAnalysisByPeriodCopyWithImpl<LoadTransactionAnalysisByPeriod>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadTransactionAnalysisByPeriod&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,startDate,endDate,isIncome);
+
+@override
+String toString() {
+  return 'TransactionHistoryEvent.loadTransactionAnalysisByPeriod(startDate: $startDate, endDate: $endDate, isIncome: $isIncome)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LoadTransactionAnalysisByPeriodCopyWith<$Res> implements $TransactionHistoryEventCopyWith<$Res> {
+  factory $LoadTransactionAnalysisByPeriodCopyWith(LoadTransactionAnalysisByPeriod value, $Res Function(LoadTransactionAnalysisByPeriod) _then) = _$LoadTransactionAnalysisByPeriodCopyWithImpl;
+@useResult
+$Res call({
+ DateTime startDate, DateTime endDate, bool isIncome
+});
+
+
+
+
+}
+/// @nodoc
+class _$LoadTransactionAnalysisByPeriodCopyWithImpl<$Res>
+    implements $LoadTransactionAnalysisByPeriodCopyWith<$Res> {
+  _$LoadTransactionAnalysisByPeriodCopyWithImpl(this._self, this._then);
+
+  final LoadTransactionAnalysisByPeriod _self;
+  final $Res Function(LoadTransactionAnalysisByPeriod) _then;
+
+/// Create a copy of TransactionHistoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? startDate = null,Object? endDate = null,Object? isIncome = null,}) {
+  return _then(LoadTransactionAnalysisByPeriod(
+startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class UpdateStartDate implements TransactionHistoryEvent {
   const UpdateStartDate({required this.startDate});
   
@@ -409,75 +479,5 @@ String toString() {
 
 
 
-
-/// @nodoc
-
-
-class LoadTransactionAnalysisByPeriod implements TransactionHistoryEvent {
-  const LoadTransactionAnalysisByPeriod({required this.startDate, required this.endDate, required this.isIncome});
-  
-
- final  DateTime startDate;
- final  DateTime endDate;
- final  bool isIncome;
-
-/// Create a copy of TransactionHistoryEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$LoadTransactionAnalysisByPeriodCopyWith<LoadTransactionAnalysisByPeriod> get copyWith => _$LoadTransactionAnalysisByPeriodCopyWithImpl<LoadTransactionAnalysisByPeriod>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadTransactionAnalysisByPeriod&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,startDate,endDate,isIncome);
-
-@override
-String toString() {
-  return 'TransactionHistoryEvent.loadTransactionAnalysisByPeriod(startDate: $startDate, endDate: $endDate, isIncome: $isIncome)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $LoadTransactionAnalysisByPeriodCopyWith<$Res> implements $TransactionHistoryEventCopyWith<$Res> {
-  factory $LoadTransactionAnalysisByPeriodCopyWith(LoadTransactionAnalysisByPeriod value, $Res Function(LoadTransactionAnalysisByPeriod) _then) = _$LoadTransactionAnalysisByPeriodCopyWithImpl;
-@useResult
-$Res call({
- DateTime startDate, DateTime endDate, bool isIncome
-});
-
-
-
-
-}
-/// @nodoc
-class _$LoadTransactionAnalysisByPeriodCopyWithImpl<$Res>
-    implements $LoadTransactionAnalysisByPeriodCopyWith<$Res> {
-  _$LoadTransactionAnalysisByPeriodCopyWithImpl(this._self, this._then);
-
-  final LoadTransactionAnalysisByPeriod _self;
-  final $Res Function(LoadTransactionAnalysisByPeriod) _then;
-
-/// Create a copy of TransactionHistoryEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? startDate = null,Object? endDate = null,Object? isIncome = null,}) {
-  return _then(LoadTransactionAnalysisByPeriod(
-startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as DateTime,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
-}
-
-
-}
 
 // dart format on

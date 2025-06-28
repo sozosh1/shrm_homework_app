@@ -19,15 +19,15 @@ class TransactionHistoryState with _$TransactionHistoryState {
     required String sortBy,
   }) = TransactionHistoryLoaded;
 
-  const factory TransactionHistoryState.error({required String message}) =
-      TransactionHistoryError;
-
   const factory TransactionHistoryState.analysisLoaded({
-    required List<CategoryAnalysisItem> items,
+    required List<CategoryAnalysisItem> analysisItems,
     required double totalAmount,
     required bool isIncome,
     required String currency,
     required DateTime startDate,
     required DateTime endDate,
   }) = TransactionAnalysisLoaded;
+
+  const factory TransactionHistoryState.error({required String message}) =
+      TransactionHistoryError;
 }
