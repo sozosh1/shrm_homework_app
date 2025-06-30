@@ -44,12 +44,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         backgroundColor: AppColors.primaryGreen,
         title: const Text('Редактировать'),
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close),
           onPressed: () => context.router.pop(),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check, color: Colors.white),
+            icon: const Icon(Icons.check),
             onPressed: () {
               final currentState = context.read<AccountBloc>().state;
               if (currentState is AccountLoaded) {
@@ -81,11 +81,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               ),
               autofocus: true,
             ),
-            const Spacer(),
+            SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                icon: const Icon(Icons.delete_outline),
                 label: const Text('Удалить счет'),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -96,10 +95,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.lightRedBackground,
-                  foregroundColor: Colors.red,
+                  foregroundColor: AppColors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),

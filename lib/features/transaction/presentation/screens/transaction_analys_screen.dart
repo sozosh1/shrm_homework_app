@@ -57,7 +57,6 @@ class TransactionAnalysView extends StatelessWidget {
                 color: AppColors.lightGreenBackground,
                 child: Column(
                   children: [
-                    const Divider(thickness: 0.5, height: 0.5),
                     _buildDateListTile(
                       context,
                       'Начало',
@@ -78,7 +77,7 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(),
                     _buildDateListTile(
                       context,
                       'Конец',
@@ -99,7 +98,7 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(),
                     _buildSummaryListTile(
                       'Сумма',
                       CurrencyDisplay(
@@ -107,7 +106,7 @@ class TransactionAnalysView extends StatelessWidget {
                         accountCurrency: state.currency,
                       ),
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(height: 1),
                   ],
                 ),
               ),
@@ -119,7 +118,9 @@ class TransactionAnalysView extends StatelessWidget {
                             'Нет данных для анализа за выбранный период',
                           ),
                         )
-                        : ListView.builder(
+                        : ListView.separated(
+                          separatorBuilder:
+                              (context, index) => Divider(height: 1),
                           itemCount: state.analysisItems.length,
                           itemBuilder: (context, index) {
                             final item = state.analysisItems[index];
@@ -215,7 +216,6 @@ class CategoryAnalysisListItem extends StatelessWidget {
             context.router.push(CategoryTransactionsRoute(item: item));
           },
         ),
-        const Divider(height: 0.5, thickness: 0.5),
       ],
     );
   }

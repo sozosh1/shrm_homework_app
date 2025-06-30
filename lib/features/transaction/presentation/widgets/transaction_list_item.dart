@@ -18,7 +18,6 @@ class TransactionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Divider(height: 0.5, thickness: 0.5),
         ListTile(
           leading: CircleAvatar(
             backgroundColor: AppColors.lightGreenBackground,
@@ -31,15 +30,22 @@ class TransactionListItem extends StatelessWidget {
 
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(transaction.category.name),
                   if (transaction.comment?.isNotEmpty ?? false)
-                    Expanded(child: Text(transaction.comment!)),
+                    Text(
+                      transaction.comment!,
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    ),
                 ],
               ),
               CurrencyDisplay(
+                transaction: transaction,
+                showTime: showTime,
                 amount: transaction.amount,
                 accountCurrency: transaction.account.currency,
               ),
@@ -61,7 +67,6 @@ class TransactionListItem extends StatelessWidget {
             );
           },
         ),
-        Divider(height: 0.5, thickness: 0.5),
       ],
     );
   }

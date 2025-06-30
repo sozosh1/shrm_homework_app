@@ -12,4 +12,6 @@ class AppColors {
   static const Color white = Colors.white;
 
   static const Color lightRedBackground = Color(0xFFE46962);
+
+  
 }

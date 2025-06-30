@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
-import 'package:shrm_homework_app/core/utils/currency_formatter.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_list_item.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
 
 class TransactionHistoryScreen extends StatelessWidget {
   final bool isIncome;
@@ -29,10 +29,10 @@ class TransactionHistoryScreen extends StatelessWidget {
               ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Моя история'),
+          title: Text(S.of(context).myHistory),
           actions: [
             IconButton(
-              icon: const Icon(Icons.history),
+              icon: const Icon(Icons.pending_actions_outlined),
               onPressed: () {
                 context.router.push(TransactionAnalysRoute(isIncome: isIncome));
               },
@@ -66,10 +66,9 @@ class TransactionHistoryView extends StatelessWidget {
                 color: AppColors.lightGreenBackground,
                 child: Column(
                   children: [
-                    Divider(thickness: 0.5, height: 0.5),
                     _buildDateListTile(
                       context,
-                      'Начало',
+                      S.of(context).start,
                       _formatDateForDisplay(state.startDate),
                       () async {
                         final selectedDate = await showDatePicker(
@@ -87,10 +86,10 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-                    Divider(height: 0.5, thickness: 0.5),
+                    Divider(),
                     _buildDateListTile(
                       context,
-                      'Конец',
+                      S.of(context).end,
                       _formatDateForDisplay(state.endDate),
                       () async {
                         final selectedDate = await showDatePicker(
@@ -108,23 +107,26 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-                    Divider(height: 0.5, thickness: 0.5),
+                    Divider(),
                     _buildSortingListTile(
                       context,
-                      'Сортировка',
-                      state.sortBy == 'date' ? 'По дате' : 'По сумме',
+                      S.of(context).sort,
+                      state.sortBy == 'date'
+                          ? S.of(context).byDate
+                          : S.of(context).byAmount,
                       () {
                         _showSortingDialog(context, state.sortBy);
                       },
                     ),
-                    Divider(height: 0.5, thickness: 0.5),
+                    Divider(),
                     _buildSummaryListTile(
-                      'Сумма',
+                      S.of(context).amount,
                       CurrencyDisplay(
                         amount: state.totalAmount,
                         accountCurrency: state.currency,
                       ),
                     ),
+                    Divider(height: 1),
                   ],
                 ),
               ),
@@ -146,8 +148,11 @@ class TransactionHistoryView extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
-                                  'Нет ${state.isIncome ? 'доходов' : 'расходов'} за выбранный период',
-
+                                  state.isIncome
+                                      ? S.of(context).noIncomeForSelectedPeriod
+                                      : S
+                                          .of(context)
+                                          .noExpensesForSelectedPeriod,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -159,13 +164,16 @@ class TransactionHistoryView extends StatelessWidget {
                                 const TransactionHistoryEvent.refreshHistory(),
                               );
                             },
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: state.transactions.length,
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) => Divider(),
+                              itemCount: state.transactions.length + 1,
                               itemBuilder: (context, index) {
-                                return TransactionListItem(
-                                  transaction: state.transactions[index],
-                                );
+                                if (index < state.transactions.length) {
+                                  return TransactionListItem(
+                                    showTime: true,
+                                    transaction: state.transactions[index],
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -236,12 +244,12 @@ class TransactionHistoryView extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Выберите сортировку'),
+          title: Text(S.of(context).chooseSort),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('По дате'),
+                title: Text(S.of(context).byDate),
                 leading: Radio<String>(
                   value: 'date',
                   groupValue: currentSort,
@@ -256,7 +264,7 @@ class TransactionHistoryView extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: const Text('По сумме'),
+                title: Text(S.of(context).byAmount),
                 leading: Radio<String>(
                   value: 'amount',
                   groupValue: currentSort,

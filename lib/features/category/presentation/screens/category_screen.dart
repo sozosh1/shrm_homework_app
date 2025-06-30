@@ -75,7 +75,8 @@ class CategoriesView extends StatelessWidget {
                               const LoadCategories(),
                             );
                           },
-                          child: ListView.builder(
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => Divider(),
                             itemCount: state.filteredCategories.length,
                             itemBuilder: (context, index) {
                               return CategoryListItem(

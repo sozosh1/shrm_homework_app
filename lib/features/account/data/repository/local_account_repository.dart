@@ -20,7 +20,7 @@ class LocalAccountRepository implements AccountRepository {
     // Примечание: параметр 'id' игнорируется, всегда используется _accountId.
     final account = await _getAccountInternal();
     final stats = await _getAccountStats();
-
+    
     return AccountResponse(
       id: account.id,
       name: account.name,

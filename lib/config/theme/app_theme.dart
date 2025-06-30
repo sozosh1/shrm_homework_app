@@ -21,6 +21,7 @@ class AppTheme {
         elevation: 0,
         centerTitle: true,
       ),
+      dividerTheme: DividerThemeData(color: Colors.grey),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.primaryGreen,
         foregroundColor: Colors.white,

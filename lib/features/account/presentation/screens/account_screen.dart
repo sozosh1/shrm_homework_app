@@ -34,9 +34,8 @@ class AccountScreen extends StatelessWidget {
               actions: [
                 if (state is AccountLoaded)
                   IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white),
+                    icon: const Icon(Icons.edit_outlined),
                     onPressed: () {
-                      // ИЗМЕНЕНИЕ: Оборачиваем навигацию в BlocProvider.value
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder:
@@ -61,7 +60,6 @@ class AccountScreen extends StatelessWidget {
   }
 }
 
-// ... остальная часть файла остается без изменений
 class AccountView extends StatelessWidget {
   final int accountId;
   const AccountView({super.key, required this.accountId});
@@ -83,24 +81,26 @@ class AccountView extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: const Icon(
-                        Icons.account_balance_wallet_outlined,
+                      leading: CircleAvatar(
+                        backgroundColor: AppColors.white,
+                        child: const Text('💸', style: TextStyle(fontSize: 24)),
                       ),
+
                       title: const Text('Баланс'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           state.isBalanceVisible
                               ? CurrencyDisplay(
-                                  amount: account.balance,
-                                  accountCurrency: account.currency,
-                                  style: const TextStyle(fontSize: 16),
-                                )
+                                amount: account.balance,
+                                accountCurrency: account.currency,
+                                style: const TextStyle(fontSize: 16),
+                              )
                               : const Text(
-                                  '••••••',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                          const SizedBox(width: 8),
+                                '••••••',
+                                style: TextStyle(fontSize: 16),
+                              ),
+
                           const Icon(
                             Icons.arrow_forward_ios,
                             size: 16,
@@ -113,7 +113,7 @@ class AccountView extends StatelessWidget {
                             const ToggleBalanceVisibility(),
                           ),
                     ),
-                    const Divider(height: 1, indent: 16, endIndent: 16),
+                    const Divider(height: 1),
                     ListTile(
                       title: const Text('Валюта'),
                       trailing: Row(
@@ -189,19 +189,22 @@ class AccountView extends StatelessWidget {
                     context.read<AccountBloc>().add(
                       UpdateAccount(currentState.account.id, request),
                     );
-                    
+
                     // Обновляем глобальную валюту приложения
                     final currencyService = getIt<CurrencyService>();
                     await currencyService.setCurrency(entry.key);
-                    
-                    Navigator.of(builderContext).pop();
+
+                    Navigator.of(context).pop();
                   },
                 );
               }),
               const Divider(height: 1),
               ListTile(
                 title: const Center(
-                  child: Text('Отмена', style: TextStyle(color: Colors.red)),
+                  child: Text(
+                    'Отмена',
+                    style: TextStyle(color: AppColors.white),
+                  ),
                 ),
                 onTap: () => Navigator.of(builderContext).pop(),
                 tileColor: AppColors.lightRedBackground,

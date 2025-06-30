@@ -23,7 +23,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     try {
       final account = await _repository.getAccount(event.accountId);
-
+      
       emit(AccountState.loaded(account: account, isBalanceVisible: true));
     } catch (e) {
       emit(AccountState.error(e.toString()));

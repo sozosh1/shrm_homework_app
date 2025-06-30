@@ -25,7 +25,7 @@ class LocalTransactionRepository implements TransactionRepository {
             accountId: request.accountId,
             amount: request.amount,
             categoryId: request.categoryId,
-            comment: request.comment ?? '',
+            comment: Value(request.comment),
             transactionDate: request.transactionDate,
             createdAt: now,
             updatedAt: now,
@@ -46,8 +46,7 @@ class LocalTransactionRepository implements TransactionRepository {
   @override
   Future<void> deleteTransaction(int id) async {
     await (_database.delete(_database.transactionsTable)
-      ..where((t) => t.id.equals(id)))
-        .go();
+      ..where((t) => t.id.equals(id))).go();
   }
 
   @override
@@ -55,11 +54,15 @@ class LocalTransactionRepository implements TransactionRepository {
     final query = _database.select(_database.transactionsTable).join([
       innerJoin(
         _database.accountsTable,
-        _database.accountsTable.id.equalsExp(_database.transactionsTable.accountId),
+        _database.accountsTable.id.equalsExp(
+          _database.transactionsTable.accountId,
+        ),
       ),
       innerJoin(
         _database.categoriesTable,
-        _database.categoriesTable.id.equalsExp(_database.transactionsTable.categoryId),
+        _database.categoriesTable.id.equalsExp(
+          _database.transactionsTable.categoryId,
+        ),
       ),
     ]);
 
@@ -88,6 +91,7 @@ class LocalTransactionRepository implements TransactionRepository {
         transactionDate: transaction.transactionDate,
         createdAt: transaction.createdAt,
         updatedAt: transaction.updatedAt,
+        comment: transaction.comment,
       );
     }).toList();
   }
@@ -97,14 +101,17 @@ class LocalTransactionRepository implements TransactionRepository {
     final query = _database.select(_database.transactionsTable).join([
       innerJoin(
         _database.accountsTable,
-        _database.accountsTable.id.equalsExp(_database.transactionsTable.accountId),
+        _database.accountsTable.id.equalsExp(
+          _database.transactionsTable.accountId,
+        ),
       ),
       innerJoin(
         _database.categoriesTable,
-        _database.categoriesTable.id.equalsExp(_database.transactionsTable.categoryId),
+        _database.categoriesTable.id.equalsExp(
+          _database.transactionsTable.categoryId,
+        ),
       ),
-    ])
-      ..where(_database.transactionsTable.id.equals(id));
+    ])..where(_database.transactionsTable.id.equals(id));
 
     final row = await query.getSingle();
 
@@ -141,8 +148,7 @@ class LocalTransactionRepository implements TransactionRepository {
     final now = DateTime.now();
 
     await (_database.update(_database.transactionsTable)
-      ..where((t) => t.id.equals(id)))
-        .write(
+      ..where((t) => t.id.equals(id))).write(
       TransactionsTableCompanion(
         accountId: Value(request.accountId),
         amount: Value(request.amount),

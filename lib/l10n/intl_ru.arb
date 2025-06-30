@@ -1,0 +1,34 @@
+{
+  "myHistory": "Моя история",
+  "start": "Начало",
+  "end": "Конец",
+  "sort": "Сортировка",
+  "byDate": "По дате",
+  "byAmount": "По сумме",
+  "amount": "Сумма",
+  "chooseSort": "Выберите сортировку",
+  "noIncomeForSelectedPeriod": "Нет доходов за выбранный период",
+  "noExpensesForSelectedPeriod": "Нет расходов за выбранный период",
+  "incomeToday": "Доходы сегодня",
+  "expenseToday": "Расходы сегодня",
+  "total": "Всего",
+  "account": "Счет",
+  "balance": "Баланс",
+  "currency": "Валюта",
+  "russianRuble": "Российский рубль",
+  "usDollar": "Американский доллар",
+  "euro": "Евро",
+  "cancel": "Отмена",
+  "chartWillBeImplementedLater": "График будет реализован позже",
+  "categoryName": "{transaction.category.name}",
+  "@categoryName": {
+    "description": "How many times the button has been pushed",
+    "placeholders": {
+      "count": {
+        "type": "string",
+        "example": "auto"
+      }
+    }
+
+  }
+}
