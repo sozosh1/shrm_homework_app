@@ -7,10 +7,12 @@ import 'package:shrm_homework_app/features/category/presentation/screens/categor
 import 'package:shrm_homework_app/features/home/presentation/widgets/custom_navigation_destination.dart';
 
 import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/category_transactions.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_analys_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transactions_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_history_screen.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/screens/edit_transaction_screen.dart';
 import 'package:shrm_homework_app/placeholder_screens/placeholder_screens.dart';
 
 part 'app_router.gr.dart';
@@ -39,6 +41,10 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: TransactionAnalysRoute.page),
     AutoRoute(page: CategoryTransactionsRoute.page),
     AutoRoute(page: EditAccountRoute.page),
+    AutoRoute(
+      page: EditTransactionRoute.page,
+      fullscreenDialog: true,
+    ),
   ];
 }
 

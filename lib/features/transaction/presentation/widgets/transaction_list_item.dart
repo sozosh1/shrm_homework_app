@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
@@ -52,13 +54,7 @@ class TransactionListItem extends StatelessWidget {
             color: Colors.grey,
           ),
           onTap: () {
-            // TODO: Добавить детальный просмотр транзакции
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Транзакция: ${transaction.category.name}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
+            context.router.push(EditTransactionRoute(transaction: transaction));
           },
         ),
         Divider(height: 0.5, thickness: 0.5),

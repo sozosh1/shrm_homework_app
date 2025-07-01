@@ -312,3 +312,56 @@ class TransactionHistoryRouteArgs {
   @override
   int get hashCode => key.hashCode ^ isIncome.hashCode;
 }
+
+/// generated route for
+/// [EditTransactionScreen]
+class EditTransactionRoute extends PageRouteInfo<EditTransactionRouteArgs> {
+  EditTransactionRoute({
+    Key? key,
+    required TransactionResponse transaction,
+    List<PageRouteInfo>? children,
+  }) : super(
+         EditTransactionRoute.name,
+         args: EditTransactionRouteArgs(key: key, transaction: transaction),
+         initialChildren: children,
+       );
+
+  static const String name = 'EditTransactionRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EditTransactionRouteArgs>();
+      return EditTransactionScreen(
+        key: args.key,
+        transaction: args.transaction,
+      );
+    },
+  );
+}
+
+class EditTransactionRouteArgs {
+  const EditTransactionRouteArgs({
+    this.key,
+    required this.transaction,
+  });
+
+  final Key? key;
+
+  final TransactionResponse transaction;
+
+  @override
+  String toString() {
+    return 'EditTransactionRouteArgs{key: $key, transaction: $transaction}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EditTransactionRouteArgs) return false;
+    return key == other.key && transaction == other.transaction;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ transaction.hashCode;
+}
