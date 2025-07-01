@@ -83,7 +83,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       );
 
       if (mounted) {
-        context.router.pop();
+        context.router.pop(true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Транзакция обновлена')),
         );
@@ -197,12 +197,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
             // Comment field
             TextField(
               controller: _commentController,
-              decoration: InputDecoration(
-                labelText: _commentController.text.isEmpty ? 'Комментарий' : null,
-                hintText: _commentController.text.isEmpty ? 'Комментарий' : null,
-                hintStyle: const TextStyle(color: Colors.grey),
-                prefixIcon: const Icon(Icons.comment),
-                border: const UnderlineInputBorder(),
+              decoration: const InputDecoration(
+                labelText: 'Комментарий',
+                hintText: 'Комментарий',
+                hintStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(Icons.comment),
+                border: UnderlineInputBorder(),
               ),
               maxLines: 2,
             ),

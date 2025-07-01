@@ -86,6 +86,7 @@ class LocalTransactionRepository implements TransactionRepository {
         ),
         amount: transaction.amount,
         transactionDate: transaction.transactionDate,
+        comment: transaction.comment.isEmpty ? null : transaction.comment,
         createdAt: transaction.createdAt,
         updatedAt: transaction.updatedAt,
       );
@@ -128,6 +129,7 @@ class LocalTransactionRepository implements TransactionRepository {
       ),
       amount: transaction.amount,
       transactionDate: transaction.transactionDate,
+      comment: transaction.comment.isEmpty ? null : transaction.comment,
       createdAt: transaction.createdAt,
       updatedAt: transaction.updatedAt,
     );
