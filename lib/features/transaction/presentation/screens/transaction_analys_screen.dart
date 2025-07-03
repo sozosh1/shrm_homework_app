@@ -11,6 +11,7 @@ import 'package:shrm_homework_app/features/transaction/domain/models/category_an
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
+import 'package:transaction_chart/transaction_chart.dart';
 
 @RoutePage()
 class TransactionAnalysScreen extends StatelessWidget {
@@ -112,20 +113,49 @@ class TransactionAnalysView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child:
-                    state.analysisItems.isEmpty
-                        ? Center(
-                          child: Text(
-                            'Нет данных для анализа за выбранный период',
-                          ),
-                        )
-                        : ListView.builder(
-                          itemCount: state.analysisItems.length,
-                          itemBuilder: (context, index) {
-                            final item = state.analysisItems[index];
-                            return CategoryAnalysisListItem(item: item);
-                          },
+                child: state.analysisItems.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Нет данных для анализа за выбранный период',
                         ),
+                      )
+                    : Column(
+                        children: [
+                          // Chart section
+                          Container(
+                            height: 300,
+                            padding: const EdgeInsets.all(16),
+                            child: TransactionPieChart(
+                              sections: _convertToChartData(state.analysisItems),
+                              config: const TransactionChartConfig(
+                                showLegend: true,
+                                showTooltips: true,
+                                animationDuration: Duration(milliseconds: 1000),
+                                maxCategoryNameLength: 15,
+                              ),
+                              onSectionTap: (section) {
+                                // Find the corresponding CategoryAnalysisItem
+                                final item = state.analysisItems.firstWhere(
+                                  (item) => item.category.name == section.categoryName,
+                                  orElse: () => state.analysisItems.first,
+                                );
+                                context.router.push(CategoryTransactionsRoute(item: item));
+                              },
+                            ),
+                          ),
+                          const Divider(height: 1, thickness: 0.5),
+                          // List section
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: state.analysisItems.length,
+                              itemBuilder: (context, index) {
+                                final item = state.analysisItems[index];
+                                return CategoryAnalysisListItem(item: item);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             ],
           );
@@ -171,6 +201,16 @@ class TransactionAnalysView extends StatelessWidget {
       'Декабрь',
     ];
     return '${date.day} ${months[date.month - 1]} ${date.year}';
+  }
+
+  /// Converts CategoryAnalysisItem list to ChartSectionData list
+  List<ChartSectionData> _convertToChartData(List<CategoryAnalysisItem> items) {
+    return items.map((item) => ChartSectionData(
+      categoryName: item.category.name,
+      value: item.totalAmount,
+      percentage: item.percentage,
+      categoryIcon: item.category.emodji,
+    )).toList();
   }
 }
 

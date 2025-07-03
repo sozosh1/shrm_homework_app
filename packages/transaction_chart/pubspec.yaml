@@ -1,0 +1,19 @@
+name: transaction_chart
+description: A Flutter package for displaying animated transaction pie charts
+version: 1.0.0
+
+environment:
+  sdk: ^3.7.0
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fl_chart: ^0.69.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
