@@ -42,16 +42,21 @@ class TransactionChartConfig {
     this.maxCategoryNameLength = 20,
     this.legendTextOverflow = TextOverflow.ellipsis,
     this.colorPalette = const [
-      Color(0xFF6C63FF),
-      Color(0xFF50C878),
-      Color(0xFFFF6B6B),
-      Color(0xFFFFD93D),
-      Color(0xFF6BCF7F),
-      Color(0xFFFF8C42),
-      Color(0xFF9B59B6),
-      Color(0xFF3498DB),
-      Color(0xFFE74C3C),
-      Color(0xFFF39C12),
+      Color(0xFF6C63FF), // Purple
+      Color(0xFF50C878), // Emerald
+      Color(0xFFFF6B6B), // Coral
+      Color(0xFFFFD93D), // Golden
+      Color(0xFF6BCF7F), // Mint
+      Color(0xFFFF8C42), // Orange
+      Color(0xFF9B59B6), // Amethyst
+      Color(0xFF3498DB), // Sky Blue
+      Color(0xFFE74C3C), // Red
+      Color(0xFFF39C12), // Orange Yellow
+      Color(0xFF2ECC71), // Green
+      Color(0xFFE67E22), // Carrot
+      Color(0xFF8E44AD), // Wisteria
+      Color(0xFF1ABC9C), // Turquoise
+      Color(0xFFF1C40F), // Sun Flower
     ],
     this.backgroundColor = Colors.transparent,
     this.tooltipBackgroundColor = const Color(0xFF37474F),

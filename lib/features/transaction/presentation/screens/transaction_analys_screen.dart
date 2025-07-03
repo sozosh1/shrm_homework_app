@@ -135,11 +135,15 @@ class TransactionAnalysView extends StatelessWidget {
                               ),
                               onSectionTap: (section) {
                                 // Find the corresponding CategoryAnalysisItem
-                                final item = state.analysisItems.firstWhere(
-                                  (item) => item.category.name == section.categoryName,
-                                  orElse: () => state.analysisItems.first,
-                                );
-                                context.router.push(CategoryTransactionsRoute(item: item));
+                                try {
+                                  final item = state.analysisItems.firstWhere(
+                                    (item) => item.category.name == section.categoryName,
+                                  );
+                                  context.router.push(CategoryTransactionsRoute(item: item));
+                                } catch (e) {
+                                  // Fallback if item not found
+                                  debugPrint('Could not find category item for: ${section.categoryName}');
+                                }
                               },
                             ),
                           ),

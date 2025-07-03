@@ -223,15 +223,25 @@ class _TransactionPieChartState extends State<TransactionPieChart>
       final color = section.customColor ?? 
           ChartUtils.getColorByIndex(widget.config.colorPalette, index);
       
+      // Only show percentage text if there's more than one section
+      final showTitle = sections.length > 1;
+      
       return PieChartSectionData(
         value: section.value,
         color: color,
-        title: '${section.percentage.toStringAsFixed(1)}%',
+        title: showTitle ? '${section.percentage.toStringAsFixed(1)}%' : '',
         radius: widget.config.radius,
         titleStyle: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
           color: Colors.white,
+          shadows: [
+            Shadow(
+              color: Colors.black26,
+              offset: Offset(1, 1),
+              blurRadius: 2,
+            ),
+          ],
         ),
         badgeWidget: section.categoryIcon != null
             ? Container(
