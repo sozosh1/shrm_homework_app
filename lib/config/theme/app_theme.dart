@@ -15,13 +15,45 @@ class AppTheme {
         onSurface: AppColors.textDark,
       ),
       useMaterial3: true,
+
+      
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return AppColors.primaryGreen; 
+            }
+            return AppColors.white; 
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return AppColors.white; 
+            }
+            return AppColors.textDark; 
+          }),
+          side: WidgetStateProperty.all<BorderSide>(
+            const BorderSide(color: AppColors.primaryGreen), 
+          ),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), 
+            ),
+          ),
+          padding: WidgetStateProperty.all<EdgeInsets>(
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 16), 
+          ),
+        ),
+      ),
+
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.primaryGreen,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         centerTitle: true,
       ),
-      dividerTheme: DividerThemeData(color: Colors.grey),
+
+      dividerTheme: const DividerThemeData(color: Colors.grey),
+
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.primaryGreen,
         foregroundColor: Colors.white,
@@ -43,6 +75,7 @@ class AppTheme {
           color: AppColors.textDark,
         ),
       ),
+
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: AppColors.textDark, fontSize: 16),
         labelLarge: TextStyle(fontSize: 20),

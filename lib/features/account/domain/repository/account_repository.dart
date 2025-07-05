@@ -5,4 +5,5 @@ import 'package:shrm_homework_app/features/account/domain/models/account/account
 abstract class AccountRepository {
   Future<Account> updateAccount(int id, AccountUpdateRequest request);
   Future<AccountResponse> getAccount(int id);
+  Stream<List<Map<String, dynamic>>> getTransactionHistoryStream();
 }

@@ -13,9 +13,7 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await configureDependencies();
-      
-
-      
+            
       final talker = GetIt.I<Talker>();
       talker.debug('Log debug');
 

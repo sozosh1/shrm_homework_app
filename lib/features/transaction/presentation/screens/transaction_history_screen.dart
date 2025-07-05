@@ -9,6 +9,8 @@ import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_form_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_list_item.dart';
 import 'package:shrm_homework_app/generated/l10n.dart';
 
@@ -61,7 +63,7 @@ class TransactionHistoryView extends StatelessWidget {
         } else if (state is TransactionHistoryLoaded) {
           return Column(
             children: [
-              // Фильтры по датам
+              
               Container(
                 color: AppColors.lightGreenBackground,
                 child: Column(
@@ -170,10 +172,36 @@ class TransactionHistoryView extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 if (index < state.transactions.length) {
                                   return TransactionListItem(
+                                    onTap: () async {
+                                      final bloc = getIt<TransactionBloc>();
+                                      final result = await showModalBottomSheet(
+                                        useSafeArea: true,
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder:
+                                            (_) => BlocProvider.value(
+                                              value: bloc,
+                                              child: FractionallySizedBox(
+                                                heightFactor: 1,
+                                                child: TransactionFormScreen(
+                                                  isIncome: state.isIncome,
+                                                  transaction:
+                                                      state.transactions[index],
+                                                ),
+                                              ),
+                                            ),
+                                      );
+                                      if (result == true) {
+                                        context.read<TransactionHistoryBloc>().add(
+                                          const TransactionHistoryEvent.refreshHistory(),
+                                        );
+                                      }
+                                    },
                                     showTime: true,
                                     transaction: state.transactions[index],
                                   );
                                 }
+                                return const SizedBox.shrink();
                               },
                             ),
                           ),

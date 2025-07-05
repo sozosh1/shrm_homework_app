@@ -13,10 +13,11 @@ class CategoryTransactionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(item.category.name)),
-      body: ListView.builder(
+      body: ListView.separated(
+        separatorBuilder: (context, index) => Divider(),
         itemCount: item.transactions.length,
         itemBuilder: (context, index) {
-          // Сортируем транзакции по дате (от новой к старой)
+          
           final sortedTransactions = List.of(item.transactions)
             ..sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
           return TransactionListItem(transaction: sortedTransactions[index]);

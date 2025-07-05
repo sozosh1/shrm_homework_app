@@ -188,8 +188,7 @@ class TransactionHistoryBloc
             );
             final lastTransaction =
                 transactions.sortedBy((t) => t.transactionDate).last;
-            final double percentage =
-                totalAmount > 0 ? (categoryTotal / totalAmount) * 100 : 0;
+            final double percentage = (categoryTotal / totalAmount.abs()) * 100;
 
             return CategoryAnalysisItem(
               category: category,

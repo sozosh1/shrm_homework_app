@@ -7,11 +7,13 @@ class TransactionListItem extends StatelessWidget {
   final TransactionResponse transaction;
   final bool? showAvatar;
   final bool? showTime;
+  final GestureTapCallback? onTap;
   const TransactionListItem({
     super.key,
     required this.transaction,
     this.showAvatar,
     this.showTime,
+    this.onTap,
   });
 
   @override
@@ -57,15 +59,8 @@ class TransactionListItem extends StatelessWidget {
             size: 16,
             color: Colors.grey,
           ),
-          onTap: () {
-            // TODO: Добавить детальный просмотр транзакции
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Транзакция: ${transaction.category.name}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
-          },
+
+          onTap: onTap,
         ),
       ],
     );

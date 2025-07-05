@@ -6,12 +6,16 @@ part 'transaction_state.freezed.dart';
 class TransactionState with _$TransactionState {
   const factory TransactionState.initial() = TransactionInitial;
   const factory TransactionState.loading() = TransactionLoading;
+  const factory TransactionState.saving() = TransactionSaving;
   const factory TransactionState.loaded({
     required List<TransactionResponse> transactions,
     required double totalAmount,
     required bool isIncome,
     required String currency,
   }) = TransactionLoaded;
+
+  const factory TransactionState.saved() = TransactionSaved;
+  const factory TransactionState.deleted() = TransactionDeleted;
 
   const factory TransactionState.error({required String message}) =
       TransactionError;

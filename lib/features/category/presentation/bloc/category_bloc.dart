@@ -56,7 +56,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         return;
       }
 
-      // Используем fuzzy search пакет для поиска
+     
       final filteredCategories = _fuzzySearchUseCase.execute(
         currentState.allCategories,
         query,

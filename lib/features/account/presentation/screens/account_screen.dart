@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/services/currency_service.dart';
@@ -74,6 +76,11 @@ class AccountView extends StatelessWidget {
 
         if (state is AccountLoaded) {
           final account = state.account;
+          final chartData =
+              state.currentPeriod == 'daily'
+                  ? state.dailyData
+                  : state.monthlyData;
+
           return Column(
             children: [
               Container(
@@ -81,25 +88,20 @@ class AccountView extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: CircleAvatar(
+                      leading: const CircleAvatar(
                         backgroundColor: AppColors.white,
-                        child: const Text('💸', style: TextStyle(fontSize: 24)),
+                        child: Text('💸', style: TextStyle(fontSize: 24)),
                       ),
 
                       title: const Text('Баланс'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          state.isBalanceVisible
-                              ? CurrencyDisplay(
-                                amount: account.balance,
-                                accountCurrency: account.currency,
-                                style: const TextStyle(fontSize: 16),
-                              )
-                              : const Text(
-                                '••••••',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                          CurrencyDisplay(
+                            amount: account.balance,
+                            accountCurrency: account.currency,
+                            style: const TextStyle(fontSize: 16),
+                          ),
 
                           const Icon(
                             Icons.arrow_forward_ios,
@@ -108,10 +110,42 @@ class AccountView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onTap:
-                          () => context.read<AccountBloc>().add(
-                            const ToggleBalanceVisibility(),
-                          ),
+                      onTap: () {
+                        
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (builderContext) {
+                            return SafeArea(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    title: Text(state.account.name),
+                                    onTap: () {
+                                      Navigator.of(builderContext).pop();
+                                    },
+                                  ),
+                                  const Divider(height: 1),
+                                  ListTile(
+                                    title: const Center(
+                                      child: Text(
+                                        'Отмена',
+                                        style: TextStyle(
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(builderContext).pop();
+                                    },
+                                    tileColor: AppColors.lightRedBackground,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                     const Divider(height: 1),
                     ListTile(
@@ -136,12 +170,195 @@ class AccountView extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
-                child: Center(
-                  child:
-                      state.isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('График будет реализован позже'),
+
+             
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SegmentedButton(
+                          style: ButtonStyle(
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          segments: const [
+                            ButtonSegment(value: 'daily', label: Text('Дни')),
+                            ButtonSegment(
+                              value: 'monthly',
+                              label: Text('Месяцы'),
+                            ),
+                          ],
+                          selected: {state.currentPeriod},
+                          onSelectionChanged: (newSelection) {
+                            context.read<AccountBloc>().add(
+                              SwitchPeriod(newSelection.first),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 200,
+                      child:
+                          chartData.isNotEmpty
+                              ? BarChart(
+                                BarChartData(
+                                  alignment: BarChartAlignment.spaceEvenly,
+                                  barGroups: _buildBarGroups(
+                                    state.dailyData,
+                                    state.monthlyData,
+                                    state.currentPeriod,
+                                    account.currency,
+                                  ),
+                                  titlesData: FlTitlesData(
+                                    leftTitles: const AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    bottomTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        interval: 6,
+                                        reservedSize: 30,
+                                        getTitlesWidget: (value, meta) {
+                                          final index = value.toInt();
+
+                                         
+                                          final groupedData =
+                                              <
+                                                DateTime,
+                                                List<Map<String, dynamic>>
+                                              >{};
+                                          for (final item in chartData) {
+                                            final date =
+                                                item['date'] as DateTime;
+                                            if (!groupedData.containsKey(
+                                              date,
+                                            )) {
+                                              groupedData[date] = [];
+                                            }
+                                            groupedData[date]!.add(item);
+                                          }
+
+                                          final sortedDates =
+                                              groupedData.keys.toList()..sort();
+
+                                          if (index >= 0 &&
+                                              index < sortedDates.length) {
+                                           
+                                            final interval =
+                                                state.currentPeriod == 'daily'
+                                                    ? 10
+                                                    : 3;
+
+                                            
+                                            if (index == 0 ||
+                                                index ==
+                                                    sortedDates.length - 1 ||
+                                                index % interval == 0) {
+                                              final date = sortedDates[index];
+                                              return Text(
+                                                state.currentPeriod == 'daily'
+                                                    ? DateFormat(
+                                                      'dd.MM',
+                                                    ).format(date)
+                                                    : DateFormat(
+                                                      'MMM',
+                                                    ).format(date),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              );
+                                            }
+                                          }
+                                          return const SizedBox.shrink();
+                                        },
+                                      ),
+                                    ),
+                                    topTitles: const AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                    rightTitles: const AxisTitles(
+                                      sideTitles: SideTitles(showTitles: false),
+                                    ),
+                                  ),
+                                  barTouchData: BarTouchData(
+                                    enabled: true,
+                                    touchTooltipData: BarTouchTooltipData(
+                                      getTooltipColor:
+                                          (touchedSpot) =>
+                                              AppColors.lightGreenBackground,
+                                      tooltipBorder: BorderSide(
+                                        color: AppColors.primaryGreen,
+                                      ),
+                                      getTooltipItem: (
+                                        group,
+                                        groupIndex,
+                                        rod,
+                                        rodIndex,
+                                      ) {
+                                        
+                                        final groupedData =
+                                            <
+                                              DateTime,
+                                              List<Map<String, dynamic>>
+                                            >{};
+                                        for (final item in chartData) {
+                                          final date = item['date'] as DateTime;
+                                          if (!groupedData.containsKey(date)) {
+                                            groupedData[date] = [];
+                                          }
+                                          groupedData[date]!.add(item);
+                                        }
+
+                                        final sortedDates =
+                                            groupedData.keys.toList()..sort();
+                                        if (group.x.toInt() >=
+                                            sortedDates.length) {
+                                          return null;
+                                        }
+
+                                        final date =
+                                            sortedDates[group.x.toInt()];
+                                        final items = groupedData[date]!;
+
+                                        if (rodIndex >= items.length) {
+                                          return null;
+                                        }
+
+                                        final item = items[rodIndex];
+                                        final amount = item['amount'] as double;
+                                        final isIncome =
+                                            item['isIncome'] as bool? ??
+                                            (amount >= 0);
+
+                                       
+                                        final prefix =
+                                            isIncome ? 'Доход: +' : 'Расход: -';
+
+                                        return BarTooltipItem(
+                                          '$prefix${amount.abs().toStringAsFixed(2)} ${account.currency}',
+                                          const TextStyle(
+                                            color: AppColors.textDark,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+
+                                  gridData: const FlGridData(show: false),
+                                  borderData: FlBorderData(show: false),
+                                ),
+                              )
+                              : const Center(
+                                child: Text(
+                                  'Нет данных для отображения графика',
+                                ),
+                              ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -156,7 +373,7 @@ class AccountView extends StatelessWidget {
           );
         }
 
-        return const SizedBox.shrink(); // Fallback for any other state
+        return const SizedBox.shrink();
       },
     );
   }
@@ -186,15 +403,14 @@ class AccountView extends StatelessWidget {
                       balance: currentState.account.balance,
                       currency: entry.key,
                     );
+
                     context.read<AccountBloc>().add(
                       UpdateAccount(currentState.account.id, request),
                     );
 
-                    // Обновляем глобальную валюту приложения
+                    
                     final currencyService = getIt<CurrencyService>();
                     await currencyService.setCurrency(entry.key);
-
-                    Navigator.of(context).pop();
                   },
                 );
               }),
@@ -214,5 +430,56 @@ class AccountView extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<BarChartGroupData> _buildBarGroups(
+    List<Map<String, dynamic>> dailyData,
+    List<Map<String, dynamic>> monthlyData,
+    String currentPeriod,
+    String currency,
+  ) {
+    final data = currentPeriod == 'daily' ? dailyData : monthlyData;
+
+   
+    final groupedData = <DateTime, List<Map<String, dynamic>>>{};
+    for (final item in data) {
+      final date = item['date'] as DateTime;
+      if (!groupedData.containsKey(date)) {
+        groupedData[date] = [];
+      }
+      groupedData[date]!.add(item);
+    }
+
+    
+    final sortedDates = groupedData.keys.toList()..sort();
+
+    return sortedDates.asMap().entries.map((entry) {
+      final index = entry.key;
+      final date = entry.value;
+      final items = groupedData[date]!;
+
+      
+      final rods = <BarChartRodData>[];
+
+      for (final item in items) {
+        final amount = item['amount'] as double;
+        final isIncome = item['isIncome'] as bool? ?? (amount >= 0);
+
+        if (amount > 0) {
+          rods.add(
+            BarChartRodData(
+              toY: amount,
+              color:
+                  isIncome
+                      ? AppColors.primaryGreen
+                      : AppColors.lightRedBackground,
+              width: 6,
+            ),
+          );
+        }
+      }
+
+      return BarChartGroupData(x: index, barRods: rods);
+    }).toList();
   }
 }

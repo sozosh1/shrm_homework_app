@@ -14,4 +14,5 @@ abstract class AccountEvent with _$AccountEvent {
       ToggleBalanceVisibility;
 
   const factory AccountEvent.refreshAccount(int accountId) = RefreshAccount;
+  const factory AccountEvent.switchPeriod(String period) = SwitchPeriod;
 }

@@ -8,6 +8,7 @@ import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_state.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_form_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_list_item.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/generated/l10n.dart';
@@ -25,37 +26,57 @@ class TransactionsScreen extends StatelessWidget {
               getIt<TransactionBloc>()..add(
                 TransactionEvent.loadTodayTransactions(isIncome: isIncome),
               ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            isIncome ? S.of(context).incomeToday : S.of(context).expenseToday,
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.history),
-              onPressed: () {
-                context.router.push(
-                  TransactionHistoryRoute(isIncome: isIncome),
-                );
-              },
-            ),
-          ],
-        ),
-        body: TransactionsView(isIncome: isIncome),
-        floatingActionButton: FloatingActionButton(
-          shape: const CircleBorder(),
-          elevation: 0.0,
-          onPressed: () {
-            // TODO: Добавить экран создания транзакции
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Функция добавления транзакции в разработке'),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                isIncome
+                    ? S.of(context).incomeToday
+                    : S.of(context).expenseToday,
               ),
-            );
-          },
-          backgroundColor: AppColors.primaryGreen,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.history),
+                  onPressed: () {
+                    context.router.push(
+                      TransactionHistoryRoute(isIncome: isIncome),
+                    );
+                  },
+                ),
+              ],
+            ),
+            body: TransactionsView(isIncome: isIncome),
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'add transaction',
+              shape: const CircleBorder(),
+              elevation: 0.0,
+              onPressed: () async {
+                final bloc = context.read<TransactionBloc>();
+                final result = await showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder:
+                      (_) => BlocProvider.value(
+                        value: bloc,
+                        child: FractionallySizedBox(
+                          heightFactor: 1,
+                          child: TransactionFormScreen(isIncome: isIncome),
+                        ),
+                      ),
+                );
+                if (result == true) {
+                  bloc.add(
+                    TransactionEvent.loadTodayTransactions(isIncome: isIncome),
+                  );
+                }
+              },
+              backgroundColor: AppColors.primaryGreen,
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
+          );
+        },
       ),
     );
   }
@@ -135,6 +156,32 @@ class TransactionsView extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return TransactionListItem(
                                 transaction: state.transactions[index],
+                                onTap: () async {
+                                  final bloc = context.read<TransactionBloc>();
+                                  final result = await showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder:
+                                        (_) => BlocProvider.value(
+                                          value: bloc,
+                                          child: FractionallySizedBox(
+                                            heightFactor: 1,
+                                            child: TransactionFormScreen(
+                                              isIncome: state.isIncome,
+                                              transaction:
+                                                  state.transactions[index],
+                                            ),
+                                          ),
+                                        ),
+                                  );
+                                  if (result == true) {
+                                    bloc.add(
+                                      TransactionEvent.loadTodayTransactions(
+                                        isIncome: isIncome,
+                                      ),
+                                    );
+                                  }
+                                },
                               );
                             },
                           ),

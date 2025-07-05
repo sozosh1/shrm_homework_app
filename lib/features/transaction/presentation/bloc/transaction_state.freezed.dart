@@ -109,6 +109,38 @@ String toString() {
 /// @nodoc
 
 
+class TransactionSaving implements TransactionState {
+  const TransactionSaving();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionSaving);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TransactionState.saving()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class TransactionLoaded implements TransactionState {
   const TransactionLoaded({required final  List<TransactionResponse> transactions, required this.totalAmount, required this.isIncome, required this.currency}): _transactions = transactions;
   
@@ -183,6 +215,70 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class TransactionSaved implements TransactionState {
+  const TransactionSaved();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionSaved);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TransactionState.saved()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class TransactionDeleted implements TransactionState {
+  const TransactionDeleted();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionDeleted);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TransactionState.deleted()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

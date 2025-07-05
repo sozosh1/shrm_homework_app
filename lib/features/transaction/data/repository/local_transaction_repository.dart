@@ -155,7 +155,7 @@ class LocalTransactionRepository implements TransactionRepository {
         categoryId: Value(request.categoryId),
         comment: Value(request.comment ?? ''),
         transactionDate: Value(request.transactionDate),
-        updatedAt: Value(now), // ИСПРАВЛЕНО: createdAt больше не обновляется
+        updatedAt: Value(now), 
       ),
     );
 

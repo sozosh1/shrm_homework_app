@@ -56,8 +56,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 final request = AccountUpdateRequest(
                   name: _controller.text,
                   balance:
-                      currentState.account.balance, // Передаем текущий баланс
-                  currency: currentState.account.currency, // и валюту
+                      currentState.account.balance, 
+                  currency: currentState.account.currency,// и валюту
                 );
                 context.read<AccountBloc>().add(
                   UpdateAccount(widget.accountId, request),
