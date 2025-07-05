@@ -70,20 +70,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i104.AccountRepository>(
       () => _i766.LocalAccountRepository(gh<_i982.AppDatabase>()),
     );
+    gh.factory<_i708.AccountBloc>(
+      () => _i708.AccountBloc(
+        gh<_i104.AccountRepository>(),
+        gh<_i982.AppDatabase>(),
+      ),
+    );
     gh.factory<_i292.CategoryBloc>(
       () => _i292.CategoryBloc(
         gh<_i847.CategoryRepository>(),
         gh<_i578.FuzzySearchUseCase>(),
       ),
     );
-    gh.factory<_i356.TransactionBloc>(
-      () => _i356.TransactionBloc(gh<_i472.TransactionRepository>()),
-    );
     gh.factory<_i1051.TransactionHistoryBloc>(
       () => _i1051.TransactionHistoryBloc(gh<_i472.TransactionRepository>()),
     );
-    gh.factory<_i708.AccountBloc>(
-      () => _i708.AccountBloc(gh<_i104.AccountRepository>()),
+    gh.factory<_i356.TransactionBloc>(
+      () => _i356.TransactionBloc(
+        gh<_i472.TransactionRepository>(),
+        gh<_i207.Talker>(),
+      ),
     );
     return this;
   }

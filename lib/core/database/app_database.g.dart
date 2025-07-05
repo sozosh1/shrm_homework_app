@@ -781,9 +781,9 @@ class $TransactionsTableTable extends TransactionsTable
   late final GeneratedColumn<String> comment = GeneratedColumn<String>(
     'comment',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _transactionDateMeta = const VerificationMeta(
     'transactionDate',
@@ -874,8 +874,6 @@ class $TransactionsTableTable extends TransactionsTable
         _commentMeta,
         comment.isAcceptableOrUnknown(data['comment']!, _commentMeta),
       );
-    } else if (isInserting) {
-      context.missing(_commentMeta);
     }
     if (data.containsKey('transaction_date')) {
       context.handle(
@@ -933,11 +931,10 @@ class $TransactionsTableTable extends TransactionsTable
             DriftSqlType.double,
             data['${effectivePrefix}amount'],
           )!,
-      comment:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}comment'],
-          )!,
+      comment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}comment'],
+      ),
       transactionDate:
           attachedDatabase.typeMapping.read(
             DriftSqlType.dateTime,
@@ -968,7 +965,7 @@ class TransactionsTableData extends DataClass
   final int accountId;
   final int categoryId;
   final double amount;
-  final String comment;
+  final String? comment;
   final DateTime transactionDate;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -977,7 +974,7 @@ class TransactionsTableData extends DataClass
     required this.accountId,
     required this.categoryId,
     required this.amount,
-    required this.comment,
+    this.comment,
     required this.transactionDate,
     required this.createdAt,
     required this.updatedAt,
@@ -989,7 +986,9 @@ class TransactionsTableData extends DataClass
     map['account_id'] = Variable<int>(accountId);
     map['category_id'] = Variable<int>(categoryId);
     map['amount'] = Variable<double>(amount);
-    map['comment'] = Variable<String>(comment);
+    if (!nullToAbsent || comment != null) {
+      map['comment'] = Variable<String>(comment);
+    }
     map['transaction_date'] = Variable<DateTime>(transactionDate);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -1002,7 +1001,10 @@ class TransactionsTableData extends DataClass
       accountId: Value(accountId),
       categoryId: Value(categoryId),
       amount: Value(amount),
-      comment: Value(comment),
+      comment:
+          comment == null && nullToAbsent
+              ? const Value.absent()
+              : Value(comment),
       transactionDate: Value(transactionDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -1019,7 +1021,7 @@ class TransactionsTableData extends DataClass
       accountId: serializer.fromJson<int>(json['accountId']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       amount: serializer.fromJson<double>(json['amount']),
-      comment: serializer.fromJson<String>(json['comment']),
+      comment: serializer.fromJson<String?>(json['comment']),
       transactionDate: serializer.fromJson<DateTime>(json['transactionDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -1033,7 +1035,7 @@ class TransactionsTableData extends DataClass
       'accountId': serializer.toJson<int>(accountId),
       'categoryId': serializer.toJson<int>(categoryId),
       'amount': serializer.toJson<double>(amount),
-      'comment': serializer.toJson<String>(comment),
+      'comment': serializer.toJson<String?>(comment),
       'transactionDate': serializer.toJson<DateTime>(transactionDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -1045,7 +1047,7 @@ class TransactionsTableData extends DataClass
     int? accountId,
     int? categoryId,
     double? amount,
-    String? comment,
+    Value<String?> comment = const Value.absent(),
     DateTime? transactionDate,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -1054,7 +1056,7 @@ class TransactionsTableData extends DataClass
     accountId: accountId ?? this.accountId,
     categoryId: categoryId ?? this.categoryId,
     amount: amount ?? this.amount,
-    comment: comment ?? this.comment,
+    comment: comment.present ? comment.value : this.comment,
     transactionDate: transactionDate ?? this.transactionDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -1122,7 +1124,7 @@ class TransactionsTableCompanion
   final Value<int> accountId;
   final Value<int> categoryId;
   final Value<double> amount;
-  final Value<String> comment;
+  final Value<String?> comment;
   final Value<DateTime> transactionDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -1141,14 +1143,13 @@ class TransactionsTableCompanion
     required int accountId,
     required int categoryId,
     required double amount,
-    required String comment,
+    this.comment = const Value.absent(),
     required DateTime transactionDate,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) : accountId = Value(accountId),
        categoryId = Value(categoryId),
        amount = Value(amount),
-       comment = Value(comment),
        transactionDate = Value(transactionDate),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt);
@@ -1179,7 +1180,7 @@ class TransactionsTableCompanion
     Value<int>? accountId,
     Value<int>? categoryId,
     Value<double>? amount,
-    Value<String>? comment,
+    Value<String?>? comment,
     Value<DateTime>? transactionDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
@@ -2398,7 +2399,7 @@ typedef $$TransactionsTableTableCreateCompanionBuilder =
       required int accountId,
       required int categoryId,
       required double amount,
-      required String comment,
+      Value<String?> comment,
       required DateTime transactionDate,
       required DateTime createdAt,
       required DateTime updatedAt,
@@ -2409,7 +2410,7 @@ typedef $$TransactionsTableTableUpdateCompanionBuilder =
       Value<int> accountId,
       Value<int> categoryId,
       Value<double> amount,
-      Value<String> comment,
+      Value<String?> comment,
       Value<DateTime> transactionDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
@@ -2764,7 +2765,7 @@ class $$TransactionsTableTableTableManager
                 Value<int> accountId = const Value.absent(),
                 Value<int> categoryId = const Value.absent(),
                 Value<double> amount = const Value.absent(),
-                Value<String> comment = const Value.absent(),
+                Value<String?> comment = const Value.absent(),
                 Value<DateTime> transactionDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
@@ -2784,7 +2785,7 @@ class $$TransactionsTableTableTableManager
                 required int accountId,
                 required int categoryId,
                 required double amount,
-                required String comment,
+                Value<String?> comment = const Value.absent(),
                 required DateTime transactionDate,
                 required DateTime createdAt,
                 required DateTime updatedAt,

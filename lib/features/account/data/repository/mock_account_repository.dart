@@ -49,6 +49,12 @@ class MockAccountRepository implements AccountRepository {
       updatedAt: DateTime.parse('2025-06-16T21:52:33.724Z'),
     );
   }
+  
+  @override
+  Stream<List<Map<String, dynamic>>> getTransactionHistoryStream() {
+    // TODO: implement getTransactionHistoryStream
+    throw UnimplementedError();
+  }
 
  
 }

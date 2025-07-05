@@ -4,10 +4,10 @@ import 'package:shrm_homework_app/features/category/domain/models/category/categ
 
 @injectable
 class FuzzySearchUseCase {
-  // Removed _fuzzy instance to create it dynamically in each method
+  
   FuzzySearchUseCase();
 
-  /// Creates a Fuzzy instance with the given categories and options
+  
   Fuzzy<Category> _createFuzzy(List<Category> categories) {
     return Fuzzy<Category>(
       categories,
@@ -29,23 +29,23 @@ class FuzzySearchUseCase {
     );
   }
 
-  /// Performs fuzzy search on categories
+  
   List<Category> execute(List<Category> categories, String query) {
     if (query.isEmpty) {
       return categories;
     }
 
-    // Create a new Fuzzy instance
+    
     final fuzzy = _createFuzzy(categories);
 
-    // Perform search
+   
     final results = fuzzy.search(query);
 
-    // Return matched categories, sorted by relevance
+    
     return results.map((result) => result.item).toList();
   }
 
-  /// Performs search with detailed match information
+ 
   List<FuzzySearchResult> executeWithDetails(
     List<Category> categories,
     String query,
@@ -59,10 +59,10 @@ class FuzzySearchUseCase {
           .toList();
     }
 
-    // Create a new Fuzzy instance
+   
     final fuzzy = _createFuzzy(categories);
 
-    // Perform search
+    
     final results = fuzzy.search(query);
 
     return results

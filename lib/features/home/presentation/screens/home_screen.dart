@@ -7,6 +7,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AutoRouter(); // Просто отображаем текущий маршрут
+    return const AutoRouter(); 
   }
 }

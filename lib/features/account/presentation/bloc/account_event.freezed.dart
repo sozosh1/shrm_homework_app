@@ -283,4 +283,70 @@ as int,
 
 }
 
+/// @nodoc
+
+
+class SwitchPeriod implements AccountEvent {
+  const SwitchPeriod(this.period);
+  
+
+ final  String period;
+
+/// Create a copy of AccountEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SwitchPeriodCopyWith<SwitchPeriod> get copyWith => _$SwitchPeriodCopyWithImpl<SwitchPeriod>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SwitchPeriod&&(identical(other.period, period) || other.period == period));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,period);
+
+@override
+String toString() {
+  return 'AccountEvent.switchPeriod(period: $period)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SwitchPeriodCopyWith<$Res> implements $AccountEventCopyWith<$Res> {
+  factory $SwitchPeriodCopyWith(SwitchPeriod value, $Res Function(SwitchPeriod) _then) = _$SwitchPeriodCopyWithImpl;
+@useResult
+$Res call({
+ String period
+});
+
+
+
+
+}
+/// @nodoc
+class _$SwitchPeriodCopyWithImpl<$Res>
+    implements $SwitchPeriodCopyWith<$Res> {
+  _$SwitchPeriodCopyWithImpl(this._self, this._then);
+
+  final SwitchPeriod _self;
+  final $Res Function(SwitchPeriod) _then;
+
+/// Create a copy of AccountEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? period = null,}) {
+  return _then(SwitchPeriod(
+null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
 // dart format on

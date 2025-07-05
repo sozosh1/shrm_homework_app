@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
-
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
+import 'package:transaction_chart/transaction_chart.dart';
 
 @RoutePage()
 class TransactionAnalysScreen extends StatelessWidget {
@@ -51,13 +51,31 @@ class TransactionAnalysView extends StatelessWidget {
             state is TransactionHistoryLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is TransactionAnalysisLoaded) {
+          final chartConfig = TransactionChartConfig(
+            data:
+                state.analysisItems
+                    .map(
+                      (item) => ChartData(
+                        categoryName: item.category.name,
+                        color:
+                            item.category.isIncome
+                                ? Colors.greenAccent
+                                : Colors.yellowAccent,
+                        percentage: item.percentage,
+                        amount: item.totalAmount,
+                      ),
+                    )
+                    .toList(),
+            currency: state.currency,
+            animate: true,
+          );
+
           return Column(
             children: [
               Container(
                 color: AppColors.lightGreenBackground,
                 child: Column(
                   children: [
-                    const Divider(thickness: 0.5, height: 0.5),
                     _buildDateListTile(
                       context,
                       'Начало',
@@ -78,7 +96,7 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(),
                     _buildDateListTile(
                       context,
                       'Конец',
@@ -99,7 +117,7 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(),
                     _buildSummaryListTile(
                       'Сумма',
                       CurrencyDisplay(
@@ -107,26 +125,36 @@ class TransactionAnalysView extends StatelessWidget {
                         accountCurrency: state.currency,
                       ),
                     ),
-                    const Divider(height: 0.5, thickness: 0.5),
+                    const Divider(height: 1),
                   ],
                 ),
               ),
-              Expanded(
-                child:
-                    state.analysisItems.isEmpty
-                        ? Center(
-                          child: Text(
-                            'Нет данных для анализа за выбранный период',
-                          ),
-                        )
-                        : ListView.builder(
+              if (state.analysisItems.isEmpty)
+                const Expanded(
+                  child: Center(
+                    child: Text('Нет данных для анализа за выбранный период'),
+                  ),
+                )
+              else
+                Expanded(
+                  child: Column(
+                    children: [
+                      TransactionPieChart(config: chartConfig),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: ListView.separated(
+                          separatorBuilder:
+                              (context, index) => const Divider(height: 1),
                           itemCount: state.analysisItems.length,
                           itemBuilder: (context, index) {
                             final item = state.analysisItems[index];
                             return CategoryAnalysisListItem(item: item);
                           },
                         ),
-              ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           );
         } else if (state is TransactionHistoryError) {
@@ -181,9 +209,12 @@ class CategoryAnalysisListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
+    
+    return Hero(
+      tag: 'category_${item.category.id}',
+      child: Material(
+        type: MaterialType.transparency,
+        child: ListTile(
           leading: CircleAvatar(
             backgroundColor: AppColors.lightGreenBackground,
             radius: 20,
@@ -215,8 +246,7 @@ class CategoryAnalysisListItem extends StatelessWidget {
             context.router.push(CategoryTransactionsRoute(item: item));
           },
         ),
-        const Divider(height: 0.5, thickness: 0.5),
-      ],
+      ),
     );
   }
 }

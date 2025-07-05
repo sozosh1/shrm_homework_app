@@ -7,7 +7,7 @@ class TransactionsTable extends Table {
   IntColumn get accountId => integer().references(AccountsTable, #id)();
   IntColumn get categoryId => integer().references(CategoriesTable, #id)();
   RealColumn get amount => real()();
-  TextColumn get comment => text()();
+  TextColumn get comment => text().nullable()();
   DateTimeColumn get transactionDate => dateTime()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();

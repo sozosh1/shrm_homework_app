@@ -7,18 +7,19 @@ class TransactionListItem extends StatelessWidget {
   final TransactionResponse transaction;
   final bool? showAvatar;
   final bool? showTime;
+  final GestureTapCallback? onTap;
   const TransactionListItem({
     super.key,
     required this.transaction,
     this.showAvatar,
     this.showTime,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Divider(height: 0.5, thickness: 0.5),
         ListTile(
           leading: CircleAvatar(
             backgroundColor: AppColors.lightGreenBackground,
@@ -31,15 +32,22 @@ class TransactionListItem extends StatelessWidget {
 
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(transaction.category.name),
                   if (transaction.comment?.isNotEmpty ?? false)
-                    Expanded(child: Text(transaction.comment!)),
+                    Text(
+                      transaction.comment!,
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    ),
                 ],
               ),
               CurrencyDisplay(
+                transaction: transaction,
+                showTime: showTime,
                 amount: transaction.amount,
                 accountCurrency: transaction.account.currency,
               ),
@@ -51,17 +59,9 @@ class TransactionListItem extends StatelessWidget {
             size: 16,
             color: Colors.grey,
           ),
-          onTap: () {
-            // TODO: Добавить детальный просмотр транзакции
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Транзакция: ${transaction.category.name}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
-          },
+
+          onTap: onTap,
         ),
-        Divider(height: 0.5, thickness: 0.5),
       ],
     );
   }

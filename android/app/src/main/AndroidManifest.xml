@@ -1,8 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   
+       <!-- Поддержка только телефонов -->
+    <supports-screens 
+        android:largeScreens="false"
+        android:xlargeScreens="false"
+        android:normalScreens="true"
+        android:smallScreens="true"/>
+    
+    <!-- Указываем что приложение требует сенсорный экран -->
+    <uses-feature 
+        android:name="android.hardware.touchscreen" 
+        android:required="true" />
+    
+    <!-- Исключаем ТВ -->
+    <uses-feature 
+        android:name="android.software.leanback" 
+        android:required="false" />
+   
     <application
         android:label="shrm_homework_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

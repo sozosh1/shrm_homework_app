@@ -44,10 +44,10 @@ class _CategorySearchBarState extends State<CategorySearchBar> {
   }
 
   void _onSearchChanged(String value) {
-    // Отменяем предыдущий таймер
+    
     _debounceTimer?.cancel();
 
-    // Устанавливаем новый таймер для дебаунсинга
+    
     _debounceTimer = Timer(const Duration(milliseconds: 300), () {
       widget.onChanged(value);
     });

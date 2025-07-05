@@ -19,7 +19,7 @@ class TransactionHistoryBloc
   final TransactionRepository _repository;
 
   TransactionHistoryBloc(this._repository)
-      : super(const TransactionHistoryState.initial()) {
+    : super(const TransactionHistoryState.initial()) {
     on<LoadTransactionHistoryInitial>(_onLoadTransactionHistoryInitial);
     on<LoadTransactionHistoryByPeriod>(_onLoadTransactionHistoryByPeriod);
     on<LoadTransactionAnalysisByPeriod>(_onLoadTransactionAnalysisByPeriod);
@@ -86,22 +86,26 @@ class TransactionHistoryBloc
         999,
       );
 
-      final filteredTransactions = allTransactions.where((transaction) {
-        final transactionDate = transaction.transactionDate;
-        final isInPeriod = !transactionDate.isBefore(startOfDay) &&
-            !transactionDate.isAfter(endOfDay);
-        final isCorrectType = transaction.category.isIncome == event.isIncome;
-        return isInPeriod && isCorrectType;
-      }).toList();
+      final filteredTransactions =
+          allTransactions.where((transaction) {
+            final transactionDate = transaction.transactionDate;
+            final isInPeriod =
+                !transactionDate.isBefore(startOfDay) &&
+                !transactionDate.isAfter(endOfDay);
+            final isCorrectType =
+                transaction.category.isIncome == event.isIncome;
+            return isInPeriod && isCorrectType;
+          }).toList();
 
       final totalAmount = filteredTransactions.fold<double>(
         0,
         (sum, transaction) => sum + transaction.amount,
       );
 
-      final currency = filteredTransactions.isNotEmpty
-          ? filteredTransactions.first.account.currency
-          : 'RUB';
+      final currency =
+          filteredTransactions.isNotEmpty
+              ? filteredTransactions.first.account.currency
+              : 'RUB';
 
       _sortTransactions(filteredTransactions, event.sortBy ?? 'date');
 
@@ -147,47 +151,53 @@ class TransactionHistoryBloc
         999,
       );
 
-      final filteredTransactions = allTransactions.where((transaction) {
-        final transactionDate = transaction.transactionDate;
-        final isInPeriod = !transactionDate.isBefore(startOfDay) &&
-            !transactionDate.isAfter(endOfDay);
-        final isCorrectType = transaction.category.isIncome == event.isIncome;
-        return isInPeriod && isCorrectType;
-      }).toList();
+      final filteredTransactions =
+          allTransactions.where((transaction) {
+            final transactionDate = transaction.transactionDate;
+            final isInPeriod =
+                !transactionDate.isBefore(startOfDay) &&
+                !transactionDate.isAfter(endOfDay);
+            final isCorrectType =
+                transaction.category.isIncome == event.isIncome;
+            return isInPeriod && isCorrectType;
+          }).toList();
 
       final totalAmount = filteredTransactions.fold<double>(
         0,
         (sum, transaction) => sum + transaction.amount,
       );
 
-      final currency = filteredTransactions.isNotEmpty
-          ? filteredTransactions.first.account.currency
-          : 'RUB';
+      final currency =
+          filteredTransactions.isNotEmpty
+              ? filteredTransactions.first.account.currency
+              : 'RUB';
 
-      final groupedByCategory =
-          groupBy(filteredTransactions, (t) => t.category);
+      final groupedByCategory = groupBy(
+        filteredTransactions,
+        (t) => t.category,
+      );
 
-      final analysisItems = groupedByCategory.entries.map((entry) {
-        final category = entry.key;
-        final transactions = entry.value;
+      final analysisItems =
+          groupedByCategory.entries.map((entry) {
+            final category = entry.key;
+            final transactions = entry.value;
 
-        final categoryTotal = transactions.fold<double>(
-          0,
-          (sum, t) => sum + t.amount,
-        );
-        final lastTransaction =
-            transactions.sortedBy((t) => t.transactionDate).last;
-        final double percentage =
-            totalAmount > 0 ? (categoryTotal / totalAmount) * 100 : 0;
+            final categoryTotal = transactions.fold<double>(
+              0,
+              (sum, t) => sum + t.amount,
+            );
+            final lastTransaction =
+                transactions.sortedBy((t) => t.transactionDate).last;
+            final double percentage = (categoryTotal / totalAmount.abs()) * 100;
 
-        return CategoryAnalysisItem(
-          category: category,
-          totalAmount: categoryTotal,
-          lastTransaction: lastTransaction,
-          percentage: percentage,
-          transactions: transactions,
-        );
-      }).toList();
+            return CategoryAnalysisItem(
+              category: category,
+              totalAmount: categoryTotal,
+              lastTransaction: lastTransaction,
+              percentage: percentage,
+              transactions: transactions,
+            );
+          }).toList();
 
       analysisItems.sort((a, b) => b.totalAmount.compareTo(a.totalAmount));
 
