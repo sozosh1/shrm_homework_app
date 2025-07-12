@@ -8,7 +8,7 @@ class CurrencyService {
 
   CurrencyService(this._preferencesService);
 
-  static const String _currencyKey = 'app_currency';
+  
   static const String _defaultCurrency = 'RUB';
 
   final StreamController<String> _currencyController =

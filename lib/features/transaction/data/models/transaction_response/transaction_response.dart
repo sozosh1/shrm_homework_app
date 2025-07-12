@@ -19,5 +19,22 @@ abstract class TransactionResponse with _$TransactionResponse {
   }) = _TransactionResponse;
 
   factory TransactionResponse.fromJson(Map<String, dynamic> json) =>
-      _$TransactionResponseFromJson(json);
+      _$TransactionResponseFromJson(_preprocessTransactionJson(json));
+}
+
+/// Предобработка JSON для корректного парсинга amount
+Map<String, dynamic> _preprocessTransactionJson(Map<String, dynamic> json) {
+  final processed = Map<String, dynamic>.from(json);
+  
+  // Обрабатываем amount - может приходить как строка или число
+  if (processed['amount'] != null) {
+    final amount = processed['amount'];
+    if (amount is String) {
+      processed['amount'] = double.tryParse(amount) ?? 0.0;
+    } else if (amount is num) {
+      processed['amount'] = amount.toDouble();
+    }
+  }
+  
+  return processed;
 }

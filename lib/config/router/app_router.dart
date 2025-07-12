@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
+import 'package:shrm_homework_app/core/widgets/offline_banner.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/account_screen.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/edit_account_screen.dart';
 import 'package:shrm_homework_app/features/category/presentation/screens/category_screen.dart';
@@ -60,7 +61,7 @@ class HomeWrapperPage extends StatelessWidget {
         final tabsRouter = AutoTabsRouter.of(context);
 
         return Scaffold(
-          body: child,
+          body: OfflineBanner(child: child),
           bottomNavigationBar: NavigationBar(
             backgroundColor: AppColors.lightBackground,
             selectedIndex: tabsRouter.activeIndex,

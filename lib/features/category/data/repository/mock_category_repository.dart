@@ -7,9 +7,9 @@ class MockCategoryRepository implements CategoryRepository {
   @override
   Future<List<Category>> getAllCategories() async {
     return [
-      Category(id: 1, name: 'Salary', emodji: '🤑', isIncome: true),
-      Category(id: 2, name: 'Grocery list', emodji: '🥑', isIncome: false),
-      Category(id: 3, name: 'Sport', emodji: '🤸🏽‍♀️', isIncome: false),
+      Category(id: 1, name: 'Salary', emoji: '🤑', isIncome: true),
+      Category(id: 2, name: 'Grocery list', emoji: '🥑', isIncome: false),
+      Category(id: 3, name: 'Sport', emoji: '🤸🏽‍♀️', isIncome: false),
     ];
   }
 

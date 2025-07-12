@@ -442,10 +442,10 @@ class $CategoriesTableTable extends CategoriesTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _emodjiMeta = const VerificationMeta('emodji');
+  static const VerificationMeta _emojiMeta = const VerificationMeta('emoji');
   @override
-  late final GeneratedColumn<String> emodji = GeneratedColumn<String>(
-    'emodji',
+  late final GeneratedColumn<String> emoji = GeneratedColumn<String>(
+    'emoji',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -466,7 +466,7 @@ class $CategoriesTableTable extends CategoriesTable
     ),
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name, emodji, isIncome];
+  List<GeneratedColumn> get $columns => [id, name, emoji, isIncome];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -490,13 +490,13 @@ class $CategoriesTableTable extends CategoriesTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('emodji')) {
+    if (data.containsKey('emoji')) {
       context.handle(
-        _emodjiMeta,
-        emodji.isAcceptableOrUnknown(data['emodji']!, _emodjiMeta),
+        _emojiMeta,
+        emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta),
       );
     } else if (isInserting) {
-      context.missing(_emodjiMeta);
+      context.missing(_emojiMeta);
     }
     if (data.containsKey('is_income')) {
       context.handle(
@@ -525,10 +525,10 @@ class $CategoriesTableTable extends CategoriesTable
             DriftSqlType.string,
             data['${effectivePrefix}name'],
           )!,
-      emodji:
+      emoji:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}emodji'],
+            data['${effectivePrefix}emoji'],
           )!,
       isIncome:
           attachedDatabase.typeMapping.read(
@@ -548,12 +548,12 @@ class CategoriesTableData extends DataClass
     implements Insertable<CategoriesTableData> {
   final int id;
   final String name;
-  final String emodji;
+  final String emoji;
   final bool isIncome;
   const CategoriesTableData({
     required this.id,
     required this.name,
-    required this.emodji,
+    required this.emoji,
     required this.isIncome,
   });
   @override
@@ -561,7 +561,7 @@ class CategoriesTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['emodji'] = Variable<String>(emodji);
+    map['emoji'] = Variable<String>(emoji);
     map['is_income'] = Variable<bool>(isIncome);
     return map;
   }
@@ -570,7 +570,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableCompanion(
       id: Value(id),
       name: Value(name),
-      emodji: Value(emodji),
+      emoji: Value(emoji),
       isIncome: Value(isIncome),
     );
   }
@@ -583,7 +583,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      emodji: serializer.fromJson<String>(json['emodji']),
+      emoji: serializer.fromJson<String>(json['emoji']),
       isIncome: serializer.fromJson<bool>(json['isIncome']),
     );
   }
@@ -593,7 +593,7 @@ class CategoriesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'emodji': serializer.toJson<String>(emodji),
+      'emoji': serializer.toJson<String>(emoji),
       'isIncome': serializer.toJson<bool>(isIncome),
     };
   }
@@ -601,19 +601,19 @@ class CategoriesTableData extends DataClass
   CategoriesTableData copyWith({
     int? id,
     String? name,
-    String? emodji,
+    String? emoji,
     bool? isIncome,
   }) => CategoriesTableData(
     id: id ?? this.id,
     name: name ?? this.name,
-    emodji: emodji ?? this.emodji,
+    emoji: emoji ?? this.emoji,
     isIncome: isIncome ?? this.isIncome,
   );
   CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
     return CategoriesTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
-      emodji: data.emodji.present ? data.emodji.value : this.emodji,
+      emoji: data.emoji.present ? data.emoji.value : this.emoji,
       isIncome: data.isIncome.present ? data.isIncome.value : this.isIncome,
     );
   }
@@ -623,53 +623,53 @@ class CategoriesTableData extends DataClass
     return (StringBuffer('CategoriesTableData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emodji: $emodji, ')
+          ..write('emoji: $emoji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, emodji, isIncome);
+  int get hashCode => Object.hash(id, name, emoji, isIncome);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoriesTableData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.emodji == this.emodji &&
+          other.emoji == this.emoji &&
           other.isIncome == this.isIncome);
 }
 
 class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> emodji;
+  final Value<String> emoji;
   final Value<bool> isIncome;
   const CategoriesTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.emodji = const Value.absent(),
+    this.emoji = const Value.absent(),
     this.isIncome = const Value.absent(),
   });
   CategoriesTableCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String emodji,
+    required String emoji,
     required bool isIncome,
   }) : name = Value(name),
-       emodji = Value(emodji),
+       emoji = Value(emoji),
        isIncome = Value(isIncome);
   static Insertable<CategoriesTableData> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<String>? emodji,
+    Expression<String>? emoji,
     Expression<bool>? isIncome,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (emodji != null) 'emodji': emodji,
+      if (emoji != null) 'emoji': emoji,
       if (isIncome != null) 'is_income': isIncome,
     });
   }
@@ -677,13 +677,13 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   CategoriesTableCompanion copyWith({
     Value<int>? id,
     Value<String>? name,
-    Value<String>? emodji,
+    Value<String>? emoji,
     Value<bool>? isIncome,
   }) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      emodji: emodji ?? this.emodji,
+      emoji: emoji ?? this.emoji,
       isIncome: isIncome ?? this.isIncome,
     );
   }
@@ -697,8 +697,8 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (emodji.present) {
-      map['emodji'] = Variable<String>(emodji.value);
+    if (emoji.present) {
+      map['emoji'] = Variable<String>(emoji.value);
     }
     if (isIncome.present) {
       map['is_income'] = Variable<bool>(isIncome.value);
@@ -711,7 +711,7 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     return (StringBuffer('CategoriesTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emodji: $emodji, ')
+          ..write('emoji: $emoji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
@@ -1333,6 +1333,40 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _syncedAtMeta = const VerificationMeta(
+    'syncedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncedAt = GeneratedColumn<DateTime>(
+    'synced_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
+    'syncError',
+  );
+  @override
+  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
+    'sync_error',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _retryCountMeta = const VerificationMeta(
+    'retryCount',
+  );
+  @override
+  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
+    'retry_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1342,6 +1376,9 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
     entityData,
     createdAt,
     isSynced,
+    syncedAt,
+    syncError,
+    retryCount,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1403,6 +1440,24 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
         isSynced.isAcceptableOrUnknown(data['is_synced']!, _isSyncedMeta),
       );
     }
+    if (data.containsKey('synced_at')) {
+      context.handle(
+        _syncedAtMeta,
+        syncedAt.isAcceptableOrUnknown(data['synced_at']!, _syncedAtMeta),
+      );
+    }
+    if (data.containsKey('sync_error')) {
+      context.handle(
+        _syncErrorMeta,
+        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
+      );
+    }
+    if (data.containsKey('retry_count')) {
+      context.handle(
+        _retryCountMeta,
+        retryCount.isAcceptableOrUnknown(data['retry_count']!, _retryCountMeta),
+      );
+    }
     return context;
   }
 
@@ -1449,6 +1504,19 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
             DriftSqlType.bool,
             data['${effectivePrefix}is_synced'],
           )!,
+      syncedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}synced_at'],
+      ),
+      syncError: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_error'],
+      ),
+      retryCount:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}retry_count'],
+          )!,
     );
   }
 
@@ -1467,6 +1535,9 @@ class BackUpOperationsTableData extends DataClass
   final String entityData;
   final DateTime createdAt;
   final bool isSynced;
+  final DateTime? syncedAt;
+  final String? syncError;
+  final int retryCount;
   const BackUpOperationsTableData({
     required this.id,
     required this.operationType,
@@ -1475,6 +1546,9 @@ class BackUpOperationsTableData extends DataClass
     required this.entityData,
     required this.createdAt,
     required this.isSynced,
+    this.syncedAt,
+    this.syncError,
+    required this.retryCount,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1488,6 +1562,13 @@ class BackUpOperationsTableData extends DataClass
     map['entity_data'] = Variable<String>(entityData);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['is_synced'] = Variable<bool>(isSynced);
+    if (!nullToAbsent || syncedAt != null) {
+      map['synced_at'] = Variable<DateTime>(syncedAt);
+    }
+    if (!nullToAbsent || syncError != null) {
+      map['sync_error'] = Variable<String>(syncError);
+    }
+    map['retry_count'] = Variable<int>(retryCount);
     return map;
   }
 
@@ -1503,6 +1584,15 @@ class BackUpOperationsTableData extends DataClass
       entityData: Value(entityData),
       createdAt: Value(createdAt),
       isSynced: Value(isSynced),
+      syncedAt:
+          syncedAt == null && nullToAbsent
+              ? const Value.absent()
+              : Value(syncedAt),
+      syncError:
+          syncError == null && nullToAbsent
+              ? const Value.absent()
+              : Value(syncError),
+      retryCount: Value(retryCount),
     );
   }
 
@@ -1519,6 +1609,9 @@ class BackUpOperationsTableData extends DataClass
       entityData: serializer.fromJson<String>(json['entityData']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
+      syncedAt: serializer.fromJson<DateTime?>(json['syncedAt']),
+      syncError: serializer.fromJson<String?>(json['syncError']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
     );
   }
   @override
@@ -1532,6 +1625,9 @@ class BackUpOperationsTableData extends DataClass
       'entityData': serializer.toJson<String>(entityData),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'isSynced': serializer.toJson<bool>(isSynced),
+      'syncedAt': serializer.toJson<DateTime?>(syncedAt),
+      'syncError': serializer.toJson<String?>(syncError),
+      'retryCount': serializer.toJson<int>(retryCount),
     };
   }
 
@@ -1543,6 +1639,9 @@ class BackUpOperationsTableData extends DataClass
     String? entityData,
     DateTime? createdAt,
     bool? isSynced,
+    Value<DateTime?> syncedAt = const Value.absent(),
+    Value<String?> syncError = const Value.absent(),
+    int? retryCount,
   }) => BackUpOperationsTableData(
     id: id ?? this.id,
     operationType: operationType ?? this.operationType,
@@ -1551,6 +1650,9 @@ class BackUpOperationsTableData extends DataClass
     entityData: entityData ?? this.entityData,
     createdAt: createdAt ?? this.createdAt,
     isSynced: isSynced ?? this.isSynced,
+    syncedAt: syncedAt.present ? syncedAt.value : this.syncedAt,
+    syncError: syncError.present ? syncError.value : this.syncError,
+    retryCount: retryCount ?? this.retryCount,
   );
   BackUpOperationsTableData copyWithCompanion(
     BackUpOperationsTableCompanion data,
@@ -1568,6 +1670,10 @@ class BackUpOperationsTableData extends DataClass
           data.entityData.present ? data.entityData.value : this.entityData,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
+      syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
+      syncError: data.syncError.present ? data.syncError.value : this.syncError,
+      retryCount:
+          data.retryCount.present ? data.retryCount.value : this.retryCount,
     );
   }
 
@@ -1580,7 +1686,10 @@ class BackUpOperationsTableData extends DataClass
           ..write('entityId: $entityId, ')
           ..write('entityData: $entityData, ')
           ..write('createdAt: $createdAt, ')
-          ..write('isSynced: $isSynced')
+          ..write('isSynced: $isSynced, ')
+          ..write('syncedAt: $syncedAt, ')
+          ..write('syncError: $syncError, ')
+          ..write('retryCount: $retryCount')
           ..write(')'))
         .toString();
   }
@@ -1594,6 +1703,9 @@ class BackUpOperationsTableData extends DataClass
     entityData,
     createdAt,
     isSynced,
+    syncedAt,
+    syncError,
+    retryCount,
   );
   @override
   bool operator ==(Object other) =>
@@ -1605,7 +1717,10 @@ class BackUpOperationsTableData extends DataClass
           other.entityId == this.entityId &&
           other.entityData == this.entityData &&
           other.createdAt == this.createdAt &&
-          other.isSynced == this.isSynced);
+          other.isSynced == this.isSynced &&
+          other.syncedAt == this.syncedAt &&
+          other.syncError == this.syncError &&
+          other.retryCount == this.retryCount);
 }
 
 class BackUpOperationsTableCompanion
@@ -1617,6 +1732,9 @@ class BackUpOperationsTableCompanion
   final Value<String> entityData;
   final Value<DateTime> createdAt;
   final Value<bool> isSynced;
+  final Value<DateTime?> syncedAt;
+  final Value<String?> syncError;
+  final Value<int> retryCount;
   const BackUpOperationsTableCompanion({
     this.id = const Value.absent(),
     this.operationType = const Value.absent(),
@@ -1625,6 +1743,9 @@ class BackUpOperationsTableCompanion
     this.entityData = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.isSynced = const Value.absent(),
+    this.syncedAt = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.retryCount = const Value.absent(),
   });
   BackUpOperationsTableCompanion.insert({
     this.id = const Value.absent(),
@@ -1634,6 +1755,9 @@ class BackUpOperationsTableCompanion
     required String entityData,
     this.createdAt = const Value.absent(),
     this.isSynced = const Value.absent(),
+    this.syncedAt = const Value.absent(),
+    this.syncError = const Value.absent(),
+    this.retryCount = const Value.absent(),
   }) : operationType = Value(operationType),
        entityType = Value(entityType),
        entityData = Value(entityData);
@@ -1645,6 +1769,9 @@ class BackUpOperationsTableCompanion
     Expression<String>? entityData,
     Expression<DateTime>? createdAt,
     Expression<bool>? isSynced,
+    Expression<DateTime>? syncedAt,
+    Expression<String>? syncError,
+    Expression<int>? retryCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1654,6 +1781,9 @@ class BackUpOperationsTableCompanion
       if (entityData != null) 'entity_data': entityData,
       if (createdAt != null) 'created_at': createdAt,
       if (isSynced != null) 'is_synced': isSynced,
+      if (syncedAt != null) 'synced_at': syncedAt,
+      if (syncError != null) 'sync_error': syncError,
+      if (retryCount != null) 'retry_count': retryCount,
     });
   }
 
@@ -1665,6 +1795,9 @@ class BackUpOperationsTableCompanion
     Value<String>? entityData,
     Value<DateTime>? createdAt,
     Value<bool>? isSynced,
+    Value<DateTime?>? syncedAt,
+    Value<String?>? syncError,
+    Value<int>? retryCount,
   }) {
     return BackUpOperationsTableCompanion(
       id: id ?? this.id,
@@ -1674,6 +1807,9 @@ class BackUpOperationsTableCompanion
       entityData: entityData ?? this.entityData,
       createdAt: createdAt ?? this.createdAt,
       isSynced: isSynced ?? this.isSynced,
+      syncedAt: syncedAt ?? this.syncedAt,
+      syncError: syncError ?? this.syncError,
+      retryCount: retryCount ?? this.retryCount,
     );
   }
 
@@ -1701,6 +1837,15 @@ class BackUpOperationsTableCompanion
     if (isSynced.present) {
       map['is_synced'] = Variable<bool>(isSynced.value);
     }
+    if (syncedAt.present) {
+      map['synced_at'] = Variable<DateTime>(syncedAt.value);
+    }
+    if (syncError.present) {
+      map['sync_error'] = Variable<String>(syncError.value);
+    }
+    if (retryCount.present) {
+      map['retry_count'] = Variable<int>(retryCount.value);
+    }
     return map;
   }
 
@@ -1713,7 +1858,10 @@ class BackUpOperationsTableCompanion
           ..write('entityId: $entityId, ')
           ..write('entityData: $entityData, ')
           ..write('createdAt: $createdAt, ')
-          ..write('isSynced: $isSynced')
+          ..write('isSynced: $isSynced, ')
+          ..write('syncedAt: $syncedAt, ')
+          ..write('syncError: $syncError, ')
+          ..write('retryCount: $retryCount')
           ..write(')'))
         .toString();
   }
@@ -2086,14 +2234,14 @@ typedef $$CategoriesTableTableCreateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       required String name,
-      required String emodji,
+      required String emoji,
       required bool isIncome,
     });
 typedef $$CategoriesTableTableUpdateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       Value<String> name,
-      Value<String> emodji,
+      Value<String> emoji,
       Value<bool> isIncome,
     });
 
@@ -2157,8 +2305,8 @@ class $$CategoriesTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get emodji => $composableBuilder(
-    column: $table.emodji,
+  ColumnFilters<String> get emoji => $composableBuilder(
+    column: $table.emoji,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2212,8 +2360,8 @@ class $$CategoriesTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get emodji => $composableBuilder(
-    column: $table.emodji,
+  ColumnOrderings<String> get emoji => $composableBuilder(
+    column: $table.emoji,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2238,8 +2386,8 @@ class $$CategoriesTableTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get emodji =>
-      $composableBuilder(column: $table.emodji, builder: (column) => column);
+  GeneratedColumn<String> get emoji =>
+      $composableBuilder(column: $table.emoji, builder: (column) => column);
 
   GeneratedColumn<bool> get isIncome =>
       $composableBuilder(column: $table.isIncome, builder: (column) => column);
@@ -2310,24 +2458,24 @@ class $$CategoriesTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> emodji = const Value.absent(),
+                Value<String> emoji = const Value.absent(),
                 Value<bool> isIncome = const Value.absent(),
               }) => CategoriesTableCompanion(
                 id: id,
                 name: name,
-                emodji: emodji,
+                emoji: emoji,
                 isIncome: isIncome,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String name,
-                required String emodji,
+                required String emoji,
                 required bool isIncome,
               }) => CategoriesTableCompanion.insert(
                 id: id,
                 name: name,
-                emodji: emodji,
+                emoji: emoji,
                 isIncome: isIncome,
               ),
           withReferenceMapper:
@@ -2891,6 +3039,9 @@ typedef $$BackUpOperationsTableTableCreateCompanionBuilder =
       required String entityData,
       Value<DateTime> createdAt,
       Value<bool> isSynced,
+      Value<DateTime?> syncedAt,
+      Value<String?> syncError,
+      Value<int> retryCount,
     });
 typedef $$BackUpOperationsTableTableUpdateCompanionBuilder =
     BackUpOperationsTableCompanion Function({
@@ -2901,6 +3052,9 @@ typedef $$BackUpOperationsTableTableUpdateCompanionBuilder =
       Value<String> entityData,
       Value<DateTime> createdAt,
       Value<bool> isSynced,
+      Value<DateTime?> syncedAt,
+      Value<String?> syncError,
+      Value<int> retryCount,
     });
 
 class $$BackUpOperationsTableTableFilterComposer
@@ -2944,6 +3098,21 @@ class $$BackUpOperationsTableTableFilterComposer
 
   ColumnFilters<bool> get isSynced => $composableBuilder(
     column: $table.isSynced,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncedAt => $composableBuilder(
+    column: $table.syncedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -2991,6 +3160,21 @@ class $$BackUpOperationsTableTableOrderingComposer
     column: $table.isSynced,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get syncedAt => $composableBuilder(
+    column: $table.syncedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncError => $composableBuilder(
+    column: $table.syncError,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$BackUpOperationsTableTableAnnotationComposer
@@ -3028,6 +3212,17 @@ class $$BackUpOperationsTableTableAnnotationComposer
 
   GeneratedColumn<bool> get isSynced =>
       $composableBuilder(column: $table.isSynced, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get syncedAt =>
+      $composableBuilder(column: $table.syncedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncError =>
+      $composableBuilder(column: $table.syncError, builder: (column) => column);
+
+  GeneratedColumn<int> get retryCount => $composableBuilder(
+    column: $table.retryCount,
+    builder: (column) => column,
+  );
 }
 
 class $$BackUpOperationsTableTableTableManager
@@ -3083,6 +3278,9 @@ class $$BackUpOperationsTableTableTableManager
                 Value<String> entityData = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<bool> isSynced = const Value.absent(),
+                Value<DateTime?> syncedAt = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
               }) => BackUpOperationsTableCompanion(
                 id: id,
                 operationType: operationType,
@@ -3091,6 +3289,9 @@ class $$BackUpOperationsTableTableTableManager
                 entityData: entityData,
                 createdAt: createdAt,
                 isSynced: isSynced,
+                syncedAt: syncedAt,
+                syncError: syncError,
+                retryCount: retryCount,
               ),
           createCompanionCallback:
               ({
@@ -3101,6 +3302,9 @@ class $$BackUpOperationsTableTableTableManager
                 required String entityData,
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<bool> isSynced = const Value.absent(),
+                Value<DateTime?> syncedAt = const Value.absent(),
+                Value<String?> syncError = const Value.absent(),
+                Value<int> retryCount = const Value.absent(),
               }) => BackUpOperationsTableCompanion.insert(
                 id: id,
                 operationType: operationType,
@@ -3109,6 +3313,9 @@ class $$BackUpOperationsTableTableTableManager
                 entityData: entityData,
                 createdAt: createdAt,
                 isSynced: isSynced,
+                syncedAt: syncedAt,
+                syncError: syncError,
+                retryCount: retryCount,
               ),
           withReferenceMapper:
               (p0) =>

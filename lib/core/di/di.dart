@@ -11,5 +11,9 @@ final getIt = GetIt.instance;
   asExtension: true,
 )
 Future<void> configureDependencies() async {
+  getIt.registerFactory<String>(
+    () => 'SHpjYexGOFZdJCdJzQbLJD6z', 
+    instanceName: 'bearerToken',
+  );
   getIt.init();
 }
