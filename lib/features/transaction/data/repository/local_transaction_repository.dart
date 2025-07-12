@@ -6,15 +6,13 @@ import 'package:shrm_homework_app/features/category/domain/models/category/categ
 import 'package:shrm_homework_app/features/transaction/data/models/transaction/transaction.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
-import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 
-@Injectable(as: TransactionRepository)
-class LocalTransactionRepository implements TransactionRepository {
+@injectable
+class LocalTransactionRepository {
   final AppDatabase _database;
 
   LocalTransactionRepository(this._database);
 
-  @override
   Future<Transaction> createTransaction(TransactionRequest request) async {
     final now = DateTime.now();
 
@@ -43,13 +41,11 @@ class LocalTransactionRepository implements TransactionRepository {
     );
   }
 
-  @override
   Future<void> deleteTransaction(int id) async {
     await (_database.delete(_database.transactionsTable)
       ..where((t) => t.id.equals(id))).go();
   }
 
-  @override
   Future<List<TransactionResponse>> getAllTransactions() async {
     final query = _database.select(_database.transactionsTable).join([
       innerJoin(
@@ -84,7 +80,7 @@ class LocalTransactionRepository implements TransactionRepository {
         category: Category(
           id: category.id,
           name: category.name,
-          emodji: category.emodji,
+          emoji: category.emoji,
           isIncome: category.isIncome,
         ),
         amount: transaction.amount,
@@ -96,7 +92,6 @@ class LocalTransactionRepository implements TransactionRepository {
     }).toList();
   }
 
-  @override
   Future<TransactionResponse> getTransaction(int id) async {
     final query = _database.select(_database.transactionsTable).join([
       innerJoin(
@@ -113,7 +108,13 @@ class LocalTransactionRepository implements TransactionRepository {
       ),
     ])..where(_database.transactionsTable.id.equals(id));
 
-    final row = await query.getSingle();
+    final rows = await query.get();
+    
+    if (rows.isEmpty) {
+      throw Exception('Транзакция с ID $id не найдена');
+    }
+    
+    final row = rows.first;
 
     final transaction = row.readTable(_database.transactionsTable);
     final account = row.readTable(_database.accountsTable);
@@ -130,7 +131,7 @@ class LocalTransactionRepository implements TransactionRepository {
       category: Category(
         id: category.id,
         name: category.name,
-        emodji: category.emodji,
+        emoji: category.emoji,
         isIncome: category.isIncome,
       ),
       amount: transaction.amount,
@@ -140,7 +141,6 @@ class LocalTransactionRepository implements TransactionRepository {
     );
   }
 
-  @override
   Future<TransactionResponse> updateTransaction(
     int id,
     TransactionRequest request,

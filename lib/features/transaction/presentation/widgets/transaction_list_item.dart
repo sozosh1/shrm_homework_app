@@ -25,7 +25,7 @@ class TransactionListItem extends StatelessWidget {
             backgroundColor: AppColors.lightGreenBackground,
             radius: 12,
             child: Text(
-              transaction.category.emodji,
+              transaction.category.emoji,
               style: const TextStyle(fontSize: 20),
             ),
           ),

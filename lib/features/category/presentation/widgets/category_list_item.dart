@@ -14,7 +14,7 @@ class CategoryListItem extends StatelessWidget {
       children: [
         ListTile(
           leading: CircleAvatar(
-            child: Text(category.emodji, style: TextStyle(fontSize: 24)),
+            child: Text(category.emoji, style: TextStyle(fontSize: 24)),
           ),
           title: Text(category.name),
           onTap: () {

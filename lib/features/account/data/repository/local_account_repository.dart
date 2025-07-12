@@ -6,11 +6,10 @@ import 'package:shrm_homework_app/features/account/data/models/account_responce/
 import 'package:shrm_homework_app/features/account/data/models/account_update_request/account_update_request.dart';
 import 'package:shrm_homework_app/features/account/data/models/stat_item/stat_item.dart';
 import 'package:shrm_homework_app/features/account/domain/models/account/account.dart';
-import 'package:shrm_homework_app/features/account/domain/repository/account_repository.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-@Injectable(as: AccountRepository)
-class LocalAccountRepository implements AccountRepository {
+@injectable
+class LocalAccountRepository {
   
   static const _accountId = 1;
   final AppDatabase _database;
@@ -18,7 +17,6 @@ class LocalAccountRepository implements AccountRepository {
   LocalAccountRepository(this._database);
   final Talker _talker = Talker();
 
-  @override
   Future<AccountResponse> getAccount(int id) async {
     
     final account = await _getAccountInternal();
@@ -36,7 +34,6 @@ class LocalAccountRepository implements AccountRepository {
     );
   }
 
-  @override
   Future<Account> updateAccount(int id, AccountUpdateRequest request) async {
     
     await (_database.update(_database.accountsTable)
@@ -98,7 +95,7 @@ class LocalAccountRepository implements AccountRepository {
       final stat = StatItem(
         categoryId: category.id,
         categoryName: category.name,
-        emoji: category.emodji,
+        emoji: category.emoji,
         amount: e.value,
       );
 
@@ -112,7 +109,6 @@ class LocalAccountRepository implements AccountRepository {
   }
 
   
-  @override
   Stream<List<Map<String, dynamic>>> getTransactionHistoryStream() {
     _talker.info(
       'Starting transaction history stream for account $_accountId at ${DateTime.now()}',

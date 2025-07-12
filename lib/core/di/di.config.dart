@@ -13,13 +13,21 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:talker_flutter/talker_flutter.dart' as _i207;
 
+import '../../features/account/data/repository/account_repository_impl.dart'
+    as _i852;
 import '../../features/account/data/repository/local_account_repository.dart'
     as _i766;
+import '../../features/account/data/repository/remote_account_repository.dart'
+    as _i1005;
 import '../../features/account/domain/repository/account_repository.dart'
     as _i104;
 import '../../features/account/presentation/bloc/account_bloc.dart' as _i708;
+import '../../features/category/data/repository/category_repository_impl.dart'
+    as _i1004;
 import '../../features/category/data/repository/local_category_repository.dart'
     as _i1026;
+import '../../features/category/data/repository/remote_category_repository.dart'
+    as _i825;
 import '../../features/category/domain/repository/category_repository.dart'
     as _i847;
 import '../../features/category/domain/usecases/fuzzy_search_usecase.dart'
@@ -27,6 +35,10 @@ import '../../features/category/domain/usecases/fuzzy_search_usecase.dart'
 import '../../features/category/presentation/bloc/category_bloc.dart' as _i292;
 import '../../features/transaction/data/repository/local_transaction_repository.dart'
     as _i100;
+import '../../features/transaction/data/repository/remote_transaction_repository.dart'
+    as _i430;
+import '../../features/transaction/data/repository/transaction_repository_impl.dart'
+    as _i857;
 import '../../features/transaction/domain/repository/transaction_repository.dart'
     as _i472;
 import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
@@ -35,8 +47,10 @@ import '../../features/transaction/presentation/bloc/transaction_history/transac
     as _i1051;
 import '../database/app_database.dart' as _i982;
 import '../network/dio_client.dart' as _i667;
+import '../services/backup_sync_service.dart' as _i147;
 import '../services/connectivity_service.dart' as _i47;
 import '../services/currency_service.dart' as _i31;
+import '../services/initialization_service.dart' as _i931;
 import '../storage/preferences_service.dart' as _i636;
 import 'talker_module.dart' as _i956;
 
@@ -72,14 +86,67 @@ extension GetItInjectableX on _i174.GetIt {
         gh<String>(instanceName: 'bearerToken'),
       ),
     );
-    gh.factory<_i847.CategoryRepository>(
+    gh.factory<_i825.RemoteCategoryRepository>(
+      () => _i825.RemoteCategoryRepository(
+        gh<_i667.DioClient>(),
+        gh<_i207.Talker>(),
+      ),
+    );
+    gh.factory<_i1005.RemoteAccountRepository>(
+      () => _i1005.RemoteAccountRepository(
+        gh<_i667.DioClient>(),
+        gh<_i207.Talker>(),
+      ),
+    );
+    gh.factory<_i430.RemoteTransactionRepository>(
+      () => _i430.RemoteTransactionRepository(
+        gh<_i667.DioClient>(),
+        gh<_i207.Talker>(),
+      ),
+    );
+    gh.factory<_i766.LocalAccountRepository>(
+      () => _i766.LocalAccountRepository(gh<_i982.AppDatabase>()),
+    );
+    gh.factory<_i1026.LocalCategoryRepository>(
       () => _i1026.LocalCategoryRepository(gh<_i982.AppDatabase>()),
     );
-    gh.factory<_i472.TransactionRepository>(
+    gh.factory<_i100.LocalTransactionRepository>(
       () => _i100.LocalTransactionRepository(gh<_i982.AppDatabase>()),
     );
+    gh.singleton<_i147.BackupSyncService>(
+      () => _i147.BackupSyncService(
+        gh<_i982.AppDatabase>(),
+        gh<_i667.DioClient>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i207.Talker>(),
+      ),
+    );
     gh.factory<_i104.AccountRepository>(
-      () => _i766.LocalAccountRepository(gh<_i982.AppDatabase>()),
+      () => _i852.AccountRepositoryImpl(
+        gh<_i766.LocalAccountRepository>(),
+        gh<_i1005.RemoteAccountRepository>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i147.BackupSyncService>(),
+        gh<_i207.Talker>(),
+      ),
+    );
+    gh.factory<_i472.TransactionRepository>(
+      () => _i857.TransactionRepositoryImpl(
+        gh<_i100.LocalTransactionRepository>(),
+        gh<_i430.RemoteTransactionRepository>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i147.BackupSyncService>(),
+        gh<_i207.Talker>(),
+      ),
+    );
+    gh.factory<_i847.CategoryRepository>(
+      () => _i1004.CategoryRepositoryImpl(
+        gh<_i1026.LocalCategoryRepository>(),
+        gh<_i825.RemoteCategoryRepository>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i147.BackupSyncService>(),
+        gh<_i207.Talker>(),
+      ),
     );
     gh.factory<_i708.AccountBloc>(
       () => _i708.AccountBloc(
@@ -91,6 +158,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i292.CategoryBloc(
         gh<_i847.CategoryRepository>(),
         gh<_i578.FuzzySearchUseCase>(),
+      ),
+    );
+    gh.factory<_i931.InitializationService>(
+      () => _i931.InitializationService(
+        gh<_i847.CategoryRepository>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i982.AppDatabase>(),
+        gh<_i207.Talker>(),
       ),
     );
     gh.factory<_i1051.TransactionHistoryBloc>(

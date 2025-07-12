@@ -33,7 +33,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
   AppDatabase(this._talker) : super(_openConnection(_talker));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -42,8 +42,9 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
         await m.createAll();
         _talker.log('🎯 Database tables created');
 
-        await _insertInitialCategories();
-        _talker.log('📂 Initial categories inserted');
+        // Не вставляем категории автоматически - они будут загружены из API
+        // await _insertInitialCategories();
+        // _talker.log('📂 Initial categories inserted');
 
         await _insertInitialAccount();
         _talker.log('💳 Initial account inserted');
@@ -59,6 +60,30 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
       },
       onUpgrade: (Migrator m, int from, int to) async {
         _talker.log('🔄 Database upgraded from $from to $to');
+        
+        if (from < 2) {
+          // Обновление схемы BackUpOperationsTable с правильными значениями по умолчанию
+          _talker.log('🔧 Updating BackUpOperationsTable schema...');
+          
+          // Если таблица уже существует, пересоздаем ее с правильными значениями по умолчанию
+          await m.drop(backUpOperationsTable);
+          await m.create(backUpOperationsTable);
+          
+          _talker.log('✅ BackUpOperationsTable schema updated');
+        }
+        
+        if (from < 3) {
+          // Обновление поля emodji на emoji в CategoriesTable
+          _talker.log('🔧 Updating CategoriesTable: emodji -> emoji');
+          
+          // Удаляем старые данные и пересоздаем таблицу с правильным полем emoji
+          await m.drop(categoriesTable);
+          await m.create(categoriesTable);
+          
+
+          
+          _talker.log('✅ CategoriesTable updated with emoji field (categories will be loaded from API)');
+        }
       },
     );
   }
@@ -265,38 +290,39 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
     }
   }
 
-  Future<void> _insertInitialCategories() async {
-    _talker.debug('📝 Inserting initial categories...');
+  /// Вставляет начальные категории (используется как fallback)
+  Future<void> insertFallbackCategories() async {
+    _talker.debug('📝 Inserting fallback categories...');
     await batch((batch) {
       batch.insertAll(categoriesTable, [
         CategoriesTableCompanion.insert(
           id: const Value(1),
           name: 'Зарплата',
-          emodji: '💰',
+          emoji: '💰',
           isIncome: true,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(2),
           name: 'Фриланс',
-          emodji: '💰',
+          emoji: '💰',
           isIncome: true,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(3),
           name: 'Продукты',
-          emodji: '🛒',
+          emoji: '🛒',
           isIncome: false,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(4),
           name: 'Транспорт',
-          emodji: '🚗',
+          emoji: '🚗',
           isIncome: false,
         ),
         CategoriesTableCompanion.insert(
           id: const Value(5),
           name: 'Развлечения',
-          emodji: '🎬',
+          emoji: '🎬',
           isIncome: false,
         ),
       ]);

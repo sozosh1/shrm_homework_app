@@ -219,7 +219,7 @@ class CategoryAnalysisListItem extends StatelessWidget {
             backgroundColor: AppColors.lightGreenBackground,
             radius: 20,
             child: Text(
-              item.category.emodji,
+              item.category.emoji,
               style: const TextStyle(fontSize: 24),
             ),
           ),

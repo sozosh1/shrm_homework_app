@@ -442,10 +442,10 @@ class $CategoriesTableTable extends CategoriesTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _emodjiMeta = const VerificationMeta('emodji');
+  static const VerificationMeta _emojiMeta = const VerificationMeta('emoji');
   @override
-  late final GeneratedColumn<String> emodji = GeneratedColumn<String>(
-    'emodji',
+  late final GeneratedColumn<String> emoji = GeneratedColumn<String>(
+    'emoji',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -466,7 +466,7 @@ class $CategoriesTableTable extends CategoriesTable
     ),
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name, emodji, isIncome];
+  List<GeneratedColumn> get $columns => [id, name, emoji, isIncome];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -490,13 +490,13 @@ class $CategoriesTableTable extends CategoriesTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('emodji')) {
+    if (data.containsKey('emoji')) {
       context.handle(
-        _emodjiMeta,
-        emodji.isAcceptableOrUnknown(data['emodji']!, _emodjiMeta),
+        _emojiMeta,
+        emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta),
       );
     } else if (isInserting) {
-      context.missing(_emodjiMeta);
+      context.missing(_emojiMeta);
     }
     if (data.containsKey('is_income')) {
       context.handle(
@@ -525,10 +525,10 @@ class $CategoriesTableTable extends CategoriesTable
             DriftSqlType.string,
             data['${effectivePrefix}name'],
           )!,
-      emodji:
+      emoji:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}emodji'],
+            data['${effectivePrefix}emoji'],
           )!,
       isIncome:
           attachedDatabase.typeMapping.read(
@@ -548,12 +548,12 @@ class CategoriesTableData extends DataClass
     implements Insertable<CategoriesTableData> {
   final int id;
   final String name;
-  final String emodji;
+  final String emoji;
   final bool isIncome;
   const CategoriesTableData({
     required this.id,
     required this.name,
-    required this.emodji,
+    required this.emoji,
     required this.isIncome,
   });
   @override
@@ -561,7 +561,7 @@ class CategoriesTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['emodji'] = Variable<String>(emodji);
+    map['emoji'] = Variable<String>(emoji);
     map['is_income'] = Variable<bool>(isIncome);
     return map;
   }
@@ -570,7 +570,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableCompanion(
       id: Value(id),
       name: Value(name),
-      emodji: Value(emodji),
+      emoji: Value(emoji),
       isIncome: Value(isIncome),
     );
   }
@@ -583,7 +583,7 @@ class CategoriesTableData extends DataClass
     return CategoriesTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      emodji: serializer.fromJson<String>(json['emodji']),
+      emoji: serializer.fromJson<String>(json['emoji']),
       isIncome: serializer.fromJson<bool>(json['isIncome']),
     );
   }
@@ -593,7 +593,7 @@ class CategoriesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'emodji': serializer.toJson<String>(emodji),
+      'emoji': serializer.toJson<String>(emoji),
       'isIncome': serializer.toJson<bool>(isIncome),
     };
   }
@@ -601,19 +601,19 @@ class CategoriesTableData extends DataClass
   CategoriesTableData copyWith({
     int? id,
     String? name,
-    String? emodji,
+    String? emoji,
     bool? isIncome,
   }) => CategoriesTableData(
     id: id ?? this.id,
     name: name ?? this.name,
-    emodji: emodji ?? this.emodji,
+    emoji: emoji ?? this.emoji,
     isIncome: isIncome ?? this.isIncome,
   );
   CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
     return CategoriesTableData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
-      emodji: data.emodji.present ? data.emodji.value : this.emodji,
+      emoji: data.emoji.present ? data.emoji.value : this.emoji,
       isIncome: data.isIncome.present ? data.isIncome.value : this.isIncome,
     );
   }
@@ -623,53 +623,53 @@ class CategoriesTableData extends DataClass
     return (StringBuffer('CategoriesTableData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emodji: $emodji, ')
+          ..write('emoji: $emoji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, emodji, isIncome);
+  int get hashCode => Object.hash(id, name, emoji, isIncome);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoriesTableData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.emodji == this.emodji &&
+          other.emoji == this.emoji &&
           other.isIncome == this.isIncome);
 }
 
 class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> emodji;
+  final Value<String> emoji;
   final Value<bool> isIncome;
   const CategoriesTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.emodji = const Value.absent(),
+    this.emoji = const Value.absent(),
     this.isIncome = const Value.absent(),
   });
   CategoriesTableCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String emodji,
+    required String emoji,
     required bool isIncome,
   }) : name = Value(name),
-       emodji = Value(emodji),
+       emoji = Value(emoji),
        isIncome = Value(isIncome);
   static Insertable<CategoriesTableData> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<String>? emodji,
+    Expression<String>? emoji,
     Expression<bool>? isIncome,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (emodji != null) 'emodji': emodji,
+      if (emoji != null) 'emoji': emoji,
       if (isIncome != null) 'is_income': isIncome,
     });
   }
@@ -677,13 +677,13 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
   CategoriesTableCompanion copyWith({
     Value<int>? id,
     Value<String>? name,
-    Value<String>? emodji,
+    Value<String>? emoji,
     Value<bool>? isIncome,
   }) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      emodji: emodji ?? this.emodji,
+      emoji: emoji ?? this.emoji,
       isIncome: isIncome ?? this.isIncome,
     );
   }
@@ -697,8 +697,8 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (emodji.present) {
-      map['emodji'] = Variable<String>(emodji.value);
+    if (emoji.present) {
+      map['emoji'] = Variable<String>(emoji.value);
     }
     if (isIncome.present) {
       map['is_income'] = Variable<bool>(isIncome.value);
@@ -711,7 +711,7 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     return (StringBuffer('CategoriesTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('emodji: $emodji, ')
+          ..write('emoji: $emoji, ')
           ..write('isIncome: $isIncome')
           ..write(')'))
         .toString();
@@ -2234,14 +2234,14 @@ typedef $$CategoriesTableTableCreateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       required String name,
-      required String emodji,
+      required String emoji,
       required bool isIncome,
     });
 typedef $$CategoriesTableTableUpdateCompanionBuilder =
     CategoriesTableCompanion Function({
       Value<int> id,
       Value<String> name,
-      Value<String> emodji,
+      Value<String> emoji,
       Value<bool> isIncome,
     });
 
@@ -2305,8 +2305,8 @@ class $$CategoriesTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get emodji => $composableBuilder(
-    column: $table.emodji,
+  ColumnFilters<String> get emoji => $composableBuilder(
+    column: $table.emoji,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2360,8 +2360,8 @@ class $$CategoriesTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get emodji => $composableBuilder(
-    column: $table.emodji,
+  ColumnOrderings<String> get emoji => $composableBuilder(
+    column: $table.emoji,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2386,8 +2386,8 @@ class $$CategoriesTableTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get emodji =>
-      $composableBuilder(column: $table.emodji, builder: (column) => column);
+  GeneratedColumn<String> get emoji =>
+      $composableBuilder(column: $table.emoji, builder: (column) => column);
 
   GeneratedColumn<bool> get isIncome =>
       $composableBuilder(column: $table.isIncome, builder: (column) => column);
@@ -2458,24 +2458,24 @@ class $$CategoriesTableTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> emodji = const Value.absent(),
+                Value<String> emoji = const Value.absent(),
                 Value<bool> isIncome = const Value.absent(),
               }) => CategoriesTableCompanion(
                 id: id,
                 name: name,
-                emodji: emodji,
+                emoji: emoji,
                 isIncome: isIncome,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String name,
-                required String emodji,
+                required String emoji,
                 required bool isIncome,
               }) => CategoriesTableCompanion.insert(
                 id: id,
                 name: name,
-                emodji: emodji,
+                emoji: emoji,
                 isIncome: isIncome,
               ),
           withReferenceMapper:

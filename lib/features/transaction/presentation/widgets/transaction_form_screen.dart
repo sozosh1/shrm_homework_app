@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
+import 'package:shrm_homework_app/core/services/backup_sync_service.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
 import 'package:shrm_homework_app/features/account/domain/repository/account_repository.dart';
 import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
@@ -78,7 +79,6 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     });
 
     try {
-      
       final accountRepository = getIt<AccountRepository>();
       final categoryRepository = getIt<CategoryRepository>();
 
@@ -93,7 +93,6 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
         ),
       ];
 
-      
       _categories = await categoryRepository.getCategoriesByType(
         widget.isIncome,
       );
@@ -192,7 +191,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 final category = _categories[index];
                 return ListTile(
                   leading: Text(
-                    category.emodji,
+                    category.emoji,
                     style: TextStyle(fontSize: 24),
                   ),
                   title: Text(category.name),
@@ -264,10 +263,15 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   }
 
   void _validateAndSave() {
+    print('🔍 TransactionForm: Начинаем валидацию и сохранение');
+    
     if (!_validateFields()) {
+      print('❌ TransactionForm: Валидация не прошла');
       _showValidationDialog();
       return;
     }
+
+    print('✅ TransactionForm: Валидация прошла успешно');
 
     final dateTime = DateTime(
       _selectedDate.year,
@@ -289,8 +293,11 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
       transactionDate: dateTime,
     );
 
+    print('📝 TransactionForm: Создаем запрос: accountId=${request.accountId}, categoryId=${request.categoryId}, amount=${request.amount}');
+
     final bloc = context.read<TransactionBloc>();
     if (widget.transaction == null) {
+      print('🆕 TransactionForm: Создаем новую транзакцию');
       bloc.add(
         TransactionEvent.createTransaction(
           request: request,
@@ -298,6 +305,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
         ),
       );
     } else {
+      print('✏️ TransactionForm: Обновляем существующую транзакцию ID=${widget.transaction!.id}');
       bloc.add(
         TransactionEvent.updateTransaction(
           id: widget.transaction!.id,
@@ -340,6 +348,26 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     );
   }
 
+  void _clearFailedOperations() async {
+    try {
+      final backupService = getIt<BackupSyncService>();
+      await backupService.clearFailedOperations();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Неудачные операции синхронизации очищены'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorDialog('Ошибка очистки операций: $e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<TransactionBloc, TransactionState>(
@@ -358,9 +386,34 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.check, color: Colors.white),
-              onPressed: _validateAndSave,
+            GestureDetector(
+              onLongPress: () {
+                // Длинное нажатие для очистки неудачных операций синхронизации
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Очистка операций'),
+                    content: const Text('Очистить все неудачные операции синхронизации?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Отмена'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _clearFailedOperations();
+                        },
+                        child: const Text('Очистить'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: IconButton(
+                icon: const Icon(Icons.check, color: Colors.white),
+                onPressed: _validateAndSave,
+              ),
             ),
           ],
           title: Text(
@@ -477,7 +530,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                         ? Row(
                           children: [
                             Text(
-                              _selectedCategory!.emodji,
+                              _selectedCategory!.emoji,
                               style: const TextStyle(fontSize: 20),
                             ),
                             const SizedBox(width: 8),
