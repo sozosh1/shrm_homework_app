@@ -34,6 +34,8 @@ import '../../features/transaction/presentation/bloc/transaction_bloc.dart'
 import '../../features/transaction/presentation/bloc/transaction_history/transaction_history_bloc.dart'
     as _i1051;
 import '../database/app_database.dart' as _i982;
+import '../network/dio_client.dart' as _i667;
+import '../services/connectivity_service.dart' as _i47;
 import '../services/currency_service.dart' as _i31;
 import '../storage/preferences_service.dart' as _i636;
 import 'talker_module.dart' as _i956;
@@ -60,6 +62,15 @@ extension GetItInjectableX on _i174.GetIt {
     });
     gh.singleton<_i982.AppDatabase>(
       () => _i982.AppDatabase(gh<_i207.Talker>()),
+    );
+    gh.singleton<_i47.ConnectivityService>(
+      () => _i47.ConnectivityService(gh<_i207.Talker>()),
+    );
+    gh.singleton<_i667.DioClient>(
+      () => _i667.DioClient(
+        gh<_i207.Talker>(),
+        gh<String>(instanceName: 'bearerToken'),
+      ),
     );
     gh.factory<_i847.CategoryRepository>(
       () => _i1026.LocalCategoryRepository(gh<_i982.AppDatabase>()),

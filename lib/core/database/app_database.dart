@@ -49,7 +49,7 @@ class AppDatabase extends _$AppDatabase with ChangeNotifier {
         _talker.log('💳 Initial account inserted');
 
         await _insertSampleTransactions();
-        _talker.log('💰 Sample transactions inserted');
+       _talker.log('💰 Sample transactions inserted');
 
         // Проверка вставленных данных после миграции
         final transactions = await select(transactionsTable).get();
