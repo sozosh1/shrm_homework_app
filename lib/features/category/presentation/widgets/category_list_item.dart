@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
 
 class CategoryListItem extends StatelessWidget {
   final Category category;
@@ -14,17 +14,10 @@ class CategoryListItem extends StatelessWidget {
       children: [
         ListTile(
           leading: CircleAvatar(
-            child: Text(category.emoji, style: TextStyle(fontSize: 24)),
+            radius: 16,
+            child: Text(category.emoji, style: TextStyle(fontSize: 20)),
           ),
           title: Text(category.name),
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Категория: ${category.name}'),
-                duration: const Duration(seconds: 1),
-              ),
-            );
-          },
         ),
       ],
     );

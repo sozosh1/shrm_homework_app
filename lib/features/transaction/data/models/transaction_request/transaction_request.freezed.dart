@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionRequest {
 
- int get accountId; int get categoryId; double get amount; DateTime get transactionDate; String? get comment;
+ int get accountId; int get categoryId; double get amount;@IsoDateTimeConverter() DateTime get transactionDate; String? get comment;
 /// Create a copy of TransactionRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TransactionRequestCopyWith<$Res>  {
   factory $TransactionRequestCopyWith(TransactionRequest value, $Res Function(TransactionRequest) _then) = _$TransactionRequestCopyWithImpl;
 @useResult
 $Res call({
- int accountId, int categoryId, double amount, DateTime transactionDate, String? comment
+ int accountId, int categoryId, double amount,@IsoDateTimeConverter() DateTime transactionDate, String? comment
 });
 
 
@@ -84,13 +84,13 @@ as String?,
 @JsonSerializable()
 
 class _TransactionRequest implements TransactionRequest {
-  const _TransactionRequest({required this.accountId, required this.categoryId, required this.amount, required this.transactionDate, this.comment});
+  const _TransactionRequest({required this.accountId, required this.categoryId, required this.amount, @IsoDateTimeConverter() required this.transactionDate, this.comment});
   factory _TransactionRequest.fromJson(Map<String, dynamic> json) => _$TransactionRequestFromJson(json);
 
 @override final  int accountId;
 @override final  int categoryId;
 @override final  double amount;
-@override final  DateTime transactionDate;
+@override@IsoDateTimeConverter() final  DateTime transactionDate;
 @override final  String? comment;
 
 /// Create a copy of TransactionRequest
@@ -126,7 +126,7 @@ abstract mixin class _$TransactionRequestCopyWith<$Res> implements $TransactionR
   factory _$TransactionRequestCopyWith(_TransactionRequest value, $Res Function(_TransactionRequest) _then) = __$TransactionRequestCopyWithImpl;
 @override @useResult
 $Res call({
- int accountId, int categoryId, double amount, DateTime transactionDate, String? comment
+ int accountId, int categoryId, double amount,@IsoDateTimeConverter() DateTime transactionDate, String? comment
 });
 
 

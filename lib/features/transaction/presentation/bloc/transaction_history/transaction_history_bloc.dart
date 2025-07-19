@@ -4,9 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shrm_homework_app/features/account/data/datasources/local_account_data_source.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
-
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -16,9 +16,10 @@ import 'transaction_history_state.dart';
 @injectable
 class TransactionHistoryBloc
     extends Bloc<TransactionHistoryEvent, TransactionHistoryState> {
-  final TransactionRepository _repository;
+  final TransactionRepository _transactionRepository;
+  final LocalAccountDataSource _accountDS;
 
-  TransactionHistoryBloc(this._repository)
+  TransactionHistoryBloc(this._transactionRepository, this._accountDS)
     : super(const TransactionHistoryState.initial()) {
     on<LoadTransactionHistoryInitial>(_onLoadTransactionHistoryInitial);
     on<LoadTransactionHistoryByPeriod>(_onLoadTransactionHistoryByPeriod);
@@ -68,7 +69,13 @@ class TransactionHistoryBloc
     emit(const TransactionHistoryState.loading());
 
     try {
-      final allTransactions = await _repository.getAllTransactions();
+      final account = await _accountDS.getAccount(100);
+      final allTransactions = await _transactionRepository
+          .getTransactionsByPeriod(
+            account.id,
+            startDate: event.startDate,
+            endDate: event.endDate,
+          );
 
       final startOfDay = DateTime(
         event.startDate.year,
@@ -133,7 +140,14 @@ class TransactionHistoryBloc
     emit(const TransactionHistoryState.loading());
 
     try {
-      final allTransactions = await _repository.getAllTransactions();
+      final account = await _accountDS.getAccount(100);
+
+      final allTransactions = await _transactionRepository
+          .getTransactionsByPeriod(
+            account.id,
+            startDate: event.startDate,
+            endDate: event.endDate,
+          );
 
       final startOfDay = DateTime(
         event.startDate.year,

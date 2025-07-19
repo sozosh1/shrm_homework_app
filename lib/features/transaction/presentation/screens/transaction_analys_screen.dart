@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
+
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
@@ -11,6 +11,7 @@ import 'package:shrm_homework_app/features/transaction/presentation/bloc/transac
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_history/transaction_history_state.dart';
 import 'package:transaction_chart/transaction_chart.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
 
 @RoutePage()
 class TransactionAnalysScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class TransactionAnalysScreen extends StatelessWidget {
                 ),
               ),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Анализ')),
+        appBar: AppBar(title: Text(S.of(context).analysis)),
         body: TransactionAnalysView(isIncome: isIncome),
       ),
     );
@@ -73,13 +74,13 @@ class TransactionAnalysView extends StatelessWidget {
           return Column(
             children: [
               Container(
-                color: AppColors.lightGreenBackground,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 child: Column(
                   children: [
                     _buildDateListTile(
                       context,
-                      'Начало',
-                      _formatDateForDisplay(state.startDate),
+                      S.of(context).start,
+                      _formatDateForDisplay(context, state.startDate),
                       () async {
                         final selectedDate = await showDatePicker(
                           context: context,
@@ -96,11 +97,11 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(),
+                    const Divider(height: 1),
                     _buildDateListTile(
                       context,
-                      'Конец',
-                      _formatDateForDisplay(state.endDate),
+                      S.of(context).end,
+                      _formatDateForDisplay(context, state.endDate),
                       () async {
                         final selectedDate = await showDatePicker(
                           context: context,
@@ -117,9 +118,9 @@ class TransactionAnalysView extends StatelessWidget {
                         }
                       },
                     ),
-                    const Divider(),
+                    const Divider(height: 1),
                     _buildSummaryListTile(
-                      'Сумма',
+                      S.of(context).amount,
                       CurrencyDisplay(
                         amount: state.totalAmount,
                         accountCurrency: state.currency,
@@ -130,10 +131,8 @@ class TransactionAnalysView extends StatelessWidget {
                 ),
               ),
               if (state.analysisItems.isEmpty)
-                const Expanded(
-                  child: Center(
-                    child: Text('Нет данных для анализа за выбранный период'),
-                  ),
+                Expanded(
+                  child: Center(child: Text(S.of(context).noDataForAnalysis)),
                 )
               else
                 Expanded(
@@ -183,20 +182,20 @@ class TransactionAnalysView extends StatelessWidget {
     return ListTile(title: Text(title), trailing: value);
   }
 
-  String _formatDateForDisplay(DateTime date) {
+  String _formatDateForDisplay(BuildContext context, DateTime date) {
     final months = [
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь',
+      S.of(context).monthJanuary,
+      S.of(context).monthFebruary,
+      S.of(context).monthMarch,
+      S.of(context).monthApril,
+      S.of(context).monthMay,
+      S.of(context).monthJune,
+      S.of(context).monthJuly,
+      S.of(context).monthAugust,
+      S.of(context).monthSeptember,
+      S.of(context).monthOctober,
+      S.of(context).monthNovember,
+      S.of(context).monthDecember,
     ];
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
@@ -209,14 +208,12 @@ class CategoryAnalysisListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Hero(
       tag: 'category_${item.category.id}',
       child: Material(
         type: MaterialType.transparency,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: AppColors.lightGreenBackground,
             radius: 20,
             child: Text(
               item.category.emoji,
@@ -224,18 +221,14 @@ class CategoryAnalysisListItem extends StatelessWidget {
             ),
           ),
           title: Text(item.category.name),
-          subtitle: Text(item.lastTransaction.comment ?? 'Нет комментария'),
+          subtitle: Text(
+            item.lastTransaction.comment ?? S.of(context).noComment,
+          ),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                '${item.percentage.toStringAsFixed(0)}%',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryGreen,
-                ),
-              ),
+              Text('${item.percentage.toStringAsFixed(0)}%'),
               CurrencyDisplay(
                 amount: item.totalAmount,
                 accountCurrency: item.lastTransaction.account.currency,

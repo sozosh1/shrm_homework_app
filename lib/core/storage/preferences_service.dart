@@ -20,9 +20,20 @@ class PreferencesService {
       .setString('last_sync_time', dateTime.toIso8601String());
 
   DateTime? getLastSyncTime() {
-    final value = _preferences.getString('last_sync_time');
-    return value != null ? DateTime.parse(value) : null;
+    final string = _preferences.getString('last_sync_time');
+    return string != null ? DateTime.tryParse(string) : null;
   }
+
+  // === Theme settings ===
+  Future<void> setPrimaryColor(int colorValue) async =>
+      await _preferences.setInt('primary_color', colorValue);
+
+  int getPrimaryColor() => _preferences.getInt('primary_color') ?? 0xFF2AE881;
+
+  Future<void> setUseSystemTheme(bool useSystem) async =>
+      await _preferences.setBool('use_system_theme', useSystem);
+
+  bool getUseSystemTheme() => _preferences.getBool('use_system_theme') ?? false;
 
   Future<void> setUserToken(String token) async =>
       await _preferences.setString('user_token', token);

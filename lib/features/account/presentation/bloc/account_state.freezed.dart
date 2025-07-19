@@ -110,30 +110,12 @@ String toString() {
 
 
 class AccountLoaded implements AccountState {
-  const AccountLoaded({required this.account, required this.isBalanceVisible, this.isLoading = false, final  List<Map<String, dynamic>> dailyData = const [], final  List<Map<String, dynamic>> monthlyData = const [], this.currentPeriod = 'daily'}): _dailyData = dailyData,_monthlyData = monthlyData;
+  const AccountLoaded({required this.account, required this.isBalanceVisible, this.isLoading = false});
   
 
  final  AccountResponse account;
  final  bool isBalanceVisible;
 @JsonKey() final  bool isLoading;
- final  List<Map<String, dynamic>> _dailyData;
-@JsonKey() List<Map<String, dynamic>> get dailyData {
-  if (_dailyData is EqualUnmodifiableListView) return _dailyData;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_dailyData);
-}
-
-// Добавлены для графика
- final  List<Map<String, dynamic>> _monthlyData;
-// Добавлены для графика
-@JsonKey() List<Map<String, dynamic>> get monthlyData {
-  if (_monthlyData is EqualUnmodifiableListView) return _monthlyData;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_monthlyData);
-}
-
-// Добавлены для графика
-@JsonKey() final  String currentPeriod;
 
 /// Create a copy of AccountState
 /// with the given fields replaced by the non-null parameter values.
@@ -145,16 +127,16 @@ $AccountLoadedCopyWith<AccountLoaded> get copyWith => _$AccountLoadedCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountLoaded&&(identical(other.account, account) || other.account == account)&&(identical(other.isBalanceVisible, isBalanceVisible) || other.isBalanceVisible == isBalanceVisible)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._dailyData, _dailyData)&&const DeepCollectionEquality().equals(other._monthlyData, _monthlyData)&&(identical(other.currentPeriod, currentPeriod) || other.currentPeriod == currentPeriod));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountLoaded&&(identical(other.account, account) || other.account == account)&&(identical(other.isBalanceVisible, isBalanceVisible) || other.isBalanceVisible == isBalanceVisible)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,account,isBalanceVisible,isLoading,const DeepCollectionEquality().hash(_dailyData),const DeepCollectionEquality().hash(_monthlyData),currentPeriod);
+int get hashCode => Object.hash(runtimeType,account,isBalanceVisible,isLoading);
 
 @override
 String toString() {
-  return 'AccountState.loaded(account: $account, isBalanceVisible: $isBalanceVisible, isLoading: $isLoading, dailyData: $dailyData, monthlyData: $monthlyData, currentPeriod: $currentPeriod)';
+  return 'AccountState.loaded(account: $account, isBalanceVisible: $isBalanceVisible, isLoading: $isLoading)';
 }
 
 
@@ -165,7 +147,7 @@ abstract mixin class $AccountLoadedCopyWith<$Res> implements $AccountStateCopyWi
   factory $AccountLoadedCopyWith(AccountLoaded value, $Res Function(AccountLoaded) _then) = _$AccountLoadedCopyWithImpl;
 @useResult
 $Res call({
- AccountResponse account, bool isBalanceVisible, bool isLoading, List<Map<String, dynamic>> dailyData, List<Map<String, dynamic>> monthlyData, String currentPeriod
+ AccountResponse account, bool isBalanceVisible, bool isLoading
 });
 
 
@@ -182,15 +164,12 @@ class _$AccountLoadedCopyWithImpl<$Res>
 
 /// Create a copy of AccountState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? account = null,Object? isBalanceVisible = null,Object? isLoading = null,Object? dailyData = null,Object? monthlyData = null,Object? currentPeriod = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? account = null,Object? isBalanceVisible = null,Object? isLoading = null,}) {
   return _then(AccountLoaded(
 account: null == account ? _self.account : account // ignore: cast_nullable_to_non_nullable
 as AccountResponse,isBalanceVisible: null == isBalanceVisible ? _self.isBalanceVisible : isBalanceVisible // ignore: cast_nullable_to_non_nullable
 as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,dailyData: null == dailyData ? _self._dailyData : dailyData // ignore: cast_nullable_to_non_nullable
-as List<Map<String, dynamic>>,monthlyData: null == monthlyData ? _self._monthlyData : monthlyData // ignore: cast_nullable_to_non_nullable
-as List<Map<String, dynamic>>,currentPeriod: null == currentPeriod ? _self.currentPeriod : currentPeriod // ignore: cast_nullable_to_non_nullable
-as String,
+as bool,
   ));
 }
 

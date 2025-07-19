@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
@@ -63,15 +62,14 @@ class TransactionHistoryView extends StatelessWidget {
         } else if (state is TransactionHistoryLoaded) {
           return Column(
             children: [
-              
               Container(
-                color: AppColors.lightGreenBackground,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 child: Column(
                   children: [
                     _buildDateListTile(
                       context,
                       S.of(context).start,
-                      _formatDateForDisplay(state.startDate),
+                      _formatDateForDisplay(context, state.startDate),
                       () async {
                         final selectedDate = await showDatePicker(
                           context: context,
@@ -88,11 +86,11 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-                    Divider(),
+                    Divider(height: 1),
                     _buildDateListTile(
                       context,
                       S.of(context).end,
-                      _formatDateForDisplay(state.endDate),
+                      _formatDateForDisplay(context, state.endDate),
                       () async {
                         final selectedDate = await showDatePicker(
                           context: context,
@@ -109,7 +107,7 @@ class TransactionHistoryView extends StatelessWidget {
                         }
                       },
                     ),
-                    Divider(),
+                    Divider(height: 1),
                     _buildSortingListTile(
                       context,
                       S.of(context).sort,
@@ -120,7 +118,7 @@ class TransactionHistoryView extends StatelessWidget {
                         _showSortingDialog(context, state.sortBy);
                       },
                     ),
-                    Divider(),
+                    Divider(height: 1),
                     _buildSummaryListTile(
                       S.of(context).amount,
                       CurrencyDisplay(
@@ -167,7 +165,8 @@ class TransactionHistoryView extends StatelessWidget {
                               );
                             },
                             child: ListView.separated(
-                              separatorBuilder: (context, index) => Divider(),
+                              separatorBuilder:
+                                  (context, index) => Divider(height: 1),
                               itemCount: state.transactions.length + 1,
                               itemBuilder: (context, index) {
                                 if (index < state.transactions.length) {
@@ -248,20 +247,20 @@ class TransactionHistoryView extends StatelessWidget {
     return ListTile(title: Text(title), trailing: value);
   }
 
-  String _formatDateForDisplay(DateTime date) {
+  String _formatDateForDisplay(BuildContext context, DateTime date) {
     final months = [
-      'Январь',
-      'Февраль',
-      'Март',
-      'Апрель',
-      'Май',
-      'Июнь',
-      'Июль',
-      'Август',
-      'Сентябрь',
-      'Октябрь',
-      'Ноябрь',
-      'Декабрь',
+      S.of(context).monthJanuary,
+      S.of(context).monthFebruary,
+      S.of(context).monthMarch,
+      S.of(context).monthApril,
+      S.of(context).monthMay,
+      S.of(context).monthJune,
+      S.of(context).monthJuly,
+      S.of(context).monthAugust,
+      S.of(context).monthSeptember,
+      S.of(context).monthOctober,
+      S.of(context).monthNovember,
+      S.of(context).monthDecember,
     ];
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }

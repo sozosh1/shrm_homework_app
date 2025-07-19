@@ -141,6 +141,152 @@ String toString() {
 /// @nodoc
 
 
+class CategoriesLoaded implements TransactionState {
+  const CategoriesLoaded({required final  List<Category> categories, required this.isIncome}): _categories = categories;
+  
+
+ final  List<Category> _categories;
+ List<Category> get categories {
+  if (_categories is EqualUnmodifiableListView) return _categories;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_categories);
+}
+
+ final  bool isIncome;
+
+/// Create a copy of TransactionState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CategoriesLoadedCopyWith<CategoriesLoaded> get copyWith => _$CategoriesLoadedCopyWithImpl<CategoriesLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoriesLoaded&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_categories),isIncome);
+
+@override
+String toString() {
+  return 'TransactionState.categoriesLoaded(categories: $categories, isIncome: $isIncome)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CategoriesLoadedCopyWith<$Res> implements $TransactionStateCopyWith<$Res> {
+  factory $CategoriesLoadedCopyWith(CategoriesLoaded value, $Res Function(CategoriesLoaded) _then) = _$CategoriesLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<Category> categories, bool isIncome
+});
+
+
+
+
+}
+/// @nodoc
+class _$CategoriesLoadedCopyWithImpl<$Res>
+    implements $CategoriesLoadedCopyWith<$Res> {
+  _$CategoriesLoadedCopyWithImpl(this._self, this._then);
+
+  final CategoriesLoaded _self;
+  final $Res Function(CategoriesLoaded) _then;
+
+/// Create a copy of TransactionState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? categories = null,Object? isIncome = null,}) {
+  return _then(CategoriesLoaded(
+categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
+as List<Category>,isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class AccountsLoaded implements TransactionState {
+  const AccountsLoaded({required final  List<AccountResponse> accounts}): _accounts = accounts;
+  
+
+ final  List<AccountResponse> _accounts;
+ List<AccountResponse> get accounts {
+  if (_accounts is EqualUnmodifiableListView) return _accounts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_accounts);
+}
+
+
+/// Create a copy of TransactionState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AccountsLoadedCopyWith<AccountsLoaded> get copyWith => _$AccountsLoadedCopyWithImpl<AccountsLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountsLoaded&&const DeepCollectionEquality().equals(other._accounts, _accounts));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_accounts));
+
+@override
+String toString() {
+  return 'TransactionState.accountsLoaded(accounts: $accounts)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AccountsLoadedCopyWith<$Res> implements $TransactionStateCopyWith<$Res> {
+  factory $AccountsLoadedCopyWith(AccountsLoaded value, $Res Function(AccountsLoaded) _then) = _$AccountsLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<AccountResponse> accounts
+});
+
+
+
+
+}
+/// @nodoc
+class _$AccountsLoadedCopyWithImpl<$Res>
+    implements $AccountsLoadedCopyWith<$Res> {
+  _$AccountsLoadedCopyWithImpl(this._self, this._then);
+
+  final AccountsLoaded _self;
+  final $Res Function(AccountsLoaded) _then;
+
+/// Create a copy of TransactionState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? accounts = null,}) {
+  return _then(AccountsLoaded(
+accounts: null == accounts ? _self._accounts : accounts // ignore: cast_nullable_to_non_nullable
+as List<AccountResponse>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class TransactionLoaded implements TransactionState {
   const TransactionLoaded({required final  List<TransactionResponse> transactions, required this.totalAmount, required this.isIncome, required this.currency}): _transactions = transactions;
   

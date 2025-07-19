@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shrm_homework_app/core/config/env.dart';
 
 import 'di.config.dart';
 
@@ -12,7 +13,7 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies() async {
   getIt.registerFactory<String>(
-    () => 'SHpjYexGOFZdJCdJzQbLJD6z', 
+    () => Env.bearerToken, 
     instanceName: 'bearerToken',
   );
   getIt.init();

@@ -1243,12 +1243,12 @@ class TransactionsTableCompanion
   }
 }
 
-class $BackUpOperationsTableTable extends BackUpOperationsTable
-    with TableInfo<$BackUpOperationsTableTable, BackUpOperationsTableData> {
+class $SyncEventsTableTable extends SyncEventsTable
+    with TableInfo<$SyncEventsTableTable, SyncEventsTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $BackUpOperationsTableTable(this.attachedDatabase, [this._alias]);
+  $SyncEventsTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -1261,17 +1261,6 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'PRIMARY KEY AUTOINCREMENT',
     ),
-  );
-  static const VerificationMeta _operationTypeMeta = const VerificationMeta(
-    'operationType',
-  );
-  @override
-  late final GeneratedColumn<String> operationType = GeneratedColumn<String>(
-    'operation_type',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
   );
   static const VerificationMeta _entityTypeMeta = const VerificationMeta(
     'entityType',
@@ -1291,16 +1280,16 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
   late final GeneratedColumn<int> entityId = GeneratedColumn<int>(
     'entity_id',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
-  static const VerificationMeta _entityDataMeta = const VerificationMeta(
-    'entityData',
+  static const VerificationMeta _operationMeta = const VerificationMeta(
+    'operation',
   );
   @override
-  late final GeneratedColumn<String> entityData = GeneratedColumn<String>(
-    'entity_data',
+  late final GeneratedColumn<String> operation = GeneratedColumn<String>(
+    'operation',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -1315,96 +1304,30 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
     aliasedName,
     false,
     type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  static const VerificationMeta _isSyncedMeta = const VerificationMeta(
-    'isSynced',
-  );
-  @override
-  late final GeneratedColumn<bool> isSynced = GeneratedColumn<bool>(
-    'is_synced',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_synced" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
-  static const VerificationMeta _syncedAtMeta = const VerificationMeta(
-    'syncedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> syncedAt = GeneratedColumn<DateTime>(
-    'synced_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _syncErrorMeta = const VerificationMeta(
-    'syncError',
-  );
-  @override
-  late final GeneratedColumn<String> syncError = GeneratedColumn<String>(
-    'sync_error',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _retryCountMeta = const VerificationMeta(
-    'retryCount',
-  );
-  @override
-  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
-    'retry_count',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
+    requiredDuringInsert: true,
   );
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    operationType,
     entityType,
     entityId,
-    entityData,
+    operation,
     createdAt,
-    isSynced,
-    syncedAt,
-    syncError,
-    retryCount,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'backup_operations';
+  static const String $name = 'sync_events_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<BackUpOperationsTableData> instance, {
+    Insertable<SyncEventsTableData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('operation_type')) {
-      context.handle(
-        _operationTypeMeta,
-        operationType.isAcceptableOrUnknown(
-          data['operation_type']!,
-          _operationTypeMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_operationTypeMeta);
     }
     if (data.containsKey('entity_type')) {
       context.handle(
@@ -1419,44 +1342,24 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
         _entityIdMeta,
         entityId.isAcceptableOrUnknown(data['entity_id']!, _entityIdMeta),
       );
+    } else if (isInserting) {
+      context.missing(_entityIdMeta);
     }
-    if (data.containsKey('entity_data')) {
+    if (data.containsKey('operation')) {
       context.handle(
-        _entityDataMeta,
-        entityData.isAcceptableOrUnknown(data['entity_data']!, _entityDataMeta),
+        _operationMeta,
+        operation.isAcceptableOrUnknown(data['operation']!, _operationMeta),
       );
     } else if (isInserting) {
-      context.missing(_entityDataMeta);
+      context.missing(_operationMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
         createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
       );
-    }
-    if (data.containsKey('is_synced')) {
-      context.handle(
-        _isSyncedMeta,
-        isSynced.isAcceptableOrUnknown(data['is_synced']!, _isSyncedMeta),
-      );
-    }
-    if (data.containsKey('synced_at')) {
-      context.handle(
-        _syncedAtMeta,
-        syncedAt.isAcceptableOrUnknown(data['synced_at']!, _syncedAtMeta),
-      );
-    }
-    if (data.containsKey('sync_error')) {
-      context.handle(
-        _syncErrorMeta,
-        syncError.isAcceptableOrUnknown(data['sync_error']!, _syncErrorMeta),
-      );
-    }
-    if (data.containsKey('retry_count')) {
-      context.handle(
-        _retryCountMeta,
-        retryCount.isAcceptableOrUnknown(data['retry_count']!, _retryCountMeta),
-      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
     }
     return context;
   }
@@ -1464,154 +1367,89 @@ class $BackUpOperationsTableTable extends BackUpOperationsTable
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  BackUpOperationsTableData map(
-    Map<String, dynamic> data, {
-    String? tablePrefix,
-  }) {
+  SyncEventsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return BackUpOperationsTableData(
+    return SyncEventsTableData(
       id:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
             data['${effectivePrefix}id'],
-          )!,
-      operationType:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}operation_type'],
           )!,
       entityType:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
             data['${effectivePrefix}entity_type'],
           )!,
-      entityId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}entity_id'],
-      ),
-      entityData:
+      entityId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}entity_id'],
+          )!,
+      operation:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}entity_data'],
+            data['${effectivePrefix}operation'],
           )!,
       createdAt:
           attachedDatabase.typeMapping.read(
             DriftSqlType.dateTime,
             data['${effectivePrefix}created_at'],
           )!,
-      isSynced:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.bool,
-            data['${effectivePrefix}is_synced'],
-          )!,
-      syncedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}synced_at'],
-      ),
-      syncError: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}sync_error'],
-      ),
-      retryCount:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}retry_count'],
-          )!,
     );
   }
 
   @override
-  $BackUpOperationsTableTable createAlias(String alias) {
-    return $BackUpOperationsTableTable(attachedDatabase, alias);
+  $SyncEventsTableTable createAlias(String alias) {
+    return $SyncEventsTableTable(attachedDatabase, alias);
   }
 }
 
-class BackUpOperationsTableData extends DataClass
-    implements Insertable<BackUpOperationsTableData> {
+class SyncEventsTableData extends DataClass
+    implements Insertable<SyncEventsTableData> {
   final int id;
-  final String operationType;
   final String entityType;
-  final int? entityId;
-  final String entityData;
+  final int entityId;
+  final String operation;
   final DateTime createdAt;
-  final bool isSynced;
-  final DateTime? syncedAt;
-  final String? syncError;
-  final int retryCount;
-  const BackUpOperationsTableData({
+  const SyncEventsTableData({
     required this.id,
-    required this.operationType,
     required this.entityType,
-    this.entityId,
-    required this.entityData,
+    required this.entityId,
+    required this.operation,
     required this.createdAt,
-    required this.isSynced,
-    this.syncedAt,
-    this.syncError,
-    required this.retryCount,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['operation_type'] = Variable<String>(operationType);
     map['entity_type'] = Variable<String>(entityType);
-    if (!nullToAbsent || entityId != null) {
-      map['entity_id'] = Variable<int>(entityId);
-    }
-    map['entity_data'] = Variable<String>(entityData);
+    map['entity_id'] = Variable<int>(entityId);
+    map['operation'] = Variable<String>(operation);
     map['created_at'] = Variable<DateTime>(createdAt);
-    map['is_synced'] = Variable<bool>(isSynced);
-    if (!nullToAbsent || syncedAt != null) {
-      map['synced_at'] = Variable<DateTime>(syncedAt);
-    }
-    if (!nullToAbsent || syncError != null) {
-      map['sync_error'] = Variable<String>(syncError);
-    }
-    map['retry_count'] = Variable<int>(retryCount);
     return map;
   }
 
-  BackUpOperationsTableCompanion toCompanion(bool nullToAbsent) {
-    return BackUpOperationsTableCompanion(
+  SyncEventsTableCompanion toCompanion(bool nullToAbsent) {
+    return SyncEventsTableCompanion(
       id: Value(id),
-      operationType: Value(operationType),
       entityType: Value(entityType),
-      entityId:
-          entityId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(entityId),
-      entityData: Value(entityData),
+      entityId: Value(entityId),
+      operation: Value(operation),
       createdAt: Value(createdAt),
-      isSynced: Value(isSynced),
-      syncedAt:
-          syncedAt == null && nullToAbsent
-              ? const Value.absent()
-              : Value(syncedAt),
-      syncError:
-          syncError == null && nullToAbsent
-              ? const Value.absent()
-              : Value(syncError),
-      retryCount: Value(retryCount),
     );
   }
 
-  factory BackUpOperationsTableData.fromJson(
+  factory SyncEventsTableData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return BackUpOperationsTableData(
+    return SyncEventsTableData(
       id: serializer.fromJson<int>(json['id']),
-      operationType: serializer.fromJson<String>(json['operationType']),
       entityType: serializer.fromJson<String>(json['entityType']),
-      entityId: serializer.fromJson<int?>(json['entityId']),
-      entityData: serializer.fromJson<String>(json['entityData']),
+      entityId: serializer.fromJson<int>(json['entityId']),
+      operation: serializer.fromJson<String>(json['operation']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      isSynced: serializer.fromJson<bool>(json['isSynced']),
-      syncedAt: serializer.fromJson<DateTime?>(json['syncedAt']),
-      syncError: serializer.fromJson<String?>(json['syncError']),
-      retryCount: serializer.fromJson<int>(json['retryCount']),
     );
   }
   @override
@@ -1619,197 +1457,115 @@ class BackUpOperationsTableData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'operationType': serializer.toJson<String>(operationType),
       'entityType': serializer.toJson<String>(entityType),
-      'entityId': serializer.toJson<int?>(entityId),
-      'entityData': serializer.toJson<String>(entityData),
+      'entityId': serializer.toJson<int>(entityId),
+      'operation': serializer.toJson<String>(operation),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'isSynced': serializer.toJson<bool>(isSynced),
-      'syncedAt': serializer.toJson<DateTime?>(syncedAt),
-      'syncError': serializer.toJson<String?>(syncError),
-      'retryCount': serializer.toJson<int>(retryCount),
     };
   }
 
-  BackUpOperationsTableData copyWith({
+  SyncEventsTableData copyWith({
     int? id,
-    String? operationType,
     String? entityType,
-    Value<int?> entityId = const Value.absent(),
-    String? entityData,
+    int? entityId,
+    String? operation,
     DateTime? createdAt,
-    bool? isSynced,
-    Value<DateTime?> syncedAt = const Value.absent(),
-    Value<String?> syncError = const Value.absent(),
-    int? retryCount,
-  }) => BackUpOperationsTableData(
+  }) => SyncEventsTableData(
     id: id ?? this.id,
-    operationType: operationType ?? this.operationType,
     entityType: entityType ?? this.entityType,
-    entityId: entityId.present ? entityId.value : this.entityId,
-    entityData: entityData ?? this.entityData,
+    entityId: entityId ?? this.entityId,
+    operation: operation ?? this.operation,
     createdAt: createdAt ?? this.createdAt,
-    isSynced: isSynced ?? this.isSynced,
-    syncedAt: syncedAt.present ? syncedAt.value : this.syncedAt,
-    syncError: syncError.present ? syncError.value : this.syncError,
-    retryCount: retryCount ?? this.retryCount,
   );
-  BackUpOperationsTableData copyWithCompanion(
-    BackUpOperationsTableCompanion data,
-  ) {
-    return BackUpOperationsTableData(
+  SyncEventsTableData copyWithCompanion(SyncEventsTableCompanion data) {
+    return SyncEventsTableData(
       id: data.id.present ? data.id.value : this.id,
-      operationType:
-          data.operationType.present
-              ? data.operationType.value
-              : this.operationType,
       entityType:
           data.entityType.present ? data.entityType.value : this.entityType,
       entityId: data.entityId.present ? data.entityId.value : this.entityId,
-      entityData:
-          data.entityData.present ? data.entityData.value : this.entityData,
+      operation: data.operation.present ? data.operation.value : this.operation,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
-      syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
-      syncError: data.syncError.present ? data.syncError.value : this.syncError,
-      retryCount:
-          data.retryCount.present ? data.retryCount.value : this.retryCount,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('BackUpOperationsTableData(')
+    return (StringBuffer('SyncEventsTableData(')
           ..write('id: $id, ')
-          ..write('operationType: $operationType, ')
           ..write('entityType: $entityType, ')
           ..write('entityId: $entityId, ')
-          ..write('entityData: $entityData, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('isSynced: $isSynced, ')
-          ..write('syncedAt: $syncedAt, ')
-          ..write('syncError: $syncError, ')
-          ..write('retryCount: $retryCount')
+          ..write('operation: $operation, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    operationType,
-    entityType,
-    entityId,
-    entityData,
-    createdAt,
-    isSynced,
-    syncedAt,
-    syncError,
-    retryCount,
-  );
+  int get hashCode =>
+      Object.hash(id, entityType, entityId, operation, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is BackUpOperationsTableData &&
+      (other is SyncEventsTableData &&
           other.id == this.id &&
-          other.operationType == this.operationType &&
           other.entityType == this.entityType &&
           other.entityId == this.entityId &&
-          other.entityData == this.entityData &&
-          other.createdAt == this.createdAt &&
-          other.isSynced == this.isSynced &&
-          other.syncedAt == this.syncedAt &&
-          other.syncError == this.syncError &&
-          other.retryCount == this.retryCount);
+          other.operation == this.operation &&
+          other.createdAt == this.createdAt);
 }
 
-class BackUpOperationsTableCompanion
-    extends UpdateCompanion<BackUpOperationsTableData> {
+class SyncEventsTableCompanion extends UpdateCompanion<SyncEventsTableData> {
   final Value<int> id;
-  final Value<String> operationType;
   final Value<String> entityType;
-  final Value<int?> entityId;
-  final Value<String> entityData;
+  final Value<int> entityId;
+  final Value<String> operation;
   final Value<DateTime> createdAt;
-  final Value<bool> isSynced;
-  final Value<DateTime?> syncedAt;
-  final Value<String?> syncError;
-  final Value<int> retryCount;
-  const BackUpOperationsTableCompanion({
+  const SyncEventsTableCompanion({
     this.id = const Value.absent(),
-    this.operationType = const Value.absent(),
     this.entityType = const Value.absent(),
     this.entityId = const Value.absent(),
-    this.entityData = const Value.absent(),
+    this.operation = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.isSynced = const Value.absent(),
-    this.syncedAt = const Value.absent(),
-    this.syncError = const Value.absent(),
-    this.retryCount = const Value.absent(),
   });
-  BackUpOperationsTableCompanion.insert({
+  SyncEventsTableCompanion.insert({
     this.id = const Value.absent(),
-    required String operationType,
     required String entityType,
-    this.entityId = const Value.absent(),
-    required String entityData,
-    this.createdAt = const Value.absent(),
-    this.isSynced = const Value.absent(),
-    this.syncedAt = const Value.absent(),
-    this.syncError = const Value.absent(),
-    this.retryCount = const Value.absent(),
-  }) : operationType = Value(operationType),
-       entityType = Value(entityType),
-       entityData = Value(entityData);
-  static Insertable<BackUpOperationsTableData> custom({
+    required int entityId,
+    required String operation,
+    required DateTime createdAt,
+  }) : entityType = Value(entityType),
+       entityId = Value(entityId),
+       operation = Value(operation),
+       createdAt = Value(createdAt);
+  static Insertable<SyncEventsTableData> custom({
     Expression<int>? id,
-    Expression<String>? operationType,
     Expression<String>? entityType,
     Expression<int>? entityId,
-    Expression<String>? entityData,
+    Expression<String>? operation,
     Expression<DateTime>? createdAt,
-    Expression<bool>? isSynced,
-    Expression<DateTime>? syncedAt,
-    Expression<String>? syncError,
-    Expression<int>? retryCount,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (operationType != null) 'operation_type': operationType,
       if (entityType != null) 'entity_type': entityType,
       if (entityId != null) 'entity_id': entityId,
-      if (entityData != null) 'entity_data': entityData,
+      if (operation != null) 'operation': operation,
       if (createdAt != null) 'created_at': createdAt,
-      if (isSynced != null) 'is_synced': isSynced,
-      if (syncedAt != null) 'synced_at': syncedAt,
-      if (syncError != null) 'sync_error': syncError,
-      if (retryCount != null) 'retry_count': retryCount,
     });
   }
 
-  BackUpOperationsTableCompanion copyWith({
+  SyncEventsTableCompanion copyWith({
     Value<int>? id,
-    Value<String>? operationType,
     Value<String>? entityType,
-    Value<int?>? entityId,
-    Value<String>? entityData,
+    Value<int>? entityId,
+    Value<String>? operation,
     Value<DateTime>? createdAt,
-    Value<bool>? isSynced,
-    Value<DateTime?>? syncedAt,
-    Value<String?>? syncError,
-    Value<int>? retryCount,
   }) {
-    return BackUpOperationsTableCompanion(
+    return SyncEventsTableCompanion(
       id: id ?? this.id,
-      operationType: operationType ?? this.operationType,
       entityType: entityType ?? this.entityType,
       entityId: entityId ?? this.entityId,
-      entityData: entityData ?? this.entityData,
+      operation: operation ?? this.operation,
       createdAt: createdAt ?? this.createdAt,
-      isSynced: isSynced ?? this.isSynced,
-      syncedAt: syncedAt ?? this.syncedAt,
-      syncError: syncError ?? this.syncError,
-      retryCount: retryCount ?? this.retryCount,
     );
   }
 
@@ -1819,49 +1575,29 @@ class BackUpOperationsTableCompanion
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (operationType.present) {
-      map['operation_type'] = Variable<String>(operationType.value);
-    }
     if (entityType.present) {
       map['entity_type'] = Variable<String>(entityType.value);
     }
     if (entityId.present) {
       map['entity_id'] = Variable<int>(entityId.value);
     }
-    if (entityData.present) {
-      map['entity_data'] = Variable<String>(entityData.value);
+    if (operation.present) {
+      map['operation'] = Variable<String>(operation.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (isSynced.present) {
-      map['is_synced'] = Variable<bool>(isSynced.value);
-    }
-    if (syncedAt.present) {
-      map['synced_at'] = Variable<DateTime>(syncedAt.value);
-    }
-    if (syncError.present) {
-      map['sync_error'] = Variable<String>(syncError.value);
-    }
-    if (retryCount.present) {
-      map['retry_count'] = Variable<int>(retryCount.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('BackUpOperationsTableCompanion(')
+    return (StringBuffer('SyncEventsTableCompanion(')
           ..write('id: $id, ')
-          ..write('operationType: $operationType, ')
           ..write('entityType: $entityType, ')
           ..write('entityId: $entityId, ')
-          ..write('entityData: $entityData, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('isSynced: $isSynced, ')
-          ..write('syncedAt: $syncedAt, ')
-          ..write('syncError: $syncError, ')
-          ..write('retryCount: $retryCount')
+          ..write('operation: $operation, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -1876,8 +1612,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $TransactionsTableTable transactionsTable =
       $TransactionsTableTable(this);
-  late final $BackUpOperationsTableTable backUpOperationsTable =
-      $BackUpOperationsTableTable(this);
+  late final $SyncEventsTableTable syncEventsTable = $SyncEventsTableTable(
+    this,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1886,7 +1623,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     accountsTable,
     categoriesTable,
     transactionsTable,
-    backUpOperationsTable,
+    syncEventsTable,
   ];
 }
 
@@ -3030,36 +2767,26 @@ typedef $$TransactionsTableTableProcessedTableManager =
       TransactionsTableData,
       PrefetchHooks Function({bool accountId, bool categoryId})
     >;
-typedef $$BackUpOperationsTableTableCreateCompanionBuilder =
-    BackUpOperationsTableCompanion Function({
+typedef $$SyncEventsTableTableCreateCompanionBuilder =
+    SyncEventsTableCompanion Function({
       Value<int> id,
-      required String operationType,
       required String entityType,
-      Value<int?> entityId,
-      required String entityData,
-      Value<DateTime> createdAt,
-      Value<bool> isSynced,
-      Value<DateTime?> syncedAt,
-      Value<String?> syncError,
-      Value<int> retryCount,
+      required int entityId,
+      required String operation,
+      required DateTime createdAt,
     });
-typedef $$BackUpOperationsTableTableUpdateCompanionBuilder =
-    BackUpOperationsTableCompanion Function({
+typedef $$SyncEventsTableTableUpdateCompanionBuilder =
+    SyncEventsTableCompanion Function({
       Value<int> id,
-      Value<String> operationType,
       Value<String> entityType,
-      Value<int?> entityId,
-      Value<String> entityData,
+      Value<int> entityId,
+      Value<String> operation,
       Value<DateTime> createdAt,
-      Value<bool> isSynced,
-      Value<DateTime?> syncedAt,
-      Value<String?> syncError,
-      Value<int> retryCount,
     });
 
-class $$BackUpOperationsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $BackUpOperationsTableTable> {
-  $$BackUpOperationsTableTableFilterComposer({
+class $$SyncEventsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncEventsTableTable> {
+  $$SyncEventsTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3068,11 +2795,6 @@ class $$BackUpOperationsTableTableFilterComposer
   });
   ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get operationType => $composableBuilder(
-    column: $table.operationType,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3086,8 +2808,8 @@ class $$BackUpOperationsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get entityData => $composableBuilder(
-    column: $table.entityData,
+  ColumnFilters<String> get operation => $composableBuilder(
+    column: $table.operation,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3095,31 +2817,11 @@ class $$BackUpOperationsTableTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
-
-  ColumnFilters<bool> get isSynced => $composableBuilder(
-    column: $table.isSynced,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get syncedAt => $composableBuilder(
-    column: $table.syncedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get syncError => $composableBuilder(
-    column: $table.syncError,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get retryCount => $composableBuilder(
-    column: $table.retryCount,
-    builder: (column) => ColumnFilters(column),
-  );
 }
 
-class $$BackUpOperationsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $BackUpOperationsTableTable> {
-  $$BackUpOperationsTableTableOrderingComposer({
+class $$SyncEventsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncEventsTableTable> {
+  $$SyncEventsTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3128,11 +2830,6 @@ class $$BackUpOperationsTableTableOrderingComposer
   });
   ColumnOrderings<int> get id => $composableBuilder(
     column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get operationType => $composableBuilder(
-    column: $table.operationType,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3146,8 +2843,8 @@ class $$BackUpOperationsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get entityData => $composableBuilder(
-    column: $table.entityData,
+  ColumnOrderings<String> get operation => $composableBuilder(
+    column: $table.operation,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3155,31 +2852,11 @@ class $$BackUpOperationsTableTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
-
-  ColumnOrderings<bool> get isSynced => $composableBuilder(
-    column: $table.isSynced,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get syncedAt => $composableBuilder(
-    column: $table.syncedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get syncError => $composableBuilder(
-    column: $table.syncError,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get retryCount => $composableBuilder(
-    column: $table.retryCount,
-    builder: (column) => ColumnOrderings(column),
-  );
 }
 
-class $$BackUpOperationsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $BackUpOperationsTableTable> {
-  $$BackUpOperationsTableTableAnnotationComposer({
+class $$SyncEventsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncEventsTableTable> {
+  $$SyncEventsTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3189,11 +2866,6 @@ class $$BackUpOperationsTableTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get operationType => $composableBuilder(
-    column: $table.operationType,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<String> get entityType => $composableBuilder(
     column: $table.entityType,
     builder: (column) => column,
@@ -3202,120 +2874,82 @@ class $$BackUpOperationsTableTableAnnotationComposer
   GeneratedColumn<int> get entityId =>
       $composableBuilder(column: $table.entityId, builder: (column) => column);
 
-  GeneratedColumn<String> get entityData => $composableBuilder(
-    column: $table.entityData,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get operation =>
+      $composableBuilder(column: $table.operation, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
-
-  GeneratedColumn<bool> get isSynced =>
-      $composableBuilder(column: $table.isSynced, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get syncedAt =>
-      $composableBuilder(column: $table.syncedAt, builder: (column) => column);
-
-  GeneratedColumn<String> get syncError =>
-      $composableBuilder(column: $table.syncError, builder: (column) => column);
-
-  GeneratedColumn<int> get retryCount => $composableBuilder(
-    column: $table.retryCount,
-    builder: (column) => column,
-  );
 }
 
-class $$BackUpOperationsTableTableTableManager
+class $$SyncEventsTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $BackUpOperationsTableTable,
-          BackUpOperationsTableData,
-          $$BackUpOperationsTableTableFilterComposer,
-          $$BackUpOperationsTableTableOrderingComposer,
-          $$BackUpOperationsTableTableAnnotationComposer,
-          $$BackUpOperationsTableTableCreateCompanionBuilder,
-          $$BackUpOperationsTableTableUpdateCompanionBuilder,
+          $SyncEventsTableTable,
+          SyncEventsTableData,
+          $$SyncEventsTableTableFilterComposer,
+          $$SyncEventsTableTableOrderingComposer,
+          $$SyncEventsTableTableAnnotationComposer,
+          $$SyncEventsTableTableCreateCompanionBuilder,
+          $$SyncEventsTableTableUpdateCompanionBuilder,
           (
-            BackUpOperationsTableData,
+            SyncEventsTableData,
             BaseReferences<
               _$AppDatabase,
-              $BackUpOperationsTableTable,
-              BackUpOperationsTableData
+              $SyncEventsTableTable,
+              SyncEventsTableData
             >,
           ),
-          BackUpOperationsTableData,
+          SyncEventsTableData,
           PrefetchHooks Function()
         > {
-  $$BackUpOperationsTableTableTableManager(
+  $$SyncEventsTableTableTableManager(
     _$AppDatabase db,
-    $BackUpOperationsTableTable table,
+    $SyncEventsTableTable table,
   ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer:
-              () => $$BackUpOperationsTableTableFilterComposer(
-                $db: db,
-                $table: table,
-              ),
+              () =>
+                  $$SyncEventsTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer:
-              () => $$BackUpOperationsTableTableOrderingComposer(
+              () => $$SyncEventsTableTableOrderingComposer(
                 $db: db,
                 $table: table,
               ),
           createComputedFieldComposer:
-              () => $$BackUpOperationsTableTableAnnotationComposer(
+              () => $$SyncEventsTableTableAnnotationComposer(
                 $db: db,
                 $table: table,
               ),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<String> operationType = const Value.absent(),
                 Value<String> entityType = const Value.absent(),
-                Value<int?> entityId = const Value.absent(),
-                Value<String> entityData = const Value.absent(),
+                Value<int> entityId = const Value.absent(),
+                Value<String> operation = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
-                Value<bool> isSynced = const Value.absent(),
-                Value<DateTime?> syncedAt = const Value.absent(),
-                Value<String?> syncError = const Value.absent(),
-                Value<int> retryCount = const Value.absent(),
-              }) => BackUpOperationsTableCompanion(
+              }) => SyncEventsTableCompanion(
                 id: id,
-                operationType: operationType,
                 entityType: entityType,
                 entityId: entityId,
-                entityData: entityData,
+                operation: operation,
                 createdAt: createdAt,
-                isSynced: isSynced,
-                syncedAt: syncedAt,
-                syncError: syncError,
-                retryCount: retryCount,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required String operationType,
                 required String entityType,
-                Value<int?> entityId = const Value.absent(),
-                required String entityData,
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<bool> isSynced = const Value.absent(),
-                Value<DateTime?> syncedAt = const Value.absent(),
-                Value<String?> syncError = const Value.absent(),
-                Value<int> retryCount = const Value.absent(),
-              }) => BackUpOperationsTableCompanion.insert(
+                required int entityId,
+                required String operation,
+                required DateTime createdAt,
+              }) => SyncEventsTableCompanion.insert(
                 id: id,
-                operationType: operationType,
                 entityType: entityType,
                 entityId: entityId,
-                entityData: entityData,
+                operation: operation,
                 createdAt: createdAt,
-                isSynced: isSynced,
-                syncedAt: syncedAt,
-                syncError: syncError,
-                retryCount: retryCount,
               ),
           withReferenceMapper:
               (p0) =>
@@ -3332,25 +2966,25 @@ class $$BackUpOperationsTableTableTableManager
       );
 }
 
-typedef $$BackUpOperationsTableTableProcessedTableManager =
+typedef $$SyncEventsTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $BackUpOperationsTableTable,
-      BackUpOperationsTableData,
-      $$BackUpOperationsTableTableFilterComposer,
-      $$BackUpOperationsTableTableOrderingComposer,
-      $$BackUpOperationsTableTableAnnotationComposer,
-      $$BackUpOperationsTableTableCreateCompanionBuilder,
-      $$BackUpOperationsTableTableUpdateCompanionBuilder,
+      $SyncEventsTableTable,
+      SyncEventsTableData,
+      $$SyncEventsTableTableFilterComposer,
+      $$SyncEventsTableTableOrderingComposer,
+      $$SyncEventsTableTableAnnotationComposer,
+      $$SyncEventsTableTableCreateCompanionBuilder,
+      $$SyncEventsTableTableUpdateCompanionBuilder,
       (
-        BackUpOperationsTableData,
+        SyncEventsTableData,
         BaseReferences<
           _$AppDatabase,
-          $BackUpOperationsTableTable,
-          BackUpOperationsTableData
+          $SyncEventsTableTable,
+          SyncEventsTableData
         >,
       ),
-      BackUpOperationsTableData,
+      SyncEventsTableData,
       PrefetchHooks Function()
     >;
 
@@ -3363,6 +2997,6 @@ class $AppDatabaseManager {
       $$CategoriesTableTableTableManager(_db, _db.categoriesTable);
   $$TransactionsTableTableTableManager get transactionsTable =>
       $$TransactionsTableTableTableManager(_db, _db.transactionsTable);
-  $$BackUpOperationsTableTableTableManager get backUpOperationsTable =>
-      $$BackUpOperationsTableTableTableManager(_db, _db.backUpOperationsTable);
+  $$SyncEventsTableTableTableManager get syncEventsTable =>
+      $$SyncEventsTableTableTableManager(_db, _db.syncEventsTable);
 }

@@ -45,6 +45,104 @@ $TransactionEventCopyWith(TransactionEvent _, $Res Function(TransactionEvent) __
 /// @nodoc
 
 
+class LoadCategories implements TransactionEvent {
+  const LoadCategories({required this.isIncome});
+  
+
+ final  bool isIncome;
+
+/// Create a copy of TransactionEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LoadCategoriesCopyWith<LoadCategories> get copyWith => _$LoadCategoriesCopyWithImpl<LoadCategories>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadCategories&&(identical(other.isIncome, isIncome) || other.isIncome == isIncome));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isIncome);
+
+@override
+String toString() {
+  return 'TransactionEvent.loadCategories(isIncome: $isIncome)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LoadCategoriesCopyWith<$Res> implements $TransactionEventCopyWith<$Res> {
+  factory $LoadCategoriesCopyWith(LoadCategories value, $Res Function(LoadCategories) _then) = _$LoadCategoriesCopyWithImpl;
+@useResult
+$Res call({
+ bool isIncome
+});
+
+
+
+
+}
+/// @nodoc
+class _$LoadCategoriesCopyWithImpl<$Res>
+    implements $LoadCategoriesCopyWith<$Res> {
+  _$LoadCategoriesCopyWithImpl(this._self, this._then);
+
+  final LoadCategories _self;
+  final $Res Function(LoadCategories) _then;
+
+/// Create a copy of TransactionEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? isIncome = null,}) {
+  return _then(LoadCategories(
+isIncome: null == isIncome ? _self.isIncome : isIncome // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class LoadAccounts implements TransactionEvent {
+  const LoadAccounts();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadAccounts);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TransactionEvent.loadAccounts()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class LoadTodayTransactions implements TransactionEvent {
   const LoadTodayTransactions({required this.isIncome});
   

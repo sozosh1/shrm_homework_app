@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
 import 'package:shrm_homework_app/features/category/presentation/bloc/category_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:shrm_homework_app/features/category/presentation/bloc/category_e
 import 'package:shrm_homework_app/features/category/presentation/bloc/category_state.dart';
 import 'package:shrm_homework_app/features/category/presentation/widgets/category_list_item.dart';
 import 'package:shrm_homework_app/features/category/presentation/widgets/search_bar.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -17,8 +17,7 @@ class CategoriesScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<CategoryBloc>()..add(const LoadCategories()),
       child: Scaffold(
-        backgroundColor: AppColors.white,
-        appBar: AppBar(title: const Text('Мои статьи'), elevation: 0),
+        appBar: AppBar(title: Text(S.of(context).myArticles), elevation: 0),
         body: const CategoriesView(),
       ),
     );
@@ -58,7 +57,7 @@ class CategoriesView extends StatelessWidget {
                       Icon(Icons.search, size: 16, color: Colors.grey[600]),
                       const SizedBox(width: 8),
                       Text(
-                        'Найдено: ${state.filteredCategories.length} из ${state.allCategories.length}',
+                        S.of(context).foundOf(state.filteredCategories.length, state.allCategories.length),
                         style: TextStyle(color: Colors.grey[600], fontSize: 14),
                       ),
                     ],
@@ -68,7 +67,7 @@ class CategoriesView extends StatelessWidget {
               Expanded(
                 child:
                     state.filteredCategories.isEmpty
-                        ? _buildEmptyState(state.isSearching, state.searchQuery)
+                        ? _buildEmptyState(context, state.isSearching, state.searchQuery)
                         : RefreshIndicator(
                           onRefresh: () async {
                             context.read<CategoryBloc>().add(
@@ -76,7 +75,8 @@ class CategoriesView extends StatelessWidget {
                             );
                           },
                           child: ListView.separated(
-                            separatorBuilder: (context, index) => Divider(),
+                            separatorBuilder:
+                                (context, index) => Divider(height: 1),
                             itemCount: state.filteredCategories.length,
                             itemBuilder: (context, index) {
                               return CategoryListItem(
@@ -100,12 +100,12 @@ class CategoriesView extends StatelessWidget {
             },
           );
         }
-        return const Center(child: Text('Неизвестное состояние'));
+        return Center(child: Text(S.of(context).unknownState));
       },
     );
   }
 
-  Widget _buildEmptyState(bool isSearching, String searchQuery) {
+  Widget _buildEmptyState(BuildContext context, bool isSearching, String searchQuery) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -118,15 +118,15 @@ class CategoriesView extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             isSearching
-                ? 'Ничего не найдено по запросу "$searchQuery"'
-                : 'Категории не найдены',
+                ? S.of(context).nothingFoundForQuery(searchQuery)
+                : S.of(context).categoriesNotFound,
             style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             textAlign: TextAlign.center,
           ),
           if (isSearching) ...[
             const SizedBox(height: 8),
             Text(
-              'Попробуйте изменить поисковый запрос',
+              S.of(context).tryChangingSearchQuery,
               style: TextStyle(fontSize: 14, color: Colors.grey[500]),
               textAlign: TextAlign.center,
             ),

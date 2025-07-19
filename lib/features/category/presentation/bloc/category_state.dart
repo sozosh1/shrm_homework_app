@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
 
 part 'category_state.freezed.dart';
 

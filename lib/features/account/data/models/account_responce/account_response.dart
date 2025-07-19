@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:shrm_homework_app/features/account/data/models/stat_item/stat_item.dart';
 
 part 'account_response.freezed.dart';
@@ -20,3 +21,4 @@ abstract class AccountResponse with _$AccountResponse {
   factory AccountResponse.fromJson(Map<String, Object?> json) =>
       _$AccountResponseFromJson(json);
 }
+

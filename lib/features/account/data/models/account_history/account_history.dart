@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shrm_homework_app/features/account/domain/models/account_state/account_state.dart';
+import 'package:shrm_homework_app/features/account/data/models/account/account_state/account_state.dart';
 
 part 'account_history.freezed.dart';
 part 'account_history.g.dart';

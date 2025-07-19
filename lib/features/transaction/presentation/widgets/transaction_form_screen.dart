@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
-import 'package:shrm_homework_app/core/di/di.dart';
-import 'package:shrm_homework_app/core/services/backup_sync_service.dart';
-import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
-import 'package:shrm_homework_app/features/account/domain/repository/account_repository.dart';
-import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
-import 'package:shrm_homework_app/features/category/domain/repository/category_repository.dart';
-import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
-import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_event.dart';
+import 'package:shrm_homework_app/features/account/data/models/account_responce/account_response.dart';
+import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_bloc.dart';
+import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_event.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_state.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
+import 'package:flutter/services.dart';
 
 class TransactionFormScreen extends StatefulWidget {
   final bool isIncome;
@@ -26,44 +22,43 @@ class TransactionFormScreen extends StatefulWidget {
   });
 
   @override
-  _TransactionFormScreenState createState() => _TransactionFormScreenState();
+  State<TransactionFormScreen> createState() => _TransactionFormScreenState();
 }
 
 class _TransactionFormScreenState extends State<TransactionFormScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _amountController;
-  late TextEditingController _commentController;
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
   Category? _selectedCategory;
-  AccountBrief? _selectedAccount;
-  List<AccountBrief> _accounts = [];
+  AccountResponse? _selectedAccount;
+  String? _initialAccountId;
+  final _amountController = TextEditingController();
+  final _commentController = TextEditingController();
   List<Category> _categories = [];
-  bool _isLoading = false;
-
-
-  String get _decimalSeparator {
-    final format = NumberFormat.decimalPattern();
-    return format.symbols.DECIMAL_SEP;
-  }
+  List<AccountResponse> _accounts = [];
 
   @override
   void initState() {
     super.initState();
-    _amountController = TextEditingController(
-      text: widget.transaction?.amount.toStringAsFixed(2) ?? '',
+    final now = DateTime.now();
+    if (widget.transaction != null) {
+      _selectedDate = widget.transaction!.transactionDate;
+      _selectedTime = TimeOfDay.fromDateTime(
+        widget.transaction!.transactionDate,
+      );
+      _selectedCategory = widget.transaction!.category;
+      _initialAccountId = widget.transaction!.account.id.toString();
+      _amountController.text = widget.transaction!.amount.toStringAsFixed(2);
+      _commentController.text = widget.transaction!.comment ?? '';
+    } else {
+      _selectedDate = now;
+      _selectedTime = TimeOfDay.fromDateTime(now);
+      _amountController.text = '';
+      _commentController.text = '';
+    }
+    context.read<TransactionBloc>().add(
+      LoadCategories(isIncome: widget.isIncome),
     );
-    _commentController = TextEditingController(
-      text: widget.transaction?.comment ?? '',
-    );
-    _selectedDate = widget.transaction?.transactionDate ?? DateTime.now();
-    _selectedTime =
-        widget.transaction?.transactionDate != null
-            ? TimeOfDay.fromDateTime(widget.transaction!.transactionDate)
-            : TimeOfDay.now();
-    _selectedCategory = widget.transaction?.category;
-    _selectedAccount = widget.transaction?.account;
-    _loadAccountsAndCategories();
+    context.read<TransactionBloc>().add(const LoadAccounts());
   }
 
   @override
@@ -73,591 +68,351 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
     super.dispose();
   }
 
-  Future<void> _loadAccountsAndCategories() async {
-    setState(() {
-      _isLoading = true;
-    });
+  String getDecimalSeparator() {
+    return NumberFormat(
+      '',
+      Localizations.localeOf(context).toString(),
+    ).symbols.DECIMAL_SEP;
+  }
 
-    try {
-      final accountRepository = getIt<AccountRepository>();
-      final categoryRepository = getIt<CategoryRepository>();
-
-      // Загружаем единственный счет (ID = 1 согласно ТЗ)
-      final accountResponse = await accountRepository.getAccount(1);
-      _accounts = [
-        AccountBrief(
-          id: accountResponse.id,
-          name: accountResponse.name,
-          balance: accountResponse.balance,
-          currency: accountResponse.currency,
-        ),
-      ];
-
-      _categories = await categoryRepository.getCategoriesByType(
-        widget.isIncome,
+  void _saveTransaction() {
+    if (_selectedCategory == null ||
+        _selectedAccount == null ||
+        _amountController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder:
+            (ctx) => AlertDialog(
+              title: Text(S.of(context).error),
+              content: Text(S.of(context).fillAllFields),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(S.of(context).ok),
+                ),
+              ],
+            ),
       );
-
-    
-      if (_selectedAccount == null && _accounts.isNotEmpty) {
-        _selectedAccount = _accounts.first;
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Ошибка загрузки данных: $e');
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime,
-    );
-    if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-      });
-    }
-  }
-
-  Future<void> _selectAccount() async {
-    if (_accounts.isEmpty) return;
-
-    final selected = await showDialog<AccountBrief>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Выберите счет'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children:
-                _accounts.map((account) {
-                  return ListTile(
-                    title: Text(account.name),
-                    subtitle: Text(
-                      '${account.balance.toStringAsFixed(2)} ${account.currency}',
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop(account);
-                    },
-                  );
-                }).toList(),
-          ),
-        );
-      },
-    );
-
-    if (selected != null) {
-      setState(() {
-        _selectedAccount = selected;
-      });
-    }
-  }
-
-  Future<void> _selectCategory() async {
-    if (_categories.isEmpty) return;
-
-    final selected = await showDialog<Category>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Выберите категорию'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _categories.length,
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                return ListTile(
-                  leading: Text(
-                    category.emoji,
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  title: Text(category.name),
-                  onTap: () {
-                    Navigator.of(context).pop(category);
-                  },
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-
-    if (selected != null) {
-      setState(() {
-        _selectedCategory = selected;
-      });
-    }
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Ошибка'),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('ОК'),
-              ),
-            ],
-          ),
-    );
-  }
-
-  void _showValidationDialog() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Заполните все поля'),
-            content: Text(
-              'Пожалуйста, заполните все обязательные поля: счет, категория и сумма.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('ОК'),
-              ),
-            ],
-          ),
-    );
-  }
-
-  bool _validateFields() {
-    if (_selectedAccount == null) return false;
-    if (_selectedCategory == null) return false;
-    if (_amountController.text.isEmpty) return false;
-
-    final amount = double.tryParse(
-      _amountController.text.replaceAll(_decimalSeparator, '.'),
-    );
-    if (amount == null || amount <= 0) return false;
-
-    return true;
-  }
-
-  void _validateAndSave() {
-    print('🔍 TransactionForm: Начинаем валидацию и сохранение');
-    
-    if (!_validateFields()) {
-      print('❌ TransactionForm: Валидация не прошла');
-      _showValidationDialog();
       return;
     }
-
-    print('✅ TransactionForm: Валидация прошла успешно');
-
-    final dateTime = DateTime(
+    final amount = double.parse(
+      _amountController.text.replaceAll(getDecimalSeparator(), '.'),
+    );
+    final transactionDate = DateTime(
       _selectedDate.year,
       _selectedDate.month,
       _selectedDate.day,
       _selectedTime.hour,
       _selectedTime.minute,
     );
-
-    final amount = double.parse(
-      _amountController.text.replaceAll(_decimalSeparator, '.'),
-    );
-
     final request = TransactionRequest(
       accountId: _selectedAccount!.id,
       categoryId: _selectedCategory!.id,
       amount: amount,
-      comment: _commentController.text.isEmpty ? null : _commentController.text,
-      transactionDate: dateTime,
+      transactionDate: transactionDate,
+      comment:
+          _commentController.text.isNotEmpty ? _commentController.text : null,
     );
-
-    print('📝 TransactionForm: Создаем запрос: accountId=${request.accountId}, categoryId=${request.categoryId}, amount=${request.amount}');
-
-    final bloc = context.read<TransactionBloc>();
-    if (widget.transaction == null) {
-      print('🆕 TransactionForm: Создаем новую транзакцию');
-      bloc.add(
-        TransactionEvent.createTransaction(
-          request: request,
-          isIncome: widget.isIncome,
-        ),
-      );
-    } else {
-      print('✏️ TransactionForm: Обновляем существующую транзакцию ID=${widget.transaction!.id}');
-      bloc.add(
-        TransactionEvent.updateTransaction(
+    if (widget.transaction != null) {
+      context.read<TransactionBloc>().add(
+        UpdateTransaction(
           id: widget.transaction!.id,
           request: request,
           isIncome: widget.isIncome,
         ),
       );
+    } else {
+      context.read<TransactionBloc>().add(
+        CreateTransaction(request: request, isIncome: widget.isIncome),
+      );
     }
+    Navigator.pop(context, true);
   }
 
   void _deleteTransaction() {
-    final bloc = context.read<TransactionBloc>();
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text(widget.isIncome ? 'Удалить доход' : 'Удалить расход'),
-            content: Text('Вы уверены, что хотите удалить эту операцию?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Отмена'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (widget.transaction != null) {
-                    bloc.add(
-                      TransactionEvent.deleteTransaction(
+    if (widget.transaction != null) {
+      showDialog(
+        context: context,
+        builder:
+            (ctx) => AlertDialog(
+              title: Text(S.of(context).deleteExpense),
+              content: Text(S.of(context).areYouSure),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(S.of(context).cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.read<TransactionBloc>().add(
+                      DeleteTransaction(
                         id: widget.transaction!.id,
                         isIncome: widget.isIncome,
                       ),
                     );
-                  }
-                },
-                child: Text('Удалить', style: TextStyle(color: Colors.red)),
-              ),
-            ],
-          ),
-    );
-  }
-
-  void _clearFailedOperations() async {
-    try {
-      final backupService = getIt<BackupSyncService>();
-      await backupService.clearFailedOperations();
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Неудачные операции синхронизации очищены'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        _showErrorDialog('Ошибка очистки операций: $e');
-      }
+                    Navigator.pop(context, true);
+                    Navigator.pop(context, true);
+                  },
+                  child: Text(
+                    S.of(context).delete,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+      );
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<TransactionBloc, TransactionState>(
-      listener: (context, state) {
-        if (state is TransactionSaved || state is TransactionDeleted) {
-          Navigator.of(context).pop(true);
-        } else if (state is TransactionError) {
-          _showErrorDialog(state.message);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryGreen,
-          leading: IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          actions: [
-            GestureDetector(
-              onLongPress: () {
-                // Длинное нажатие для очистки неудачных операций синхронизации
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Очистка операций'),
-                    content: const Text('Очистить все неудачные операции синхронизации?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Отмена'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          _clearFailedOperations();
-                        },
-                        child: const Text('Очистить'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              child: IconButton(
-                icon: const Icon(Icons.check, color: Colors.white),
-                onPressed: _validateAndSave,
-              ),
-            ),
-          ],
-          title: Text(
-            widget.transaction == null
-                ? (widget.isIncome ? 'Новый доход' : 'Новый расход')
-                : (widget.isIncome
-                    ? 'Редактировать доход'
-                    : 'Редактировать расход'),
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
-        body:
-            _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : BlocBuilder<TransactionBloc, TransactionState>(
-                  builder: (context, state) {
-                    if (state is TransactionSaving) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    return _buildForm();
-                  },
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) setState(() => _selectedDate = picked);
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (picked != null) setState(() => _selectedTime = picked);
+  }
+
+  Future<void> _pickAccount() async {
+    final selected = await showModalBottomSheet<AccountResponse>(
+      context: context,
+      builder:
+          (context) => ListView.builder(
+            itemCount: _accounts.length,
+            itemBuilder:
+                (context, index) => ListTile(
+                  title: Text(_accounts[index].name),
+                  onTap: () => Navigator.pop(context, _accounts[index]),
                 ),
-      ),
+          ),
     );
+    if (selected != null) {
+      setState(() => _selectedAccount = selected);
+    }
   }
 
-  Widget _buildForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildAccountRow(),
-                  _buildCategoryRow(),
-                  _buildAmountRow(),
-                  _buildDateRow(),
-                  _buildTimeRow(),
-                  _buildCommentRow(),
-                ],
-              ),
-            ),
-            if (widget.transaction != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: ElevatedButton(
-                  onPressed: _deleteTransaction,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.lightRedBackground,
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  child: Text(
-                    widget.isIncome ? 'Удалить доход' : 'Удалить расход',
-                    style: const TextStyle(color: Colors.white),
-                  ),
+  Future<void> _pickCategory() async {
+    final selected = await showModalBottomSheet<Category>(
+      context: context,
+      builder:
+          (context) => ListView.builder(
+            itemCount: _categories.length,
+            itemBuilder:
+                (context, index) => ListTile(
+                  title: Text(_categories[index].name),
+                  onTap: () => Navigator.pop(context, _categories[index]),
                 ),
-              ),
-          ],
-        ),
-      ),
+          ),
     );
+    if (selected != null) {
+      setState(() => _selectedCategory = selected);
+    }
   }
 
-  Widget _buildAccountRow() {
-    return _buildRow(
-      label: 'Счет',
-      child: InkWell(
-        onTap: _selectAccount,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  _selectedAccount?.name ?? 'Выберите счет',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color:
-                        _selectedAccount == null ? Colors.grey : Colors.black,
-                  ),
-                ),
-              ),
-              const Icon(Icons.arrow_drop_down, color: Colors.grey),
-            ],
-          ),
-        ),
-      ),
+  Future<void> _editAmount() async {
+    final amountController = TextEditingController(
+      text: _amountController.text,
     );
-  }
-
-  Widget _buildCategoryRow() {
-    return _buildRow(
-      label: 'Категория',
-      child: InkWell(
-        onTap: _selectCategory,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child:
-                    _selectedCategory != null
-                        ? Row(
-                          children: [
-                            Text(
-                              _selectedCategory!.emoji,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                _selectedCategory!.name,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )
-                        : Text(
-                          'Выберите категорию',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-              ),
-              const Icon(Icons.arrow_drop_down, color: Colors.grey),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAmountRow() {
-    return _buildRow(
-      label: 'Сумма',
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: _amountController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Введите сумму',
-              ),
+    final newAmount = await showDialog<String>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(S.of(context).amount),
+            content: TextFormField(
+              controller: amountController,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
-                  RegExp(r'^\d*[' + _decimalSeparator + r']?\d{0,2}$'),
+                  RegExp('[0-9${getDecimalSeparator()}]'),
                 ),
+                TextInputFormatter.withFunction((oldValue, newValue) {
+                  final sep = getDecimalSeparator();
+                  final text = newValue.text;
+                  if (text.split(sep).length > 2) return oldValue;
+                  return newValue;
+                }),
               ],
-              textAlign: TextAlign.end,
+              autofocus: true,
             ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(S.of(context).cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, amountController.text),
+                child: Text(S.of(context).ok),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Text(
-            _selectedAccount?.currency ?? 'RUB',
-            style: const TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
     );
+    if (newAmount != null && newAmount.isNotEmpty) {
+      setState(() {
+        _amountController.text = newAmount;
+      });
+    }
   }
 
-  Widget _buildDateRow() {
-    return _buildRow(
-      label: 'Дата',
-      child: InkWell(
-        onTap: () => _selectDate(context),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: Text(
-            DateFormat.yMMMd().format(_selectedDate),
-            textAlign: TextAlign.end,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
+  Future<void> _editComment() async {
+    final commentController = TextEditingController(
+      text: _commentController.text,
     );
-  }
-
-  Widget _buildTimeRow() {
-    return _buildRow(
-      label: 'Время',
-      child: InkWell(
-        onTap: () => _selectTime(context),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          child: Text(
-            _selectedTime.format(context),
-            textAlign: TextAlign.end,
-            style: const TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCommentRow() {
-    return _buildRow(
-      label: 'Комментарий',
-      child: TextFormField(
-        controller: _commentController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Комментарий',
-          hintStyle: TextStyle(color: Colors.grey[400]),
-        ),
-        maxLines: 1,
-        textAlign: TextAlign.end,
-      ),
-    );
-  }
-
-  Widget _buildRow({required String label, required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              label,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    final newComment = await showDialog<String>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(S.of(context).edit),
+            content: TextFormField(
+              controller: commentController,
+              autofocus: true,
             ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(S.of(context).cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, commentController.text),
+                child: Text(S.of(context).ok),
+              ),
+            ],
           ),
-          Expanded(child: child),
-        ],
-      ),
+    );
+    if (newComment != null) {
+      setState(() {
+        _commentController.text = newComment;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final title =
+        widget.isIncome ? S.of(context).myIncomes : S.of(context).myExpenses;
+    return BlocConsumer<TransactionBloc, TransactionState>(
+      listener: (context, state) {
+        if (state is CategoriesLoaded && state.isIncome == widget.isIncome) {
+          setState(() => _categories = state.categories);
+          if (widget.transaction == null && _categories.isNotEmpty) {
+            _selectedCategory = _categories.first;
+          }
+        } else if (state is AccountsLoaded) {
+          setState(() => _accounts = state.accounts);
+          if (_initialAccountId != null) {
+            _selectedAccount = _accounts.firstWhere(
+              (acc) => acc.id == _initialAccountId,
+            );
+          } else if (_accounts.isNotEmpty) {
+            _selectedAccount = _accounts.first;
+          }
+        } else if (state is TransactionError) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
+            ),
+            title: Text(title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.check),
+                onPressed: _saveTransaction,
+              ),
+            ],
+          ),
+          body: ListView(
+            children: [
+              ListTile(
+                title: Text(S.of(context).account),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(_selectedAccount?.name ?? S.of(context).select),
+                    const Icon(Icons.chevron_right),
+                  ],
+                ),
+                onTap: _pickAccount,
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(S.of(context).category),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(_selectedCategory?.name ?? S.of(context).select),
+                    const Icon(Icons.chevron_right),
+                  ],
+                ),
+                onTap: _pickCategory,
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(S.of(context).amount),
+                trailing: Text(
+                  '${_amountController.text} ${_selectedAccount?.currency ?? ''}',
+                ),
+                onTap: _editAmount,
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(S.of(context).date),
+                trailing: Text(DateFormat('dd.MM.yyyy').format(_selectedDate)),
+                onTap: _pickDate,
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(S.of(context).time),
+                trailing: Text(_selectedTime.format(context)),
+                onTap: _pickTime,
+              ),
+              const Divider(height: 1),
+              ListTile(
+                title: Text(
+                  _commentController.text.isEmpty
+                      ? S.of(context).none
+                      : _commentController.text,
+                ),
+                onTap: _editComment,
+              ),
+              if (widget.transaction != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 24.0,
+                  ),
+                  child: TextButton(
+                    onPressed: _deleteTransaction,
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red.withOpacity(0.1),
+                      foregroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(S.of(context).deleteExpense),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -11,7 +11,7 @@ abstract class Transaction with _$Transaction {
     required int categoryId,
     required double amount, 
     required DateTime transactionDate, 
-    required String comment, 
+    String? comment, 
     required DateTime createdAt, 
     required DateTime updatedAt, 
   }) = _Transaction;

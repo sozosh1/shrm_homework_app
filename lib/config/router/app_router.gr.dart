@@ -203,6 +203,89 @@ class IncomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PinCodeScreen]
+class PinCodeRoute extends PageRouteInfo<PinCodeRouteArgs> {
+  PinCodeRoute({
+    Key? key,
+    required PinCodeMode mode,
+    String? title,
+    VoidCallback? onSuccess,
+    VoidCallback? onBiometricAuth,
+    List<PageRouteInfo>? children,
+  }) : super(
+         PinCodeRoute.name,
+         args: PinCodeRouteArgs(
+           key: key,
+           mode: mode,
+           title: title,
+           onSuccess: onSuccess,
+           onBiometricAuth: onBiometricAuth,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'PinCodeRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<PinCodeRouteArgs>();
+      return PinCodeScreen(
+        key: args.key,
+        mode: args.mode,
+        title: args.title,
+        onSuccess: args.onSuccess,
+        onBiometricAuth: args.onBiometricAuth,
+      );
+    },
+  );
+}
+
+class PinCodeRouteArgs {
+  const PinCodeRouteArgs({
+    this.key,
+    required this.mode,
+    this.title,
+    this.onSuccess,
+    this.onBiometricAuth,
+  });
+
+  final Key? key;
+
+  final PinCodeMode mode;
+
+  final String? title;
+
+  final VoidCallback? onSuccess;
+
+  final VoidCallback? onBiometricAuth;
+
+  @override
+  String toString() {
+    return 'PinCodeRouteArgs{key: $key, mode: $mode, title: $title, onSuccess: $onSuccess, onBiometricAuth: $onBiometricAuth}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PinCodeRouteArgs) return false;
+    return key == other.key &&
+        mode == other.mode &&
+        title == other.title &&
+        onSuccess == other.onSuccess &&
+        onBiometricAuth == other.onBiometricAuth;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      mode.hashCode ^
+      title.hashCode ^
+      onSuccess.hashCode ^
+      onBiometricAuth.hashCode;
+}
+
+/// generated route for
 /// [SettingsScreen]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})
