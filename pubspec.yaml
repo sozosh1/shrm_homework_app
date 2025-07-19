@@ -47,6 +47,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   secure_application: ^4.1.0
   local_auth: ^2.3.0
+  envied: ^1.1.1
 
 
 dev_dependencies:
@@ -58,7 +59,8 @@ dev_dependencies:
   build_runner: ^2.5.4
   freezed: ^3.0.6
   drift_dev: ^2.27.0
-  flutter_gen_runner: ^5.4.0  
+  flutter_gen_runner: ^5.4.0
+  envied_generator: ^1.1.1  
 
 flutter:
   uses-material-design: true

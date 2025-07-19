@@ -210,6 +210,7 @@ class PinCodeRoute extends PageRouteInfo<PinCodeRouteArgs> {
     required PinCodeMode mode,
     String? title,
     VoidCallback? onSuccess,
+    VoidCallback? onBiometricAuth,
     List<PageRouteInfo>? children,
   }) : super(
          PinCodeRoute.name,
@@ -218,6 +219,7 @@ class PinCodeRoute extends PageRouteInfo<PinCodeRouteArgs> {
            mode: mode,
            title: title,
            onSuccess: onSuccess,
+           onBiometricAuth: onBiometricAuth,
          ),
          initialChildren: children,
        );
@@ -233,6 +235,7 @@ class PinCodeRoute extends PageRouteInfo<PinCodeRouteArgs> {
         mode: args.mode,
         title: args.title,
         onSuccess: args.onSuccess,
+        onBiometricAuth: args.onBiometricAuth,
       );
     },
   );
@@ -244,6 +247,7 @@ class PinCodeRouteArgs {
     required this.mode,
     this.title,
     this.onSuccess,
+    this.onBiometricAuth,
   });
 
   final Key? key;
@@ -254,9 +258,11 @@ class PinCodeRouteArgs {
 
   final VoidCallback? onSuccess;
 
+  final VoidCallback? onBiometricAuth;
+
   @override
   String toString() {
-    return 'PinCodeRouteArgs{key: $key, mode: $mode, title: $title, onSuccess: $onSuccess}';
+    return 'PinCodeRouteArgs{key: $key, mode: $mode, title: $title, onSuccess: $onSuccess, onBiometricAuth: $onBiometricAuth}';
   }
 
   @override
@@ -266,12 +272,17 @@ class PinCodeRouteArgs {
     return key == other.key &&
         mode == other.mode &&
         title == other.title &&
-        onSuccess == other.onSuccess;
+        onSuccess == other.onSuccess &&
+        onBiometricAuth == other.onBiometricAuth;
   }
 
   @override
   int get hashCode =>
-      key.hashCode ^ mode.hashCode ^ title.hashCode ^ onSuccess.hashCode;
+      key.hashCode ^
+      mode.hashCode ^
+      title.hashCode ^
+      onSuccess.hashCode ^
+      onBiometricAuth.hashCode;
 }
 
 /// generated route for

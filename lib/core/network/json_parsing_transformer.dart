@@ -29,7 +29,9 @@ class JsonParsingTransformer extends Transformer {
     );
     final jsonString = utf8.decode(bytes);
 
-    if (jsonString.isNotEmpty) {
+    talker.info('📥 Response body: $jsonString');
+
+    if (jsonString.isNotEmpty && jsonString.trim() != '') {
       talker.info('🔄 Starting JSON parsing using worker_manager isolate pool...');
       
       try {
@@ -43,6 +45,8 @@ class JsonParsingTransformer extends Transformer {
       }
     }
     
+    // Возвращаем null для пустых ответов, чтобы Dio мог корректно обработать
+    talker.warning('⚠️ Empty response body, returning null');
     return null;
   }
 }

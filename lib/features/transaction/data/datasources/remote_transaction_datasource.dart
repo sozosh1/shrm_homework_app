@@ -96,6 +96,14 @@ class RemoteTransactionDataSourceImpl implements RemoteTransactionDataSource {
       final json = response.data as Map<String, dynamic>;
       final modifiedJson = Map<String, dynamic>.from(json);
 
+      // Проверяем обязательные поля
+      if (modifiedJson['account'] == null) {
+        throw Exception('API response missing required field: account');
+      }
+      if (modifiedJson['category'] == null) {
+        throw Exception('API response missing required field: category');
+      }
+
       if (modifiedJson['amount'] is String) {
         modifiedJson['amount'] =
             double.tryParse(modifiedJson['amount']) ?? 0.0;
@@ -112,6 +120,12 @@ class RemoteTransactionDataSourceImpl implements RemoteTransactionDataSource {
           account['balance'] = double.tryParse(account['balance']) ?? 0.0;
         }
         modifiedJson['account'] = account;
+      } else {
+        throw Exception('API response account field is not a valid object');
+      }
+
+      if (modifiedJson['category'] is! Map<String, dynamic>) {
+        throw Exception('API response category field is not a valid object');
       }
 
       return TransactionResponse.fromJson(modifiedJson);
