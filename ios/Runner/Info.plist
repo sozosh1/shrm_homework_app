@@ -53,5 +53,11 @@
 			<integer>1</integer>
 			<!-- iPhone only -->
 		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIWindowBlurBehindEnabled</key>
+		<true/>
+		<key>UIWindowBlurBehindRadius</key>
+		<integer>20</integer>
 	</dict>
 </plist>

@@ -26,7 +26,7 @@ dependencies:
   drift: ^2.27.0
   drift_flutter: ^0.2.4
   path_provider: ^2.1.5
-  shared_preferences: ^2.5.3
+  shared_preferences: ^2.2.2
   sqlite3_flutter_libs: ^0.5.34
   sqlite3: ^2.7.6
   path: ^1.9.1
@@ -43,6 +43,11 @@ dependencies:
   retry: ^3.1.2
   json_annotation: ^4.9.0
   worker_manager: ^7.2.6
+  flutter_colorpicker: ^1.1.0
+  flutter_secure_storage: ^9.0.0
+  secure_application: ^4.1.0
+  local_auth: ^2.3.0
+
 
 dev_dependencies:
   auto_route_generator: 10.1.0
@@ -53,7 +58,7 @@ dev_dependencies:
   build_runner: ^2.5.4
   freezed: ^3.0.6
   drift_dev: ^2.27.0
-  flutter_gen_runner: ^5.4.0  # Add this for localization generation
+  flutter_gen_runner: ^5.4.0  
 
 flutter:
   uses-material-design: true
@@ -63,7 +68,7 @@ flutter:
     - assets/images/
     - assets/app/
   
-flutter_intl:  # Corrected section
+flutter_intl:  
   enabled: true
   arb-dir: lib/l10n
   template-arb-file: intl_en.arb

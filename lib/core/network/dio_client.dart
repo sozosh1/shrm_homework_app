@@ -1,17 +1,26 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+
+import 'package:shrm_homework_app/core/network/connectivity_service.dart';
+import 'package:shrm_homework_app/core/network/json_parsing_transformer.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'isolate_deserializer_interceptor.dart';
 
 @singleton
 class DioClient {
   final Dio _dio;
   final Talker _talker;
+  final ConnectivityService _connectivity;
+
   static const String _baseUrl = 'https://shmr-finance.ru/api/v1';
   final String _bearerToken;
 
-  DioClient(this._talker, @Named('bearerToken') this._bearerToken)
-    : _dio = Dio() {
+  DioClient(
+    this._talker,
+    @Named('bearerToken') this._bearerToken,
+    this._connectivity,
+  ) : _dio = Dio() {
     _setupInterceptors();
   }
 
@@ -55,10 +64,8 @@ class DioClient {
       ),
     );
 
-    // Interceptor для десериализации через изоляты
-    _dio.interceptors.add(
-      IsolateDeserializerInterceptor(_talker),
-    );
+    // Transformer для десериализации через изоляты
+    _dio.transformer = JsonParsingTransformer(_talker);
 
     // Interceptor для ретраев с exponential backoff
     _dio.interceptors.add(
@@ -66,11 +73,11 @@ class DioClient {
         dio: _dio,
         talker: _talker,
         retries: 3,
-        baseDelay: const Duration(seconds: 1), 
+        baseDelay: const Duration(seconds: 1),
       ),
     );
+    // Removed general pending add, handled in repositories
   }
-
 
   Future<Response<T>> get<T>(
     String path, {
@@ -90,7 +97,6 @@ class DioClient {
     }
   }
 
- 
   Future<Response<T>> post<T>(
     String path, {
     dynamic data,
@@ -110,7 +116,6 @@ class DioClient {
       rethrow;
     }
   }
-
 
   Future<Response<T>> put<T>(
     String path, {
@@ -132,7 +137,6 @@ class DioClient {
     }
   }
 
- 
   Future<Response<T>> delete<T>(
     String path, {
     dynamic data,
@@ -165,68 +169,37 @@ class RetryInterceptor extends Interceptor {
     required this.dio,
     required this.talker,
     this.retries = 3,
-    this.baseDelay = const Duration(seconds: 1), // Базовая задержка
+    this.baseDelay = const Duration(seconds: 1),
   });
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    var extra = err.requestOptions.extra;
-    var attempt = extra['retry_attempt'] ?? 0;
+    final statusCode = err.response?.statusCode;
+    if (statusCode != null && _shouldRetry(statusCode)) {
+      err.requestOptions.extra ??= {};
+      int retryCount = (err.requestOptions.extra['retryCount'] as int? ?? 0);
+      if (retryCount < retries) {
+        retryCount++;
+        err.requestOptions.extra['retryCount'] = retryCount;
 
-    // Проверяем, нужно ли делать retry
-    if (attempt < retries && _shouldRetry(err)) {
-      attempt++;
-      extra['retry_attempt'] = attempt;
-      err.requestOptions.extra = extra;
+        final delay = baseDelay * pow(2, retryCount - 1);
+        talker.info(
+          '🔄 Retry $retryCount/$retries for $statusCode after ${delay.inSeconds}s',
+        );
 
-      
-      // Формула: baseDelay * (2^attempt) + jitter
-      final exponentialDelay =
-          baseDelay.inMilliseconds * (1 << attempt); // 2^attempt
-      final jitter =
-          (exponentialDelay * 0.1 * (DateTime.now().millisecond % 100) / 100)
-              .round();
-      final totalDelay = Duration(milliseconds: exponentialDelay + jitter);
-
-      talker.warning(
-        '🔄 Retry attempt $attempt/$retries after ${totalDelay.inMilliseconds}ms for ${err.requestOptions.path}',
-      );
-
-      await Future.delayed(totalDelay);
-
-      try {
-        // Повторяем запрос
-        final response = await dio.fetch(err.requestOptions);
-        handler.resolve(response);
-        return;
-      } on DioException catch (e) {
-        // Если retry тоже не удался, продолжаем обработку ошибки
-        super.onError(e, handler);
-        return;
+        await Future.delayed(delay);
+        try {
+          final response = await dio.fetch(err.requestOptions);
+          return handler.resolve(response);
+        } catch (e) {
+          return handler.next(err);
+        }
       }
     }
-
-    // Если retries исчерпаны или не нужны
-    super.onError(err, handler);
+    return handler.next(err);
   }
 
-  // Определяем, нужно ли делать retry для данной ошибки
-  bool _shouldRetry(DioException error) {
- 
-    if (error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.receiveTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.connectionError) {
-      return true;
-    }
-
-    
-    if (error.response?.statusCode != null) {
-      final statusCode = error.response!.statusCode!;
-
-      return [500, 502, 503, 504, 408, 429].contains(statusCode);
-    }
-
-    return false;
+  bool _shouldRetry(int? statusCode) {
+    return [500, 502, 503, 504, 408, 429].contains(statusCode);
   }
 }

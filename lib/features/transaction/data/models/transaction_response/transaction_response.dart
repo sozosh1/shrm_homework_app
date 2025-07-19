@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shrm_homework_app/features/account/data/models/account_brief/account_brief.dart';
-import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction/transaction.dart';
+import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
 
 part 'transaction_response.freezed.dart';
 part 'transaction_response.g.dart';
@@ -19,22 +21,30 @@ abstract class TransactionResponse with _$TransactionResponse {
   }) = _TransactionResponse;
 
   factory TransactionResponse.fromJson(Map<String, dynamic> json) =>
-      _$TransactionResponseFromJson(_preprocessTransactionJson(json));
+      _$TransactionResponseFromJson(json);
 }
 
-/// Предобработка JSON для корректного парсинга amount
-Map<String, dynamic> _preprocessTransactionJson(Map<String, dynamic> json) {
-  final processed = Map<String, dynamic>.from(json);
-  
-  // Обрабатываем amount - может приходить как строка или число
-  if (processed['amount'] != null) {
-    final amount = processed['amount'];
-    if (amount is String) {
-      processed['amount'] = double.tryParse(amount) ?? 0.0;
-    } else if (amount is num) {
-      processed['amount'] = amount.toDouble();
-    }
+extension TransactionResponseX on TransactionResponse {
+  Transaction toTransaction() {
+    return Transaction(
+      id: id,
+      accountId: account.id,
+      categoryId: category.id,
+      amount: amount,
+      transactionDate: transactionDate,
+      comment: comment ?? '',
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
   }
-  
-  return processed;
+
+  TransactionRequest toRequest() {
+    return TransactionRequest(
+      accountId: account.id,
+      categoryId: category.id,
+      amount: amount,
+      transactionDate: transactionDate,
+      comment: comment,
+    );
+  }
 }

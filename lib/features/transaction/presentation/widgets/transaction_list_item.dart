@@ -22,8 +22,7 @@ class TransactionListItem extends StatelessWidget {
       children: [
         ListTile(
           leading: CircleAvatar(
-            backgroundColor: AppColors.lightGreenBackground,
-            radius: 12,
+            radius: 14,
             child: Text(
               transaction.category.emoji,
               style: const TextStyle(fontSize: 20),
@@ -39,10 +38,7 @@ class TransactionListItem extends StatelessWidget {
                 children: [
                   Text(transaction.category.name),
                   if (transaction.comment?.isNotEmpty ?? false)
-                    Text(
-                      transaction.comment!,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
+                    Text(transaction.comment!),
                 ],
               ),
               CurrencyDisplay(

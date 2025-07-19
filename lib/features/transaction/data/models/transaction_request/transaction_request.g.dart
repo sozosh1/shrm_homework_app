@@ -11,7 +11,9 @@ _TransactionRequest _$TransactionRequestFromJson(Map<String, dynamic> json) =>
       accountId: (json['accountId'] as num).toInt(),
       categoryId: (json['categoryId'] as num).toInt(),
       amount: (json['amount'] as num).toDouble(),
-      transactionDate: DateTime.parse(json['transactionDate'] as String),
+      transactionDate: const IsoDateTimeConverter().fromJson(
+        json['transactionDate'] as String,
+      ),
       comment: json['comment'] as String?,
     );
 
@@ -20,6 +22,8 @@ Map<String, dynamic> _$TransactionRequestToJson(_TransactionRequest instance) =>
       'accountId': instance.accountId,
       'categoryId': instance.categoryId,
       'amount': instance.amount,
-      'transactionDate': instance.transactionDate.toIso8601String(),
+      'transactionDate': const IsoDateTimeConverter().toJson(
+        instance.transactionDate,
+      ),
       'comment': instance.comment,
     };

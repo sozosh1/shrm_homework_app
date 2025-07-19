@@ -6,6 +6,7 @@ import 'package:shrm_homework_app/features/account/data/models/account_update_re
 import 'package:shrm_homework_app/features/account/presentation/bloc/account_bloc.dart';
 import 'package:shrm_homework_app/features/account/presentation/bloc/account_event.dart';
 import 'package:shrm_homework_app/features/account/presentation/bloc/account_state.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
 
 @RoutePage()
 class EditAccountScreen extends StatefulWidget {
@@ -41,8 +42,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryGreen,
-        title: const Text('Редактировать'),
+        title: Text(S.of(context).editAccount),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.router.pop(),
@@ -55,9 +55,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               if (currentState is AccountLoaded) {
                 final request = AccountUpdateRequest(
                   name: _controller.text,
-                  balance:
-                      currentState.account.balance, 
-                  currency: currentState.account.currency,// и валюту
+                  balance: currentState.account.balance,
+                  currency: currentState.account.currency, // и валюту
                 );
                 context.read<AccountBloc>().add(
                   UpdateAccount(widget.accountId, request),
@@ -74,8 +73,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           children: [
             TextField(
               controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Название счета',
+              decoration:  InputDecoration(
+                labelText: S.of(context).accountNameLabel,
                 prefixIcon: Icon(Icons.account_balance),
                 border: UnderlineInputBorder(),
               ),
@@ -85,11 +84,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                label: const Text('Удалить счет'),
+                label: Text(S.of(context).deleteAccount),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Функция удаления счета в разработке'),
+                     SnackBar(
+                      content: Text(S.of(context).deleteAccountInDevelopment),
                     ),
                   );
                 },

@@ -4,6 +4,10 @@ part 'transaction_event.freezed.dart';
 
 @freezed
 class TransactionEvent with _$TransactionEvent {
+  const factory TransactionEvent.loadCategories({
+    required bool isIncome,
+  }) = LoadCategories;
+  const factory TransactionEvent.loadAccounts() = LoadAccounts;
   const factory TransactionEvent.loadTodayTransactions({
     required bool isIncome,
   }) = LoadTodayTransactions;

@@ -12,7 +12,7 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
   categoryId: (json['categoryId'] as num).toInt(),
   amount: (json['amount'] as num).toDouble(),
   transactionDate: DateTime.parse(json['transactionDate'] as String),
-  comment: json['comment'] as String,
+  comment: json['comment'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
 );

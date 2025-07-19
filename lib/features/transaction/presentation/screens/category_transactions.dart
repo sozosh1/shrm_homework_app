@@ -14,10 +14,9 @@ class CategoryTransactionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(item.category.name)),
       body: ListView.separated(
-        separatorBuilder: (context, index) => Divider(),
+        separatorBuilder: (context, index) => Divider(thickness: 0.5),
         itemCount: item.transactions.length,
         itemBuilder: (context, index) {
-          
           final sortedTransactions = List.of(item.transactions)
             ..sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
           return TransactionListItem(transaction: sortedTransactions[index]);

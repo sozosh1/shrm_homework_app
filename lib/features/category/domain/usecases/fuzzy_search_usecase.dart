@@ -1,6 +1,6 @@
 import 'package:fuzzy/fuzzy.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shrm_homework_app/features/category/domain/models/category/category.dart';
+import 'package:shrm_homework_app/features/category/data/models/category/category.dart';
 
 @injectable
 class FuzzySearchUseCase {

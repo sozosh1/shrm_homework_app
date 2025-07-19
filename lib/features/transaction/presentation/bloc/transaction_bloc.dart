@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shrm_homework_app/features/account/domain/repository/account_repository.dart';
+import 'package:shrm_homework_app/features/category/domain/repository/category_repository.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_request/transaction_request.dart';
 import 'package:shrm_homework_app/features/transaction/domain/repository/transaction_repository.dart';
+
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'transaction_event.dart';
@@ -11,15 +14,64 @@ import 'transaction_state.dart';
 @injectable
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final TransactionRepository _repository;
+  final CategoryRepository _categoryRepository;
+  final AccountRepository _accountRepository;
   final Talker _talker;
 
-  TransactionBloc(this._repository, this._talker)
-    : super(const TransactionState.initial()) {
+  TransactionBloc(
+    this._repository,
+    this._categoryRepository,
+    this._accountRepository,
+    this._talker,
+  ) : super(const TransactionState.initial()) {
     on<LoadTodayTransactions>(_onLoadTodayTransactions);
     on<RefreshTransactions>(_onRefreshTransactions);
     on<CreateTransaction>(_onCreateTransaction);
     on<UpdateTransaction>(_onUpdateTransaction);
     on<DeleteTransaction>(_onDeleteTransaction);
+    on<LoadCategories>(_onLoadCategories);
+    on<LoadAccounts>(_onLoadAccounts);
+  }
+
+  Future<void> _onLoadCategories(
+    LoadCategories event,
+    Emitter<TransactionState> emit,
+  ) async {
+    try {
+      final categories = await _categoryRepository.getCategoriesByType(
+        event.isIncome,
+      );
+      emit(
+        TransactionState.categoriesLoaded(
+          categories: categories,
+          isIncome: event.isIncome,
+        ),
+      );
+    } catch (e, st) {
+      emit(
+        TransactionState.error(
+          message: 'Ошибка загрузки категорий: ${e.toString()}',
+        ),
+      );
+      _talker.handle(e, st);
+    }
+  }
+
+  Future<void> _onLoadAccounts(
+    LoadAccounts event,
+    Emitter<TransactionState> emit,
+  ) async {
+    try {
+      final account = await _accountRepository.getAccount(100);
+      emit(TransactionState.accountsLoaded(accounts: [account]));
+    } catch (e, st) {
+      emit(
+        TransactionState.error(
+          message: 'Ошибка загрузки счетов: ${e.toString()}',
+        ),
+      );
+      _talker.handle(e, st);
+    }
   }
 
   Future<void> _onLoadTodayTransactions(
@@ -27,58 +79,49 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     emit(const TransactionState.loading());
+    _talker.debug('Loading today transactions...');
 
     try {
-      final allTransactions = await _repository.getAllTransactions();
+      final now = DateTime.now();
+      final startOfDay = DateTime(now.year, now.month, now.day);
+      final endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
 
-      final today = DateTime.now();
-      final startOfDay = DateTime(today.year, today.month, today.day);
-      final endOfDay = DateTime(
-        today.year,
-        today.month,
-        today.day,
-        23,
-        59,
-        59,
-        999,
+      final transactions = await _repository.getTransactionsByPeriod(
+        100,
+        startDate: startOfDay,
+        endDate: endOfDay,
       );
 
-      final todayTransactions =
-          allTransactions.where((transaction) {
-            final transactionDate = transaction.transactionDate;
-            final isToday =
-                !transactionDate.isBefore(startOfDay) &&
-                !transactionDate.isAfter(endOfDay);
-            final isCorrectType =
-                transaction.category.isIncome == event.isIncome;
-            return isToday && isCorrectType;
-          }).toList();
+      final filteredTransactions =
+          transactions
+              .where((t) => t.category.isIncome == event.isIncome)
+              .toList()
+            ..sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
 
-      todayTransactions.sort(
-        (a, b) => b.transactionDate.compareTo(a.transactionDate),
-      );
-
-      final totalAmount = todayTransactions.fold<double>(
+      final totalAmount = filteredTransactions.fold<double>(
         0,
-        (sum, transaction) => sum + transaction.amount,
+        (sum, t) => sum + t.amount,
       );
-
-      final currency =
-          todayTransactions.isNotEmpty
-              ? todayTransactions.first.account.currency
-              : 'RUB';
 
       emit(
         TransactionState.loaded(
-          transactions: todayTransactions,
+          transactions: filteredTransactions,
           totalAmount: totalAmount,
           isIncome: event.isIncome,
-          currency: currency,
+          currency:
+              filteredTransactions.isNotEmpty
+                  ? filteredTransactions.first.account.currency
+                  : 'RUB',
         ),
       );
+      _talker.debug('Today transactions loaded successfully');
+    } on DioException catch (e) {
+      final errorMsg = _handleDioError(e);
+      emit(TransactionState.error(message: errorMsg));
+      _talker.error(errorMsg);
     } catch (e, st) {
-      emit(TransactionState.error(message: 'Ошибка загрузки транзакций: $e'));
-      GetIt.I<Talker>().handle(e, st);
+      emit(TransactionState.error(message: 'Ошибка загрузки: ${e.toString()}'));
+      _talker.handle(e, st);
     }
   }
 
@@ -88,9 +131,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   ) async {
     final currentState = state;
     if (currentState is TransactionLoaded) {
-      add(
-        TransactionEvent.loadTodayTransactions(isIncome: currentState.isIncome),
-      );
+      _talker.debug('Refreshing transactions...');
+      add(LoadTodayTransactions(isIncome: currentState.isIncome));
     }
   }
 
@@ -99,20 +141,33 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     emit(const TransactionState.saving());
+    _talker.debug('Creating transaction...');
+
     try {
-      if (!_validateTransactionRequest(event.request)) {
-        _talker.warning('Валидация не прошла при создании транзакции');
-        emit(TransactionState.error(message: 'Все поля должны быть заполнены'));
-        return;
+      if (!_validateRequest(event.request)) {
+        throw ArgumentError('Невалидные данные транзакции');
       }
 
-      _talker.info('Начинаем создание транзакции');
-      await _repository.createTransaction(event.request);
-      _talker.info('Транзакция создана успешно');
+      await _repository.createTransaction(
+        event.request,
+      );
+
       emit(const TransactionState.saved());
+      _talker.debug('Transaction created');
+
+      if (state is TransactionLoaded) {
+        add(
+          LoadTodayTransactions(
+            isIncome: (state as TransactionLoaded).isIncome,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      final errorMsg = _handleDioError(e);
+      emit(TransactionState.error(message: errorMsg));
+      _talker.error(errorMsg);
     } catch (e, st) {
-      _talker.error('Ошибка создания транзакции', e, st);
-      emit(TransactionState.error(message: 'Ошибка создания транзакции: $e'));
+      emit(TransactionState.error(message: 'Ошибка создания: ${e.toString()}'));
       _talker.handle(e, st);
     }
   }
@@ -122,21 +177,33 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     emit(const TransactionState.saving());
+    _talker.debug('Updating transaction ${event.id}...');
 
     try {
-      if (!_validateTransactionRequest(event.request)) {
-        _talker.warning('Валидация не прошла при обновлении транзакции с ID: ${event.id}');
-        emit(TransactionState.error(message: 'Все поля должны быть заполнены'));
-        return;
+      if (!_validateRequest(event.request)) {
+        throw ArgumentError('Невалидные данные транзакции');
       }
 
-      _talker.info('Начинаем обновление транзакции с ID: ${event.id}');
       await _repository.updateTransaction(event.id, event.request);
-      _talker.info('Транзакция успешно обновлена с ID: ${event.id}');
+
       emit(const TransactionState.saved());
+      _talker.debug('Transaction ${event.id} updated successfully');
+
+      if (state is TransactionLoaded) {
+        add(
+          LoadTodayTransactions(
+            isIncome: (state as TransactionLoaded).isIncome,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      final errorMsg = _handleDioError(e);
+      emit(TransactionState.error(message: errorMsg));
+      _talker.error(errorMsg);
     } catch (e, st) {
-      _talker.error('Ошибка обновления транзакции с ID: ${event.id}', e, st);
-      emit(TransactionState.error(message: 'Ошибка обновления транзакции: $e'));
+      emit(
+        TransactionState.error(message: 'Ошибка обновления: ${e.toString()}'),
+      );
       _talker.handle(e, st);
     }
   }
@@ -146,22 +213,42 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     Emitter<TransactionState> emit,
   ) async {
     emit(const TransactionState.saving());
+    _talker.debug('Deleting transaction ${event.id}...');
+
     try {
-      _talker.info('Начинаем удаление транзакции с ID: ${event.id}');
       await _repository.deleteTransaction(event.id);
-      _talker.info('Транзакция успешно удалена с ID: ${event.id}');
+
       emit(const TransactionState.deleted());
+      _talker.debug('Transaction ${event.id} deleted successfully');
+
+      if (state is TransactionLoaded) {
+        add(
+          LoadTodayTransactions(
+            isIncome: (state as TransactionLoaded).isIncome,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      final errorMsg = _handleDioError(e);
+      emit(TransactionState.error(message: errorMsg));
+      _talker.error(errorMsg);
     } catch (e, st) {
-      _talker.error('Ошибка удаления транзакции с ID: ${event.id}', e, st);
-      emit(TransactionState.error(message: 'Ошибка удаления транзакции: $e'));
+      emit(TransactionState.error(message: 'Ошибка удаления: ${e.toString()}'));
       _talker.handle(e, st);
     }
   }
 
-  bool _validateTransactionRequest(TransactionRequest request) {
-    if (request.amount <= 0) {
-      return false;
+  String _handleDioError(DioException e) {
+    if (e.response != null) {
+      final statusCode = e.response?.statusCode;
+      final errorData = e.response?.data?['message'] ?? e.response?.data;
+
+      return 'Ошибка сервера ($statusCode): $errorData';
     }
-    return true;
+    return 'Сетевая ошибка: ${e.message}';
+  }
+
+  bool _validateRequest(TransactionRequest request) {
+    return request.amount > 0;
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
+
 
 class CategorySearchBar extends StatefulWidget {
   final String value;
@@ -44,10 +44,8 @@ class _CategorySearchBarState extends State<CategorySearchBar> {
   }
 
   void _onSearchChanged(String value) {
-    
     _debounceTimer?.cancel();
 
-    
     _debounceTimer = Timer(const Duration(milliseconds: 300), () {
       widget.onChanged(value);
     });
@@ -60,9 +58,9 @@ class _CategorySearchBarState extends State<CategorySearchBar> {
       onChanged: _onSearchChanged,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.lightBackground,
+
         hintText: 'Найти статью',
-        hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16),
+
         suffixIcon:
             _controller.text.isNotEmpty
                 ? IconButton(
@@ -72,7 +70,7 @@ class _CategorySearchBarState extends State<CategorySearchBar> {
                     widget.onClear();
                   },
                 )
-                : Icon(Icons.search, color: AppColors.textDark),
+                : Icon(Icons.search),
       ),
     );
   }

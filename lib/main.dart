@@ -5,19 +5,20 @@ import 'package:get_it/get_it.dart';
 import 'package:shrm_homework_app/app.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/network/dio_client.dart';
-import 'package:shrm_homework_app/core/services/connectivity_service.dart';
-import 'package:shrm_homework_app/core/services/backup_sync_service.dart';
-import 'package:shrm_homework_app/core/services/initialization_service.dart';
+import 'package:shrm_homework_app/core/network/connectivity_service.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:worker_manager/worker_manager.dart';
+import 'package:shrm_homework_app/core/events/locale_cubit.dart';
+import 'package:shrm_homework_app/core/events/theme_cubit.dart';
+import 'package:shrm_homework_app/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:shrm_homework_app/core/services/sync_worker.dart';
 
 void main() {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      // Инициализация worker_manager для изолятов
       await workerManager.init();
 
       await configureDependencies();
@@ -27,7 +28,7 @@ void main() {
 
       // Инициализация сервисов
       try {
-        GetIt.I<DioClient>(); // Просто инициализируем DioClient
+        final dioClient = GetIt.I<DioClient>();
         final connectivityService = GetIt.I<ConnectivityService>();
 
         talker.info('✅ DioClient создан успешно');
@@ -36,11 +37,8 @@ void main() {
           '✅ WorkerManager инициализирован для десериализации через изоляты',
         );
 
-        final isConnected = await connectivityService.isConnected;
+        final isConnected = await connectivityService.checkConnection();
         talker.info('🌐 Интернет подключен: $isConnected');
-        
-        // Инициализируем категории из API
-        await _initializeCategories(talker);
       } catch (e, stackTrace) {
         talker.error('❌ Ошибка инициализации сервисов', e, stackTrace);
       }
@@ -50,23 +48,31 @@ void main() {
       FlutterError.onError =
           (details) => talker.handle(details.exception, details.stack);
 
-      runApp(MyApp());
+      final syncWorker = getIt<SyncWorker>();
+      syncWorker.start();
+
+      final themeCubit = await getIt.getAsync<ThemeCubit>();
+      await themeCubit.init();
+
+      final settingsCubit = getIt<SettingsCubit>();
+      await settingsCubit.loadSettings();
+
+      final localeCubit = LocaleCubit();
+      await localeCubit.loadLocale();
+
+      runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<ThemeCubit>(create: (_) => themeCubit),
+            BlocProvider<SettingsCubit>(create: (_) => settingsCubit),
+            BlocProvider<LocaleCubit>(create: (_) => localeCubit),
+          ],
+          child: MyApp(),
+        ),
+      );
     },
     (error, stack) {
       GetIt.I<Talker>().handle(error, stack);
     },
   );
-}
-
-
-
-/// Инициализирует категории из API
-Future<void> _initializeCategories(Talker talker) async {
-  try {
-    final initializationService = GetIt.I<InitializationService>();
-    await initializationService.initializeCategories();
-    talker.info('✅ Категории инициализированы успешно');
-  } catch (e, st) {
-    talker.error('❌ Ошибка инициализации категорий', e, st);
-  }
 }

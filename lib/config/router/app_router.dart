@@ -1,18 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/widgets/offline_banner.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/account_screen.dart';
 import 'package:shrm_homework_app/features/account/presentation/screens/edit_account_screen.dart';
 import 'package:shrm_homework_app/features/category/presentation/screens/category_screen.dart';
 import 'package:shrm_homework_app/features/home/presentation/widgets/custom_navigation_destination.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shrm_homework_app/core/services/haptic_service.dart';
+import 'package:shrm_homework_app/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:shrm_homework_app/features/settings/presentation/settings_screen.dart';
+import 'package:shrm_homework_app/features/settings/presentation/pin_code_screen.dart';
 
 import 'package:shrm_homework_app/features/transaction/domain/models/category_analysis_item.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/category_transactions.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_analys_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transactions_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/screens/transaction_history_screen.dart';
-import 'package:shrm_homework_app/placeholder_screens/placeholder_screens.dart';
+import 'package:shrm_homework_app/generated/l10n.dart';
+
 
 part 'app_router.gr.dart';
 
@@ -40,6 +45,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: TransactionAnalysRoute.page),
     AutoRoute(page: CategoryTransactionsRoute.page),
     AutoRoute(page: EditAccountRoute.page),
+    AutoRoute(page: PinCodeRoute.page),
+    
   ];
 }
 
@@ -63,33 +70,38 @@ class HomeWrapperPage extends StatelessWidget {
         return Scaffold(
           body: OfflineBanner(child: child),
           bottomNavigationBar: NavigationBar(
-            backgroundColor: AppColors.lightBackground,
             selectedIndex: tabsRouter.activeIndex,
-            onDestinationSelected: tabsRouter.setActiveIndex,
+            onDestinationSelected: (index) {
+              final settingsCubit = context.read<SettingsCubit>();
+              if (settingsCubit.state.hapticFeedbackEnabled) {
+                HapticService.selectionClick();
+              }
+              tabsRouter.setActiveIndex(index);
+            },
             destinations: [
               CustomNavigationDestination(
                 iconPath: 'assets/icons/expense.svg',
-                label: 'Расходы',
+                label: S.of(context).expenses,
                 isSelected: tabsRouter.activeIndex == 0,
               ),
               CustomNavigationDestination(
                 iconPath: 'assets/icons/income.svg',
-                label: 'Доходы',
+                label: S.of(context).income,
                 isSelected: tabsRouter.activeIndex == 1,
               ),
               CustomNavigationDestination(
                 iconPath: 'assets/icons/account.svg',
-                label: 'Счет',
+                label: S.of(context).account,
                 isSelected: tabsRouter.activeIndex == 2,
               ),
               CustomNavigationDestination(
                 iconPath: 'assets/icons/article.svg',
-                label: 'Статьи',
+                label: S.of(context).articles,
                 isSelected: tabsRouter.activeIndex == 3,
               ),
               CustomNavigationDestination(
                 iconPath: 'assets/icons/settings.svg',
-                label: 'Настройки',
+                label: S.of(context).settings,
                 isSelected: tabsRouter.activeIndex == 4,
               ),
             ],

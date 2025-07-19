@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/core/widgets/error_widget.dart';
@@ -11,6 +10,8 @@ import 'package:shrm_homework_app/features/transaction/presentation/bloc/transac
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_form_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_list_item.dart';
 import 'package:shrm_homework_app/config/router/app_router.dart';
+import 'package:shrm_homework_app/core/services/haptic_service.dart';
+import 'package:shrm_homework_app/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:shrm_homework_app/generated/l10n.dart';
 
 class TransactionsScreen extends StatelessWidget {
@@ -52,6 +53,10 @@ class TransactionsScreen extends StatelessWidget {
               shape: const CircleBorder(),
               elevation: 0.0,
               onPressed: () async {
+                final settingsCubit = context.read<SettingsCubit>();
+                if (settingsCubit.state.hapticFeedbackEnabled) {
+                  HapticService.lightImpact();
+                }
                 final bloc = context.read<TransactionBloc>();
                 final result = await showModalBottomSheet(
                   context: context,
@@ -72,8 +77,8 @@ class TransactionsScreen extends StatelessWidget {
                   );
                 }
               },
-              backgroundColor: AppColors.primaryGreen,
-              child: const Icon(Icons.add, color: Colors.white),
+
+              child: const Icon(Icons.add),
             ),
           );
         },
@@ -96,16 +101,13 @@ class TransactionsView extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
-                color: AppColors.lightGreenBackground,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       S.of(context).total,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textDark,
-                      ),
+                      style: const TextStyle(fontSize: 16),
                     ),
                     CurrencyDisplay(
                       amount: state.totalAmount,
@@ -134,7 +136,7 @@ class TransactionsView extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                'Нет ${state.isIncome ? 'доходов' : 'расходов'} за сегодня',
+                                state.isIncome ? S.of(context).noIncomeToday : S.of(context).noExpensesToday,
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey[600],
@@ -151,7 +153,7 @@ class TransactionsView extends StatelessWidget {
                           },
                           child: ListView.separated(
                             separatorBuilder:
-                                (context, index) => Divider(height: 1),
+                                (context, index) => Divider(height: 0.5),
                             itemCount: state.transactions.length,
                             itemBuilder: (context, index) {
                               return TransactionListItem(
@@ -161,11 +163,12 @@ class TransactionsView extends StatelessWidget {
                                   final result = await showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
+                                    useSafeArea: true,
                                     builder:
                                         (_) => BlocProvider.value(
                                           value: bloc,
                                           child: FractionallySizedBox(
-                                            heightFactor: 1,
+                                            heightFactor: 0.9,
                                             child: TransactionFormScreen(
                                               isIncome: state.isIncome,
                                               transaction:
