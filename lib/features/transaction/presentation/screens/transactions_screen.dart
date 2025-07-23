@@ -9,7 +9,7 @@ import 'package:shrm_homework_app/features/transaction/presentation/bloc/transac
 import 'package:shrm_homework_app/features/transaction/presentation/bloc/transaction_state.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_form_screen.dart';
 import 'package:shrm_homework_app/features/transaction/presentation/widgets/transaction_list_item.dart';
-import 'package:shrm_homework_app/config/router/app_router.dart';
+import 'package:shrm_homework_app/core/router/app_router.dart';
 import 'package:shrm_homework_app/core/services/haptic_service.dart';
 import 'package:shrm_homework_app/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:shrm_homework_app/generated/l10n.dart';

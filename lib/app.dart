@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shrm_homework_app/config/router/app_router.dart';
+import 'package:shrm_homework_app/core/router/app_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'package:shrm_homework_app/core/events/locale_cubit.dart';
 import 'package:shrm_homework_app/core/events/theme_cubit.dart';
-import 'package:shrm_homework_app/config/theme/app_theme.dart';
+import 'package:shrm_homework_app/core/theme/app_theme.dart';
 import 'package:shrm_homework_app/generated/l10n.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:secure_application/secure_application.dart';

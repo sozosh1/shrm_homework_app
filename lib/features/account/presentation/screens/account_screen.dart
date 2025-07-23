@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
+import 'package:shrm_homework_app/core/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/di/di.dart';
 import 'package:shrm_homework_app/core/services/currency_service.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
