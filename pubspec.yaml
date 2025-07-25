@@ -48,6 +48,8 @@ dependencies:
   secure_application: ^4.1.0
   local_auth: ^2.3.0
   envied: ^1.1.1
+  alchemist: ^0.11.0
+
 
 
 dev_dependencies:
