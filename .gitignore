@@ -46,3 +46,8 @@ app.*.map.json
 
 # Environment variables
 .env
+
+# Ignore non-CI golden files and failures
+test/**/goldens/**/*.png
+test/**/failures/**/*.png
+!test/**/goldens/ci/*.png

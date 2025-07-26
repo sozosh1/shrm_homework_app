@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
+import 'package:shrm_homework_app/core/theme/app_colors.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final String message;

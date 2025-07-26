@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shrm_homework_app/config/theme/app_colors.dart';
+import 'package:shrm_homework_app/core/theme/app_colors.dart';
 import 'package:shrm_homework_app/core/widgets/currency_display.dart';
 import 'package:shrm_homework_app/features/transaction/data/models/transaction_response/transaction_response.dart';
 
